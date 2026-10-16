@@ -154,3 +154,5 @@ Described in the design and not in the code (the threat model marks each):
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE) for the vendored code.
+
+To report a security problem, see [SECURITY.md](https://github.com/shivanagendrakore/agent-firewall/blob/main/SECURITY.md).

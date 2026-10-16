@@ -416,3 +416,5 @@ provenance, and nothing is published by hand.
 
 If a release is broken, publish a fixed patch version. Use `npm deprecate` on
 the broken version rather than `npm unpublish`.
+
+A push that replaces the repository's history can skip the path-filtered workflows (CI, the Python SDK, the browser extension). Start CI and the browser extension by hand (`gh workflow run ci.yml`, `gh workflow run browser.yml`), or push a small change that touches each part.

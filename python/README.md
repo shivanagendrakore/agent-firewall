@@ -378,3 +378,5 @@ per vector. It needs Node 22+ and the compiled firewall (`npm ci && npx tsc -p t
 the repository root) and skips, saying why, without them.
 
 Licence: Apache-2.0.
+
+To report a security problem, see [SECURITY.md](https://github.com/shivanagendrakore/agent-firewall/blob/main/SECURITY.md).
