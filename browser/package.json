@@ -1,6 +1,6 @@
 {
   "name": "@launchsafe/agent-firewall-browser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "LaunchSafe Agent Firewall for browsers: a Manifest V3 extension that stops a hijacked browser agent from buying, sending, granting or leaking without a person's approval.",
   "license": "Apache-2.0",
   "author": "LaunchSafe",
@@ -32,7 +32,6 @@
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
     "test:e2e": "node scripts/e2e.mjs",
-    "icons": "node scripts/make-icons.mjs",
     "capture:corpus": "node scripts/capture-corpus.mjs",
     "sync:firewall": "node scripts/sync-firewall.mjs",
     "check:vendor": "node scripts/sync-firewall.mjs --check",

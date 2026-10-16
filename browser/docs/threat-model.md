@@ -1,6 +1,6 @@
 # Threat model: LaunchSafe Agent Firewall for browsers
 
-Status: built, not released (extension version 0.0.1, not in any store). This
+Status: built, not released (extension version 0.0.2, submitted to the Chrome Web Store). This
 document describes the code as built; anything planned and not built is marked
 "not built". Companion to [design.md](design.md).
 

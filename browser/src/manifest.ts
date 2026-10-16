@@ -31,7 +31,7 @@ export const FILES = {
   blocked: "blocked.html",
 } as const;
 
-/** Toolbar and store icon sizes; the files are icons/icon-{size}.png (scripts/make-icons.mjs) and the build copies them to dist/icons/. */
+/** Toolbar and store icon sizes; the files are icons/icon-{size}.png (the LaunchSafe mark, committed) and the build copies them to dist/icons/. */
 export const ICON_SIZES = [16, 32, 48, 128] as const;
 const icons = Object.fromEntries(ICON_SIZES.map((s) => [String(s), `icons/icon-${s}.png`]));
 

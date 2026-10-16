@@ -1,4 +1,4 @@
-// Vendored from the LaunchSafe Agent Firewall (src/engine/content-lexicon.ts), Apache-2.0, at commit 09968d171ebeda828fc07ce6c843170341f28fd0.
+// Vendored from the LaunchSafe Agent Firewall (src/engine/content-lexicon.ts), Apache-2.0, at commit 5145f69e102584ff11ae342cd2349c4ee76974f3.
 // Licence: Apache-2.0 (see NOTICE).
 // Do not edit here: it is copied from the firewall repository by
 // `node scripts/sync-firewall.mjs` (`--check` verifies the copy).
