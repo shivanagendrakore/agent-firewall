@@ -501,7 +501,9 @@ what it does is hidden inside the construct. Each is a known gap.
   a default entry from the same entry you wrote yourself, so it does not try.
 - **Package checks are only as good as their data.** A malicious version
   published after your last `update`, or not yet in OSV, is not denied. A
-  typosquat of a name outside the shipped popular lists is not flagged. The npm list is the hand-kept seed list: npm's search no longer ranks packages by popularity, so it could not be regenerated for 0.3. The
+  typosquat of a name outside the shipped popular lists is not flagged. The
+  npm list is the hand-kept seed list: npm's search no longer ranks packages
+  by popularity, so it could not be regenerated for 0.3. The
   cooldown setting covers the first days of a release; npm and pip have no
   rolling cooldown.
 - **Task scope is log-only by default** (`taskScope.mode: "log"`). It records
