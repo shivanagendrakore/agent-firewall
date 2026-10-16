@@ -13,9 +13,7 @@ sidecar it talks to. The firewall itself is installed as the root README describ
 sidecar is in [docs/api.md](https://github.com/shivanagendrakore/agent-firewall/blob/main/docs/api.md), and the wire contract is
 [docs/api-v0.md](https://github.com/shivanagendrakore/agent-firewall/blob/main/docs/api-v0.md).
 
-> **Status: pre-release.** Not yet published to PyPI: the `pip install launchsafe-firewall` commands
-> below work after release. Until then, install from a checkout of the repository
-> (`pip install ./python`).
+Install it from PyPI: `pip install launchsafe-firewall`.
 
 - One runtime dependency: `httpx`. Python 3.10 or later, tested on 3.10 and 3.13 in CI (3.14 by hand) (the `pydantic-ai` extra needs 3.11 or later), on macOS and Linux only (Windows is not supported).
 - Talks only to the sidecar you point it at: the unix socket `<firewall home>/api.sock` by default,

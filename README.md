@@ -209,8 +209,8 @@ without TLS answers any process that reaches its port), and
 | [`browser/`](browser/README.md) | The browser extension (Manifest V3) for browser agents, which can [link to the firewall](docs/browser-link.md) | Chrome extension |
 | [`python/`](python/README.md) | The Python SDK for the local API, with plug-ins for the OpenAI Agents SDK, LangGraph, Claude Agent SDK, Pydantic AI, Google ADK and CrewAI | `launchsafe-firewall` on PyPI |
 
-Each part has its own package file, tests and release. The npm package is
-published; the Python SDK and the browser extension are not yet.
+Each part has its own package file, tests and release. The npm package and
+the Python SDK are published; the browser extension is not yet.
 
 ## Documentation
 
