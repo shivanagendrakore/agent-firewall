@@ -1,0 +1,45 @@
+name: Store screenshots
+
+# Produces the Chrome Web Store images (browser/test/e2e/store-screenshots.spec.ts) in CI, where Playwright's
+# Chromium is available, and uploads them as an artifact. Manual runs only.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: browser
+
+jobs:
+  shots:
+    name: store screenshots (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            browser/package-lock.json
+            package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/e2e.mjs install --with-deps chromium
+      - name: Take the screenshots
+        env:
+          PW_CHROMIUM_ATTACH_TO_OTHER: "1"
+          STORE_SHOTS: "1"
+          STORE_SHOTS_DIR: ${{ github.workspace }}/browser/store-shots
+        run: npm run test:e2e -- test/e2e/store-screenshots.spec.ts
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: store-screenshots
+          path: browser/store-shots
+          if-no-files-found: warn
