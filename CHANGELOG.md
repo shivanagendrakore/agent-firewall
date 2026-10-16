@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-10-16
+
+Maintenance release. The installed firewall behaves as in 0.3.0; this is the
+first version published by the repository's release workflow through npm
+trusted publishing, with a provenance statement.
+
+### Changed
+
+- The README says the npm package and the Python SDK (`launchsafe-firewall` on
+  PyPI) are published; the Python SDK and browser extension READMEs name the
+  security contact.
+- Timing checks in the test suite allow slower shared CI runners, and two
+  compile-cache tests skip under coverage (they still run in the normal test
+  jobs).
+
 ## [0.3.0] - 2026-10-16
 
 First public release.
