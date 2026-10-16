@@ -28,7 +28,7 @@ import { seatbeltBlock } from "../../src/runtime/gemini-seatbelt.js";
 import { protectedPaths } from "../../src/runtime/run/run.js";
 import { hookCommand } from "../../src/runtime/install.js";
 import { parseHookCommand } from "../../src/runtime/identity.js";
-import { bash, run, explain } from "../helpers.js";
+import { bash, run, explain, SLOW, UNDER_COVERAGE } from "../helpers.js";
 import { REPO, spawnCli, tempHome, testEnv } from "../helpers.js";
 
 // --- helpers ------------------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ describe("compile cache", () => {
 
   // SR3 (fixed): node enables NODE_COMPILE_CACHE at start-up, before cli.ts runs, so the installed hook command sets it empty.
   // Node keeps no compile cache while NODE_V8_COVERAGE is set (npm run coverage sets it), so the children run without it.
-  it("SR3: NODE_COMPILE_CACHE in the agent's environment does not move the cache: the installed hook command clears it", () => {
+  it.skipIf(UNDER_COVERAGE)("SR3: NODE_COMPILE_CACHE in the agent's environment does not move the cache: the installed hook command clears it", () => {
     const pkg = copyPackage();
     const home = tempHome();
     const fw = join(home, ".launchsafe-firewall");
@@ -464,6 +464,6 @@ describe("session appends without the lock", () => {
     };
     expect(timed(() => appendEvents(l, "lk", [{ type: "approval_used", actionHash: "h1" }]))).toBeGreaterThanOrEqual(400);
     expect(timed(() => consumeApproval(l, "lk", "h2", "nope"))).toBeGreaterThanOrEqual(400);
-    expect(timed(() => appendEvents(l, "lk", [{ type: "taint", source: "y" }]))).toBeLessThan(300);
+    expect(timed(() => appendEvents(l, "lk", [{ type: "taint", source: "y" }]))).toBeLessThan(300 * SLOW);
   });
 });

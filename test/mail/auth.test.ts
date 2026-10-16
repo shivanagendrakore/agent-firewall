@@ -5,6 +5,7 @@
  * ARC seal cancels a DMARC failure (EFP6); sender notes never withhold.
  */
 import { describe, expect, it } from "vitest";
+import { SLOW } from "../helpers.js";
 import { parseAuthResults, readAuth, registrableDomain, senderNotes } from "../../src/engine/mail/auth.js";
 import type { MailHeader } from "../../src/engine/mail/mime.js";
 
@@ -147,7 +148,7 @@ describe("sender notes (reported, never a reason to withhold alone)", () => {
     for (const name of [pad, `${pad} service@paypal.example ${pad}`, `${pad}.paypal.example`, "a-".repeat(50_000), "a.".repeat(50_000)]) {
       const t0 = performance.now();
       senderNotes(h(["From", `"${name}" <help@other.example>`]));
-      expect(performance.now() - t0, name.slice(0, 20)).toBeLessThan(500);
+      expect(performance.now() - t0, name.slice(0, 20)).toBeLessThan(500 * SLOW);
     }
     expect(senderNotes(h(["From", `"${pad} service@paypal.example ${pad}" <help@other.example>`])).map((n) => n.id)).toEqual(["display_name_domain"]);
     expect(senderNotes(h(["From", `"${pad} paypal.com" <help@other.example>`])).map((n) => n.id)).toEqual(["display_name_domain"]);

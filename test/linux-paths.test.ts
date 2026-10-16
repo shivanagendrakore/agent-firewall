@@ -27,7 +27,7 @@ import { purgeRefusal } from "../src/runtime/purge.js";
 import { processBindingFor } from "../src/runtime/run/vault-env.js";
 import type { Decision } from "../src/types.js";
 import { sensitivePath } from "../src/ui/data.js";
-import { bash, ctx, explain, HOME, run, tempHome, WS, type RunOpts } from "./helpers.js";
+import { bash, ctx, explain, HOME, run, SLOW, tempHome, WS, type RunOpts } from "./helpers.js";
 
 const LINUX: RunOpts = { ctx: { caseInsensitive: false } };
 const lin = ctx({ caseInsensitive: false });
@@ -545,7 +545,7 @@ describe("I7: a glob that could name them, or a recursive read of a directory ab
       for (const cmd of [`cat ${p}`, `chmod -R 777 ${p}`, `grep -r x ${p}`]) {
         const t0 = performance.now();
         bash(cmd, LINUX);
-        expect(performance.now() - t0, cmd.slice(0, 40)).toBeLessThan(400);
+        expect(performance.now() - t0, cmd.slice(0, 40)).toBeLessThan(400 * SLOW);
       }
     }
   });

@@ -14,6 +14,7 @@
 
 import { appendFileSync, writeFileSync } from "node:fs";
 import { vi } from "vitest";
+import { SLOW } from "../helpers.js";
 
 /** The suite's 30 s test timeout is for ordinary tests; a fuzz target may run for its whole time cap (and FUZZ_ITERS scales it up). */
 export function allowLongRuns(): void {
@@ -349,10 +350,10 @@ export interface Timing {
   worstSeed: number;
 }
 
-/** The wall-clock budget in ms for a decision, scaled by FUZZ_BUDGET_MS_FACTOR (a loaded machine). */
+/** The wall-clock budget in ms for a decision, scaled by SLOW (coverage, CI) and FUZZ_BUDGET_FACTOR (a loaded machine). */
 export function budget(ms: number): number {
   const f = Number(process.env.FUZZ_BUDGET_FACTOR);
-  return ms * (Number.isFinite(f) && f > 0 ? f : 1);
+  return ms * SLOW * (Number.isFinite(f) && f > 0 ? f : 1);
 }
 
 /**

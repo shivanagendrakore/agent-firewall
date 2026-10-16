@@ -3,6 +3,14 @@ import { emptyState, foldEvents } from "../src/engine/state.js";
 import { defaultConfig } from "../src/policy.js";
 import type { Context, Decision, FirewallConfig, SessionState, StateEvent } from "../src/types.js";
 
+// Under `npm run coverage` (V8 coverage on) code runs several times slower; these bounds guard against quadratic time, which is orders of magnitude over them.
+// Shared CI runners (GitHub ubuntu-latest) measured 1.4x slower than a developer machine, so the bounds are doubled there.
+/** Factor for wall-clock bounds: 4 under coverage, 2 on CI runners, 1 otherwise. Shared by every timing test (and by fuzz `budget()`). */
+export const SLOW = process.env.NODE_V8_COVERAGE !== undefined || process.env.LSFW_COVERAGE !== undefined ? 4 : process.env.CI !== undefined ? 2 : 1;
+
+/** True under `npm run coverage`: the child-process compile cache stays empty there (unexplained on CI), so those tests run only in the normal jobs. */
+export const UNDER_COVERAGE = process.env.NODE_V8_COVERAGE !== undefined || process.env.LSFW_COVERAGE !== undefined;
+
 export const HOME = "/Users/dev";
 export const WS = "/Users/dev/proj";
 

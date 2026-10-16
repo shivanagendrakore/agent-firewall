@@ -16,7 +16,7 @@ import { inspectIntel, intelDir, openIntel, readManifest, runUpdate } from "../s
 import { readLockfiles } from "../src/runtime/lockfiles.js";
 import { intelCheck } from "../src/runtime/package-doctor.js";
 import type { Context, Decision, FirewallConfig } from "../src/types.js";
-import { bash, explain, testRoot } from "./helpers.js";
+import { bash, explain, SLOW, testRoot } from "./helpers.js";
 import { FIXTURE, FIXTURE_ECOS, fixtureHome, fixtureSource, makeZip, osv } from "./intel-fixture.js";
 
 let fwHome = "";
@@ -210,7 +210,7 @@ describe("package vetting false positives (allowed, snapshot present, trusted)",
     times.sort((a, b) => a - b);
     // The 50 ms budget is measured by `npm run bench` (package-check case) on a quiet machine; inside the
     // parallel suite only a loose ceiling is stable enough to catch a regression (an accidental O(n^2)).
-    expect(times[3], `median ${times[3]} ms`).toBeLessThan(250);
+    expect(times[3], `median ${times[3]} ms`).toBeLessThan(250 * SLOW);
   });
   it("FP7: pnpm add -D vitest", () => expectV(cmd("pnpm add -D vitest"), "allow"));
   it("ordinary commands never read the snapshot", () => {

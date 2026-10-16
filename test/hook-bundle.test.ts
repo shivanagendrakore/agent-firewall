@@ -7,7 +7,7 @@
 import { describe, it, expect } from "vitest";
 import { cpSync, existsSync, mkdirSync, readdirSync, statSync, utimesSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { REPO, spawnCli, tempHome } from "./helpers.js";
+import { REPO, spawnCli, tempHome, UNDER_COVERAGE } from "./helpers.js";
 
 /** A copy of the built package somewhere else, so its install directory is not this repository. */
 function copyPackage(): string {
@@ -79,7 +79,7 @@ describe("hook bundle", () => {
     expect(r.stderr).toContain("broken bundle");
   });
 
-  it("keeps the compile cache in the firewall's data directory, only once that directory exists", () => {
+  it.skipIf(UNDER_COVERAGE)("keeps the compile cache in the firewall's data directory, only once that directory exists", () => {
     const pkg = copyPackage();
     const home = tempHome();
     const fw = join(home, ".launchsafe-firewall");

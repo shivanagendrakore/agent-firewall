@@ -5,12 +5,9 @@
  */
 import { describe, expect, it } from "vitest";
 import { parseShell, allErrors, MAX_COMMAND_LENGTH, type Script, type Word } from "../src/engine/shell/parse.js";
-import { bash, explain, HOME, WS } from "./helpers.js";
+import { bash, explain, HOME, SLOW, WS } from "./helpers.js";
 import type { Decision } from "../src/types.js";
 
-// Under `npm run coverage` (V8 coverage on) code runs several times slower; these bounds guard against quadratic time, which is orders of magnitude over them.
-// Shared CI runners (GitHub ubuntu-latest) measured 1.4x slower than a developer machine, so the bounds are doubled there.
-const SLOW = process.env.NODE_V8_COVERAGE !== undefined || process.env.LSFW_COVERAGE !== undefined ? 4 : process.env.CI !== undefined ? 2 : 1;
 
 const words = (sc: Script, i = 0): string[] => (sc.pipelines[i]?.commands[0]?.words ?? []).map((w: Word) => w.text);
 

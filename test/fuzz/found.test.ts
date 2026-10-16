@@ -30,11 +30,9 @@ import { ApiCore } from "../../src/api/core.js";
 import { agent, apiTree, removeApiTree } from "../api/harness.js";
 import { containsFingerprint, decodedVariants, fingerprint } from "../../src/engine/secrets.js";
 import { guardsView } from "../../src/ui/data.js";
+import { SLOW } from "../helpers.js";
 import { budget, deep, timed } from "./gen.js";
 
-// Under `npm run coverage` (V8 coverage on) code runs several times slower; these bounds guard against quadratic time, which is orders of magnitude over them.
-// Shared CI runners (GitHub ubuntu-latest) measured 1.4x slower than a developer machine, so the bounds are doubled there.
-const SLOW = process.env.NODE_V8_COVERAGE !== undefined || process.env.LSFW_COVERAGE !== undefined ? 4 : process.env.CI !== undefined ? 2 : 1;
 
 const roots: string[] = [];
 function home(): { l: Layout; root: string; ws: string } {

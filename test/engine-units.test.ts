@@ -18,7 +18,7 @@ import { emptyState, foldEvents } from "../src/engine/state.js";
 import { decide } from "../src/engine/decide.js";
 import { NETWORK_REFUSED_TOOL } from "../src/engine/classify.js";
 import type { Effect } from "../src/types.js";
-import { ctx } from "./helpers.js";
+import { ctx, SLOW } from "./helpers.js";
 
 describe("glob", () => {
   it("* does not cross directories", () => {
@@ -213,7 +213,7 @@ describe("sql", () => {
       return performance.now() - t0;
     };
     // Output built by += was indexed at every "#": quadratic (15 ms at 80k characters, 183 ms at 160k).
-    for (const unit of ["a&#COPY \u2066", "a-sk-&#.", "&# github.com/-"]) expect(t(unit.repeat(Math.ceil(320_000 / unit.length)))).toBeLessThan(150);
+    for (const unit of ["a&#COPY \u2066", "a-sk-&#.", "&# github.com/-"]) expect(t(unit.repeat(Math.ceil(320_000 / unit.length)))).toBeLessThan(150 * SLOW);
   });
 });
 
