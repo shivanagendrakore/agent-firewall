@@ -9,7 +9,7 @@ import type { Json } from "../../src/gateway/jsonrpc.js";
 import { tailLog } from "../../src/runtime/log.js";
 import { loadPins } from "../../src/runtime/pins.js";
 import { listRecords } from "../../src/runtime/quarantine.js";
-import { REPO } from "../helpers.js";
+import { REPO, SLOW } from "../helpers.js";
 import { gw, NOTES_TOOLS, textOf } from "./harness.js";
 
 const READ_TOOL = [{ name: "read_file", description: "Read a file.", inputSchema: { type: "object", properties: { path: { type: "string" } } } }];
@@ -77,7 +77,7 @@ describe("gateway false positives", () => {
     expect(r.result?.isError).not.toBe(true);
     expect(((r.result?.structuredContent as Json).rows as unknown[]).length).toBe(30000);
     expect(listRecords(g.l).records).toHaveLength(0);
-    expect(ms).toBeLessThan(5000);
+    expect(ms).toBeLessThan(5000 * SLOW);
   });
 
   it("GFP7: MCP calls in hook mode add no decision and no ask (the client's hook decides)", () => {
