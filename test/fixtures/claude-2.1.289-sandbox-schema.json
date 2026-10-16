@@ -1,0 +1,19 @@
+{
+  "$comment": "Captured 10 Oct 2026 from the settings schema (zod) inside the installed Claude Code 2.1.289 binary (~/Library/Application Support/Claude/claude-code/2.1.289/.../claude.app/Contents/MacOS/claude, read with strings; Claude Code was not run). Key names only, plus the defaults the schema's own descriptions state. `sandbox` is an object (no boolean form); unknown keys pass through (.passthrough()). Lists (excludedCommands, network.allowedDomains, network.allowUnixSockets, network.allowMachLookup, filesystem.allowWrite, ignoreViolations) merge across settings sources; network.strictAllowlist, allowAppleEvents, filesystem.disabled are honoured from user, managed or --settings only (project and local are ignored), and with strictAllowlist on the project's allowedDomains and WebFetch(domain:...) allow rules are left out. WebFetch(domain:...) allow rules merge into network.allowedDomains. Wildcards: *.example.com.",
+  "version": "2.1.289",
+  "sandbox": ["enabled", "failIfUnavailable", "autoAllowBashIfSandboxed", "allowUnsandboxedCommands", "network", "filesystem", "credentials", "ignoreViolations", "enableWeakerNestedSandbox", "enableWeakerNetworkIsolation", "allowAppleEvents", "excludedCommands", "ripgrep", "bwrapPath", "socatPath"],
+  "network": ["allowedDomains", "deniedDomains", "strictAllowlist", "allowManagedDomainsOnly", "allowUnixSockets", "allowAllUnixSockets", "allowLocalBinding", "allowMachLookup", "httpProxyPort", "socksProxyPort", "tlsTerminate"],
+  "filesystem": ["allowWrite", "denyWrite", "denyRead", "allowRead", "allowManagedReadPathsOnly", "disabled"],
+  "defaults": {
+    "enabled": false,
+    "failIfUnavailable": false,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": true,
+    "enableWeakerNestedSandbox": false,
+    "enableWeakerNetworkIsolation": false,
+    "allowAppleEvents": false
+  },
+  "notConfirmed": {
+    "hooksOutsideSandbox": "The schema describes sandbox.enabled as running Bash commands inside the sandbox; the only hook sandboxing strings found are for remote-tools project hooks ('a project hook could not be run in the sandbox ... for a served call'). Ordinary hooks running outside the sandbox is indicated, not confirmed by a live run; doctor's probe write is the check."
+  }
+}

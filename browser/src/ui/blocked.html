@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Navigation stopped - LaunchSafe Agent Firewall</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="narrow">
+      <h1 id="title">LaunchSafe stopped this navigation</h1>
+      <p id="why"></p>
+      <dl>
+        <dt class="muted">Destination</dt>
+        <dd id="host"></dd>
+        <dt class="muted">Data in the address</dt>
+        <dd id="chars"></dd>
+        <dt class="muted">Rule</dt>
+        <dd id="rule"></dd>
+      </dl>
+      <section aria-labelledby="next-h">
+        <h2 id="next-h" class="ls-h">What you can do</h2>
+        <p id="next" class="muted"></p>
+      </section>
+    </main>
+    <script src="blocked.js"></script>
+  </body>
+</html>

@@ -1,0 +1,2531 @@
+[
+  {
+    "id": "budget-requests-limit",
+    "description": "Untrusted request budget of 2 per host: three fetches of one allowed host",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "fetchAllowHosts": [
+          "docs.example.org",
+          "api.example.org"
+        ]
+      },
+      "budgets": {
+        "untrusted": {
+          "requestsPerHost10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-0",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-1",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:4",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-2",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-BUDGET-REQUESTS"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:6",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-requests-other-host",
+    "description": "Untrusted request budget of 2 per host: two fetches of one allowed host, then one of another",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "fetchAllowHosts": [
+          "docs.example.org",
+          "api.example.org"
+        ]
+      },
+      "budgets": {
+        "untrusted": {
+          "requestsPerHost10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-0",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-1",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:4",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://api.example.org/page-2",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:6",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-requests-exempt-host",
+    "description": "Untrusted request budget of 2 per host, the host exempt: three fetches of it",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "fetchAllowHosts": [
+          "docs.example.org",
+          "api.example.org"
+        ]
+      },
+      "budgets": {
+        "untrusted": {
+          "requestsPerHost10m": 2
+        },
+        "exemptHosts": [
+          "docs.example.org"
+        ]
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-0",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-1",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:4",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-2",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:6",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-requests-project-lowers",
+    "description": "The project's policy lowers the request budget to 1",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "fetchAllowHosts": [
+          "docs.example.org",
+          "api.example.org"
+        ]
+      },
+      "files": {
+        "workspace/.launchsafe-firewall.json": "{\"version\":3,\"budgets\":{\"untrusted\":{\"requestsPerHost10m\":1}}}"
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-0",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-1",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-BUDGET-REQUESTS"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:4",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-requests-project-cannot-disable",
+    "description": "The user's budget of 1, and a project policy that switches budgets off",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "fetchAllowHosts": [
+          "docs.example.org",
+          "api.example.org"
+        ]
+      },
+      "budgets": {
+        "untrusted": {
+          "requestsPerHost10m": 1
+        }
+      },
+      "files": {
+        "workspace/.launchsafe-firewall.json": "{\"version\":3,\"budgets\":{\"enabled\":false}}"
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-0",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/page-1",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-BUDGET-REQUESTS"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:4",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-bytes-trusted-total",
+    "description": "A trusted total of 64 bytes: a post with a 200-byte body",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "trusted": {
+          "bytesTotal": 64
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl -d \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\" https://upload.example.net/in"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-BUDGET-BYTES"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-bytes-untrusted-per-host",
+    "description": "An untrusted per-host budget of 64 bytes: fetches of an allowed host whose URLs carry 40-byte queries",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "fetchAllowHosts": [
+          "docs.example.org",
+          "api.example.org"
+        ]
+      },
+      "budgets": {
+        "untrusted": {
+          "bytesPerHost": 64
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/search?q=dddddddddddddddddddddddddddddddddddddddd",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-BUDGET-BYTES"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/search?q=eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-BUDGET-BYTES"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-loop-same-action",
+    "description": "Loop detection at 2: the same command four times",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "sameAction10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-LOOP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-LOOP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-LOOP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-loop-broken-by-write",
+    "description": "Loop detection at 2: the same command four times with a file write in between",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "sameAction10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-LOOP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Write",
+            "input": {
+              "file_path": "{{workspace}}/src/a.ts",
+              "content": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-LOOP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-loop-non-allow",
+    "description": "The non-allow limit of 2: asks in a row after outside content",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "nonAllow10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install a-pkg"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install b-pkg"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install c-pkg"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL",
+            "FW-LOOP"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install d-pkg"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL",
+            "FW-LOOP"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-monitor-same-failure",
+    "description": "The monitor's identical-failure limit of 2: the same blocked command twice, then an ordinary one",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "stopSameFailure10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-METADATA"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-monitor-project-cannot-raise",
+    "description": "The user's identical-failure limit of 2, and a project policy that raises it",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "stopSameFailure10m": 2
+        }
+      },
+      "files": {
+        "workspace/.launchsafe-firewall.json": "{\"version\":3,\"budgets\":{\"loop\":{\"stopSameFailure10m\":100}}}"
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-METADATA"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-monitor-non-allow",
+    "description": "The monitor's limit of 2 actions needing a person: outside content, installs, then an ordinary command",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "stopNonAllow10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install a-pkg"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install b-pkg"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install c-pkg"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-monitor-config-touches",
+    "description": "The monitor's limit of 2 agent-configuration changes: three settings writes, then an ordinary command",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "stopConfigTouches10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Write",
+            "input": {
+              "file_path": "{{workspace}}/.claude/settings.json",
+              "content": "{\"model\":\"m1\"}"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-AGENT-SETTINGS"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Write",
+            "input": {
+              "file_path": "{{workspace}}/.claude/settings.json",
+              "content": "{\"model\":\"m2\"}"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Write",
+            "input": {
+              "file_path": "{{workspace}}/.claude/settings.json",
+              "content": "{\"model\":\"m3\"}"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-monitor-new-hosts",
+    "description": "The monitor's limit of 2 first-contact hosts: fetches of three new hosts, then an ordinary command",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "stopNewHosts10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://a.example.org/guide",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://b.example.org/guide",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://c.example.org/guide",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:4",
+          "output": "(page)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-monitor-stop-session-scope",
+    "description": "A monitor stop in one session (default scope): an ordinary command in another session of the same agent",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "loop": {
+          "stopSameFailure10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-METADATA"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-2",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-monitor-stop-agent-scope",
+    "description": "A monitor stop with budgets.stopScope agent: an ordinary command in another session of the same agent",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "stopScope": "agent",
+        "loop": {
+          "stopSameFailure10m": 2
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-METADATA"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-2",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-STOPPED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "budget-mcp-calls",
+    "description": "A trusted MCP call budget of 2: three calls to a server whose results are trusted",
+    "source": "src/engine/budgets.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "budgets": {
+        "trusted": {
+          "mcpCalls10m": 2
+        }
+      },
+      "policy": {
+        "version": 3,
+        "mcpServers": {
+          "docs": {
+            "results": "trusted",
+            "privateData": false
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "search",
+            "input": {
+              "q": "a"
+            },
+            "mcp": {
+              "server": "docs",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(result)"
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "search",
+            "input": {
+              "q": "b"
+            },
+            "mcp": {
+              "server": "docs",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "(result)"
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "search",
+            "input": {
+              "q": "c"
+            },
+            "mcp": {
+              "server": "docs",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-BUDGET-MCP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  }
+]

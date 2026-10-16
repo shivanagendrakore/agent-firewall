@@ -1,0 +1,269 @@
+name: Release
+
+# Publishes to npm. It runs only for a pushed version tag, or by hand.
+# A manual run defaults to a dry run: every check, nothing published.
+# Steps and the one-time setup: RELEASING.md.
+#
+# Two jobs: "verify" runs every check and inspects the package with no publish rights; "publish" runs only
+# for a real release, in the npm-release environment, and is the only job that can mint an OIDC token.
+# npm trusted publishing (OIDC) replaces a long-lived NPM_TOKEN; --provenance links the package to this run.
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Run every check but do not publish"
+        type: boolean
+        default: true
+      macos_verified_sha:
+        description: "The commit sha the macOS sandbox tests passed on (RELEASING.md, 'Before the release'). Empty uses the repository variable MACOS_VERIFIED_SHA."
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  # A tag push always publishes; a manual run publishes only when the box is cleared.
+  DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry-run || 'false' }}
+  REF_TYPE: ${{ github.ref_type }}
+  REF_NAME: ${{ github.ref_name }}
+  # The macOS evidence (this workflow runs on Linux only): the sha a person ran the macOS sandbox tests on.
+  # A manual run takes the input; a tag push has none, so it reads the repository variable MACOS_VERIFIED_SHA.
+  MACOS_VERIFIED_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.macos_verified_sha != '' && inputs.macos_verified_sha || vars.MACOS_VERIFIED_SHA }}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Full history, so the ancestry check below can see origin/main.
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Verify the tag, the version and the private flag
+        shell: bash
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          private="$(node -p "require('./package.json').private === true")"
+          echo "package.json version: ${version}; private: ${private}; dry run: ${DRY_RUN}"
+          if [ "${DRY_RUN}" = "true" ]; then
+            [ "${private}" = "true" ] && echo "::warning::package.json has \"private\": true. A real release would stop here (RELEASING.md, 'Decide to publish')."
+            if [ "${REF_TYPE}" = "tag" ] && [ "${REF_NAME}" != "v${version}" ]; then
+              echo "::warning::Tag ${REF_NAME} does not match package.json version v${version}."
+            fi
+            exit 0
+          fi
+          if [ "${REF_TYPE}" != "tag" ]; then
+            echo "::error::A real release runs only from a tag. Ref ${REF_NAME} is a ${REF_TYPE} (RELEASING.md, 'Tag and publish'). Nothing was published."
+            exit 1
+          fi
+          if [ "${REF_NAME}" != "v${version}" ]; then
+            echo "::error::Tag ${REF_NAME} does not match package.json version ${version} (expected v${version}). Nothing was published."
+            exit 1
+          fi
+          if [ "${private}" != "false" ]; then
+            echo "::error::package.json still has \"private\": true, so this package must not be published. Removing it is the maintainers' publish decision (RELEASING.md, 'Decide to publish'). Nothing was published."
+            exit 1
+          fi
+
+      # Nothing here runs the macOS suites (macOS minutes cost ten times Linux's): a person runs them on a Mac
+      # (RELEASING.md, 'Before the release', step 6) and records the commit sha. A real release needs that sha to
+      # be the one being released.
+      - name: Verify the macOS sandbox tests were run on this commit
+        shell: bash
+        run: |
+          if [ "${MACOS_VERIFIED_SHA}" = "${GITHUB_SHA}" ]; then
+            echo "The macOS sandbox tests were recorded as passing on ${GITHUB_SHA}."
+          elif [ "${DRY_RUN}" = "true" ]; then
+            echo "::warning::No macOS evidence for ${GITHUB_SHA} (recorded: '${MACOS_VERIFIED_SHA}'). A real release would stop here."
+          else
+            echo "::error::The macOS sandbox tests are not recorded as passing on ${GITHUB_SHA} (recorded: '${MACOS_VERIFIED_SHA}'). Run them on a Mac and set the macos_verified_sha input or the MACOS_VERIFIED_SHA repository variable (RELEASING.md, 'Before the release', step 6). Nothing was published."
+            exit 1
+          fi
+
+      - name: Verify the commit is on main
+        shell: bash
+        run: |
+          if git merge-base --is-ancestor "${GITHUB_SHA}" refs/remotes/origin/main; then
+            echo "${GITHUB_SHA} is on origin/main."
+          elif [ "${DRY_RUN}" = "true" ]; then
+            echo "::warning::${GITHUB_SHA} is not on origin/main. A real release would stop here."
+          else
+            echo "::error::The tagged commit ${GITHUB_SHA} is not an ancestor of origin/main. Release only commits merged to main (RELEASING.md, 'Tag and publish'). Nothing was published."
+            exit 1
+          fi
+
+      # Every command CI's test job runs on Linux runs here too (test/release.test.ts checks it), so no suite
+      # skips during a release for want of a tool: ripgrep (test/canary.test.ts), bubblewrap with user
+      # namespaces (test/run-sandbox.test.ts) and the v0.2 ref (test/lifecycle/upgrade.test.ts).
+      - name: Install ripgrep and bubblewrap
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ripgrep bubblewrap
+      - name: Assert ripgrep is present
+        run: rg --version
+      # As in ci.yml: lift Ubuntu's AppArmor restriction on unprivileged user namespaces on this throwaway
+      # runner VM only, then prove bwrap works, so a skip cannot hide.
+      - name: Let bubblewrap create user namespaces
+        shell: bash
+        run: |
+          if [ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          if ! bwrap --unshare-all --die-with-parent --ro-bind / / true; then
+            echo "::error::bubblewrap cannot create a sandbox on this runner, so test/run-sandbox.test.ts would skip."
+            exit 1
+          fi
+      - name: Point the v0.2 upgrade tests at their ref
+        shell: bash
+        run: |
+          if git rev-parse -q --verify "refs/tags/v0.2/final^{commit}" >/dev/null; then
+            echo "LSFW_V02_REF=v0.2/final" >> "$GITHUB_ENV"
+          elif git rev-parse -q --verify "refs/remotes/origin/v0.2/final^{commit}" >/dev/null; then
+            echo "LSFW_V02_REF=origin/v0.2/final" >> "$GITHUB_ENV"
+          else
+            echo "::notice::This repository has no v0.2/final ref, so the v0.2 upgrade tests skip (their suite names say why)."
+          fi
+
+      - run: npm ci
+      - name: Audit runtime dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - run: npm run typecheck
+      - run: npm run lint
+      # The build starts from an empty dist/ (scripts/clean-dist.mjs), so nothing stale is packed below.
+      - run: npm run build
+      - name: Verify the hook bundle was built
+        shell: bash
+        run: |
+          if [ ! -s dist/hook/bundle.js ]; then
+            echo "::error::dist/hook/bundle.js is missing after the build (scripts/bundle-hook.mjs; rolldown is a devDependency). Nothing was published."
+            exit 1
+          fi
+      - run: npm run check:docs
+      # The vendored agent-safety copy: headers name the pinned commit (bytes are compared only when LAUNCHSAFE_APP_DIR has the source checkout).
+      - run: node scripts/sync-agent-safety.mjs --check
+      - run: npm run conformance:check
+      - run: npm test
+      # Gates: 0 normal tasks interrupted; 0 ordinary messages withheld and every attack fixture caught.
+      - run: npm run friction
+      - run: npm run mail-friction
+
+      # The build ran above, so the listing skips prepack (its output would mix into the JSON). The check
+      # requires every file package.json points at, the hook bundle, README.md, LICENSE, NOTICE, every file
+      # under docs/ and the Onest font's licence, and refuses test/, conformance/, browser/ and python/.
+      - name: Package contents
+        shell: bash
+        run: |
+          npm pack --dry-run --ignore-scripts --json > "${RUNNER_TEMP}/pack.json"
+          node scripts/check-pack.mjs "${RUNNER_TEMP}/pack.json"
+
+      - name: Dry run finished
+        if: ${{ env.DRY_RUN == 'true' }}
+        run: |
+          echo "Dry run: every check ran, nothing was published."
+
+  # The Python SDK against the real sidecar: the steps python.yml runs for it, on the release commit, so a
+  # release cannot go out with that suite red or skipped.
+  python-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: python/pyproject.toml
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install the firewall's Node dependencies
+        run: npm ci
+      - name: Build the firewall for the conformance vectors (dist-conformance)
+        run: npx tsc -p tsconfig.conformance.json
+      - name: Install the SDK
+        working-directory: python
+        run: python -m venv .venv && .venv/bin/pip install -e ".[dev]"
+      - name: Python SDK against the real sidecar
+        env:
+          LAUNCHSAFE_FIREWALL_CONFORMANCE: require
+          LAUNCHSAFE_FIREWALL_PY_VENV: ${{ github.workspace }}/python/.venv
+        run: npx vitest run test/api/e2e-python.test.ts
+
+  publish:
+    needs: [verify, python-e2e]
+    # Only the public repository publishes (the one npm's trusted publisher names, and provenance needs a public one); a copy
+    # elsewhere stops after the checks.
+    if: ${{ github.repository == 'shivanagendrakore/agent-firewall' && github.event.repository.private == false && (github.event_name == 'workflow_dispatch' && !inputs.dry-run || github.event_name == 'push') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # The environment npm's trusted publisher names (RELEASING.md, 'One-time setup').
+    environment: npm-release
+    # id-token: write lets npm exchange this run's OIDC token for a short-lived publish credential and sign
+    # the provenance statement. Nothing else is granted.
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          registry-url: "https://registry.npmjs.org"
+      # Trusted publishing needs npm 11.5.1 or later; Node 22 ships npm 10.
+      - name: npm with trusted publishing support
+        run: npm install -g npm@11.6.2 && npm --version
+
+      # The same gates as verify, repeated in the job that publishes (a re-run of this job alone must not skip them).
+      - name: Verify the tag, the commit and the private flag
+        shell: bash
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          private="$(node -p "require('./package.json').private === true")"
+          if [ "${REF_TYPE}" != "tag" ] || [ "${REF_NAME}" != "v${version}" ]; then
+            echo "::error::A release publishes only from the tag v${version} (ref ${REF_NAME}, a ${REF_TYPE}). Nothing was published."
+            exit 1
+          fi
+          if [ "${private}" != "false" ]; then
+            echo "::error::package.json has \"private\": true (RELEASING.md, 'Decide to publish'). Nothing was published."
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" refs/remotes/origin/main; then
+            echo "::error::The tagged commit ${GITHUB_SHA} is not an ancestor of origin/main. Nothing was published."
+            exit 1
+          fi
+
+      - run: npm ci
+      - name: Publish to npm (trusted publishing, with provenance)
+        shell: bash
+        run: |
+          if [ -z "${ACTIONS_ID_TOKEN_REQUEST_URL:-}" ]; then
+            echo "::error::No OIDC token is available to this job (it needs permissions: id-token: write). Nothing was published."
+            exit 1
+          fi
+          # prepack builds the package (and fails without dist/hook/bundle.js).
+          if ! npm publish --provenance --access public; then
+            echo "::error::npm refused the publish. An ENEEDAUTH, E401, E403 or E404 here usually means npm trusted publishing is not set up for @launchsafe/agent-firewall with this repository, workflow (release.yml) and environment (npm-release): see RELEASING.md, 'One-time setup: npm trusted publishing'. No NPM_TOKEN is used."
+            exit 1
+          fi
+
+      # No GitHub release step: creating one needs contents: write, which this
+      # workflow does not have. Create the release by hand (RELEASING.md, 'After the release').

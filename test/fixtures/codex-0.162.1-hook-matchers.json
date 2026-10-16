@@ -1,0 +1,107 @@
+{
+  "note": "Captured 11 Oct 2026: codex-cli 0.162.1, `codex exec --skip-git-repo-check --json -s danger-full-access` against a local mock Responses API, sealed HOME and CODEX_HOME, every group trusted in config.toml with the firewall's reproduced trusted_hash. One capture hook per group; `fired` says whether Codex ran it. matcher null = no matcher key.",
+  "groups": [
+    {
+      "event": "PreToolUse",
+      "matcher": "*",
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "PostToolUse",
+      "matcher": "*",
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "UserPromptSubmit",
+      "matcher": null,
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "UserPromptSubmit",
+      "matcher": "*",
+      "trusted": true,
+      "fired": false
+    },
+    {
+      "event": "UserPromptSubmit",
+      "matcher": "",
+      "trusted": true,
+      "fired": false
+    },
+    {
+      "event": "UserPromptSubmit",
+      "matcher": ".*",
+      "trusted": true,
+      "fired": false
+    },
+    {
+      "event": "UserPromptSubmit",
+      "matcher": "startup",
+      "trusted": true,
+      "fired": false
+    },
+    {
+      "event": "SessionStart",
+      "matcher": null,
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "SessionStart",
+      "matcher": "*",
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "SessionStart",
+      "matcher": "",
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "SessionStart",
+      "matcher": ".*",
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "SessionStart",
+      "matcher": "startup",
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "Stop",
+      "matcher": null,
+      "trusted": true,
+      "fired": true
+    },
+    {
+      "event": "Stop",
+      "matcher": "*",
+      "trusted": true,
+      "fired": false
+    },
+    {
+      "event": "Stop",
+      "matcher": "",
+      "trusted": true,
+      "fired": false
+    },
+    {
+      "event": "Stop",
+      "matcher": ".*",
+      "trusted": true,
+      "fired": false
+    },
+    {
+      "event": "Stop",
+      "matcher": "startup",
+      "trusted": true,
+      "fired": false
+    }
+  ]
+}

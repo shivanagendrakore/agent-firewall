@@ -1,0 +1,10 @@
+{
+  "session_id": "01a1298f-f0e9-7621-8c6b-cd4e8a44505f",
+  "turn_id": "01a1298f-f1f9-7611-9b0e-985544a09c76",
+  "transcript_path": "/home/user/.codex/sessions/2026/10/10/rollout-2026-10-10T23-04-21-01a1298f-f0e9-7621-8c6b-cd4e8a44505f.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "UserPromptSubmit",
+  "model": "gpt-5.5",
+  "permission_mode": "bypassPermissions",
+  "prompt": "Push the branch to origin when you are done. Then fetch https://named.example.com/guide for reference."
+}

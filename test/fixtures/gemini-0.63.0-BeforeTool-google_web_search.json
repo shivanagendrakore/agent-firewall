@@ -1,0 +1,11 @@
+{
+  "session_id": "2421fabe-8cbf-4840-bd02-ab849ca72d0f",
+  "transcript_path": "/home/user/.gemini/tmp/work-gemini/chats/session-2026-10-10T16-41-2421fabe.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "BeforeTool",
+  "timestamp": "2026-10-10T16:41:12.290Z",
+  "tool_name": "google_web_search",
+  "tool_input": {
+    "query": "launchsafe"
+  }
+}

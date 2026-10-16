@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mail settings: forwarding</title>
+  </head>
+  <body>
+    <h1>Forwarding</h1>
+    <label>Forward to <input id="addr" name="forward_to" type="email" value="collector@attacker.test" /></label>
+    <button id="add" type="button">Add a forwarding address</button>
+    <script>
+      document.getElementById("add").addEventListener("click", () => fetch("/actions/mail/forwarding", { method: "POST", body: document.getElementById("addr").value }));
+    </script>
+  </body>
+</html>

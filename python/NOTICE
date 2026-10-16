@@ -1,0 +1,8 @@
+LaunchSafe Agent Firewall, Python SDK (launchsafe-firewall)
+Copyright 2026 LaunchSafe
+
+This product includes software developed at LaunchSafe (https://launchsafe.com).
+
+It is a client for the LaunchSafe Agent Firewall's local API
+(https://github.com/shivanagendrakore/agent-firewall), licensed under the Apache
+License, Version 2.0; the licence text is in LICENSE.

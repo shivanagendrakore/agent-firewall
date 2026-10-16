@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Overview - Northwind Console</title>
+    <!-- build 2026.10.04-3f2a9c1 · static export -->
+    <style>
+      :root { --fg: #1d2330; --muted: #5b6070; --line: #e3e5ea; --accent: #2f55d4; --bg: #ffffff; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font: 15px/1.55 -apple-system, system-ui, "Segoe UI", sans-serif; color: var(--fg); background: var(--bg); }
+      a { color: var(--accent); }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .skip { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+      .skip:focus { left: 8px; top: 8px; width: auto; height: auto; }
+      .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+      .topbar { border-bottom: 1px solid var(--line); }
+      .topbar .wrap { display: flex; align-items: center; gap: 20px; height: 56px; }
+      .menu { position: relative; }
+      .menu-panel { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid var(--line); padding: 8px; min-width: 200px; z-index: 5; }
+      .menu:hover .menu-panel { display: block; }
+      .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); }
+      .modal.open { display: grid; place-items: center; }
+      .modal .dialog { background: #fff; padding: 20px; border-radius: 8px; max-width: 480px; }
+      .tooltip { visibility: hidden; opacity: 0; position: absolute; background: #1d2330; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+      .has-tip:hover .tooltip { visibility: visible; opacity: 1; }
+      .tabpanel[hidden] { display: none; }
+      .muted { color: var(--muted); }
+      .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--line); background: #f6f7f9; cursor: pointer; }
+      .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+      footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 24px 0; color: var(--muted); font-size: 13px; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+      pre { background: #f6f7f9; padding: 12px; border-radius: 6px; overflow-x: auto; }
+
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <div class="topbar"><div class="wrap" style="max-width:none"><strong>Northwind Console</strong><div class="menu"><button class="btn">Project: web ▾</button><div class="menu-panel"><a href="#">web</a><br /><a href="#">mobile-api</a><br /><a href="#">+ New project</a></div></div><button class="btn" aria-label="Notifications, 2 new">🔔<span class="sr-only">2 new</span></button></div></div>
+    <main id="main" class="wrap" style="max-width:none">
+      <h1>Overview</h1>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <section style="border:1px solid var(--line);padding:12px"><h2 style="font-size:13px" class="muted">Requests (24 h)</h2><p style="font-size:24px">1.82M</p><div role="img" aria-label="Requests per hour, steady between 60 and 90 thousand" style="height:40px;background:linear-gradient(90deg,#d9e2ec,#9fb3c8)"></div></section>
+        <section style="border:1px solid var(--line);padding:12px"><h2 style="font-size:13px" class="muted">Error rate</h2><p style="font-size:24px">0.12%</p><span class="has-tip" style="position:relative">ⓘ<span class="tooltip" role="tooltip">5xx responses divided by all responses</span></span></section>
+        <section style="border:1px solid var(--line);padding:12px"><h2 style="font-size:13px" class="muted">p95 latency</h2><p style="font-size:24px">212 ms</p></section>
+      </div>
+      <h2>Recent deploys</h2>
+      <table style="width:100%"><tr><th align="left">Commit</th><th align="left">Author</th><th align="left">Status</th><th align="left">When</th></tr>
+        <tr><td><a href="#"><code>3f2a9c1</code></a> Fix cart rounding</td><td>Sam</td><td><span aria-label="Succeeded">✓</span></td><td>12 min ago</td></tr>
+        <tr><td><a href="#"><code>9b74c98</code></a> Bump SDK to 4.2</td><td>Priya</td><td><span aria-label="Succeeded">✓</span></td><td>3 h ago</td></tr>
+        <tr><td><a href="#"><code>a1d0e55</code></a> Add order webhooks</td><td>Alex</td><td><span aria-label="Failed">✗</span> <a href="#">View logs</a></td><td>yesterday</td></tr></table>
+      <div class="modal" id="invite" role="dialog" aria-labelledby="inv-h"><div class="dialog"><h2 id="inv-h">Invite a teammate</h2><label>Email <input type="email" placeholder="name@company.test" /></label><label>Role <select><option>Viewer</option><option>Developer</option><option>Admin</option></select></label><button class="btn btn-primary">Send invite</button></div></div>
+    </main>
+  </body>
+</html>

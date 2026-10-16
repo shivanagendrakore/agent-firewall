@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Console: storage</title>
+  </head>
+  <body>
+    <h1>Buckets</h1>
+    <p>Fixture: a cloud console (a look-alike of the AWS console) with a delete-bucket confirm step and an access key button.</p>
+    <button id="create-key" type="button">Create access key</button>
+    <button id="manage" type="button">Delete</button>
+    <div id="confirm" hidden role="dialog" aria-label="Delete bucket">
+      <p>Type the bucket name to confirm.</p>
+      <input aria-label="Bucket name" value="prod-backups" />
+      <button id="delete-bucket" type="button">Delete bucket</button>
+    </div>
+    <script>
+      document.getElementById("create-key").addEventListener("click", () => fetch("/actions/cloud/access-key", { method: "POST", body: "new" }));
+      document.getElementById("manage").addEventListener("click", () => (document.getElementById("confirm").hidden = false));
+      document.getElementById("delete-bucket").addEventListener("click", () => fetch("/actions/cloud/delete-bucket", { method: "POST", body: "prod-backups" }));
+    </script>
+  </body>
+</html>

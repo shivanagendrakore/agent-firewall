@@ -1,0 +1,96 @@
+name: Browser extension
+
+# browser/ is its own npm package. These jobs run only when it (or this file)
+# changes, so firewall changes are not slowed down; ci.yml checks the root.
+# When a root source of the vendored scanner copies changes, browser-vendor.yml
+# runs the comparison test alone (test/unit/vendor-firewall.test.ts).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "browser/**"
+      - ".github/workflows/browser.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "browser/**"
+      - ".github/workflows/browser.yml"
+  # A cheap diagnostic run: only the e2e job, optionally only some specs, stopping after three failures.
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: "Playwright arguments: a test file or path regex (side-panel), or -g with a title regex (-g approval). Empty runs every spec."
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: browser
+
+jobs:
+  check:
+    name: typecheck, lint, unit tests
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: browser/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+
+  e2e:
+    name: end-to-end tests (Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            browser/package-lock.json
+            package-lock.json
+      - run: npm ci
+      - run: npm run build
+      # The real firewall, built from the repository root, for test/e2e/link.spec.ts (it skips without
+      # LAUNCHSAFE_FIREWALL_CLI). Only the compile and the bin's mode: the hook bundle is not needed here.
+      - name: Build the firewall (root)
+        working-directory: .
+        run: npm ci && node scripts/clean-dist.mjs && npx tsc -p tsconfig.build.json && node scripts/chmod-bin.mjs
+      # Playwright's own Chromium (full Chromium, which loads extensions) and the system libraries it needs.
+      - run: node scripts/e2e.mjs install --with-deps chromium
+      # Each test gets a fresh temporary profile; no request leaves 127.0.0.1.
+      # PW_CHROMIUM_ATTACH_TO_OTHER lets Playwright reach the real side panel (test/e2e/side-panel.ts); the fixtures
+      # set it too. SPEC comes from a manual run only; it is split into words, never evaluated as shell.
+      - name: npm run test:e2e
+        env:
+          PW_CHROMIUM_ATTACH_TO_OTHER: "1"
+          LAUNCHSAFE_FIREWALL_CLI: ${{ github.workspace }}/dist/cli.js
+          SPEC: ${{ inputs.spec }}
+        run: |
+          if [ -n "$SPEC" ]; then
+            read -r -a spec_args <<< "$SPEC"
+            npm run test:e2e -- "${spec_args[@]}" --max-failures=3
+          else
+            npm run test:e2e
+          fi

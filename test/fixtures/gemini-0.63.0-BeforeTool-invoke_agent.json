@@ -1,0 +1,12 @@
+{
+  "session_id": "8370dce0-78ed-434a-9b4d-71f507ced67f",
+  "transcript_path": "/home/user/.gemini/tmp/work-gemini/chats/session-2026-10-10T16-47-8370dce0.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "BeforeTool",
+  "timestamp": "2026-10-10T16:47:54.776Z",
+  "tool_name": "invoke_agent",
+  "tool_input": {
+    "agent_name": "generalist",
+    "prompt": "SUBAGENT_TASK run echo from-subagent"
+  }
+}

@@ -1,0 +1,9 @@
+“Your Name” invited you to join the team “Your team” on LaunchSafe as an admin.
+
+Accept invitation: https://app.example.com/invite/lsinv_example
+
+The invitation expires on Oct 3, 2026. Sign in with teammate@example.com to accept it.
+
+If you were not expecting this, you can ignore it. Nothing happens unless you accept.
+
+LaunchSafe, Inc.

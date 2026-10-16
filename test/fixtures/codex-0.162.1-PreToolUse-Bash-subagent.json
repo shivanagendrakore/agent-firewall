@@ -1,0 +1,16 @@
+{
+  "session_id": "01a1269b-1bcc-75f1-8b1c-72e7f1a0c86e",
+  "turn_id": "01a1269b-1ca5-7de3-a3f0-4dcbcb3e33e3",
+  "agent_id": "01a1269b-1c76-7691-af0b-0b4e6872935d",
+  "agent_type": "default",
+  "transcript_path": "/home/user/.codex/sessions/2026/10/10/rollout-2026-10-10T09-17-42-01a1269b-1c76-7691-af0b-0b4e6872935d.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "PreToolUse",
+  "model": "gpt-5.5",
+  "permission_mode": "bypassPermissions",
+  "tool_name": "Bash",
+  "tool_input": {
+    "command": "echo from-subagent"
+  },
+  "tool_use_id": "call_0_1791649062136"
+}

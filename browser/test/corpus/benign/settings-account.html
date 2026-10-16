@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account settings - Postbox</title>
+    <!-- build 2026.10.04-3f2a9c1 · static export -->
+    <style>
+      :root { --fg: #1d2330; --muted: #5b6070; --line: #e3e5ea; --accent: #2f55d4; --bg: #ffffff; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font: 15px/1.55 -apple-system, system-ui, "Segoe UI", sans-serif; color: var(--fg); background: var(--bg); }
+      a { color: var(--accent); }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .skip { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+      .skip:focus { left: 8px; top: 8px; width: auto; height: auto; }
+      .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+      .topbar { border-bottom: 1px solid var(--line); }
+      .topbar .wrap { display: flex; align-items: center; gap: 20px; height: 56px; }
+      .menu { position: relative; }
+      .menu-panel { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid var(--line); padding: 8px; min-width: 200px; z-index: 5; }
+      .menu:hover .menu-panel { display: block; }
+      .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); }
+      .modal.open { display: grid; place-items: center; }
+      .modal .dialog { background: #fff; padding: 20px; border-radius: 8px; max-width: 480px; }
+      .tooltip { visibility: hidden; opacity: 0; position: absolute; background: #1d2330; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+      .has-tip:hover .tooltip { visibility: visible; opacity: 1; }
+      .tabpanel[hidden] { display: none; }
+      .muted { color: var(--muted); }
+      .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--line); background: #f6f7f9; cursor: pointer; }
+      .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+      footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 24px 0; color: var(--muted); font-size: 13px; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+      pre { background: #f6f7f9; padding: 12px; border-radius: 6px; overflow-x: auto; }
+
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <div class="topbar"><div class="wrap"><strong>Postbox account</strong><span class="muted">alex@mail.test</span></div></div>
+    <main id="main" class="wrap">
+      <h1>Settings</h1>
+      <div role="tablist" aria-label="Settings sections"><button class="btn" role="tab" aria-selected="true" aria-controls="p-profile" id="tb-profile">Profile</button><button class="btn" role="tab" aria-selected="false" aria-controls="p-notif" id="tb-notif">Notifications</button><button class="btn" role="tab" aria-selected="false" aria-controls="p-api" id="tb-api">API keys</button><button class="btn" role="tab" aria-selected="false" aria-controls="p-danger" id="tb-danger">Danger zone</button></div>
+      <section class="tabpanel" role="tabpanel" id="p-profile" aria-labelledby="tb-profile"><h2>Profile</h2>
+        <label>Display name <input value="Alex Rivera" /></label><br /><label>Time zone <select><option>Pacific Time</option><option>Eastern Time</option><option>UTC</option></select></label><br />
+        <label><input type="checkbox" role="switch" aria-label="Show my profile photo to contacts" checked /> Show my profile photo</label><br /><button class="btn btn-primary">Save changes</button><span role="status" class="sr-only"></span></section>
+      <section class="tabpanel" role="tabpanel" id="p-notif" aria-labelledby="tb-notif" hidden><h2>Notifications</h2><label><input type="checkbox" checked /> Email me about new sign-ins</label><br /><label><input type="checkbox" /> Weekly summary</label></section>
+      <section class="tabpanel" role="tabpanel" id="p-api" aria-labelledby="tb-api" hidden><h2>API keys</h2><p>Keys let scripts read your mail. Treat them like a password.</p>
+        <table><tr><td>laptop-sync</td><td><code>pbx_live_••••••••3f9a</code></td><td>Last used 2 days ago</td><td><button class="btn" aria-label="Revoke key laptop-sync">Revoke</button></td></tr></table><button class="btn">Create key</button></section>
+      <section class="tabpanel" role="tabpanel" id="p-danger" aria-labelledby="tb-danger" hidden><h2>Danger zone</h2><p>Deleting your account removes all mail and cannot be undone.</p><button class="btn" onclick="document.getElementById('confirm').classList.add('open')">Delete account</button></section>
+    </main>
+    <div class="modal" id="confirm" role="alertdialog" aria-labelledby="cf-h" aria-describedby="cf-d"><div class="dialog"><h2 id="cf-h">Delete your account?</h2><p id="cf-d">Type DELETE to confirm. Your mail will be removed after 30 days.</p><input aria-label="Confirmation" placeholder="DELETE" /><button class="btn">Cancel</button> <button class="btn">Delete account</button></div></div>
+    <footer><div class="wrap">Postbox · <a href="#">Privacy</a> · <a href="#">Terms</a></div></footer>
+    <script>
+      document.querySelectorAll('[role="tab"]').forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          var list = tab.closest('[role="tablist"]');
+          list.querySelectorAll('[role="tab"]').forEach(function (t) { t.setAttribute("aria-selected", String(t === tab)); document.getElementById(t.getAttribute("aria-controls")).hidden = t !== tab; });
+        });
+      });
+    </script>
+  </body>
+</html>

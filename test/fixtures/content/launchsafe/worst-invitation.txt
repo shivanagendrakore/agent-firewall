@@ -1,0 +1,9 @@
+“A “quoted” <title> & 'more' with-a-very-long-unbroken-word-with-a-very-long-unb…” invited you to join the team “<Org> & "Co" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…” on LaunchSafe as a billing contact.
+
+Accept invitation: https://app.example.com/invite/lsinv_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+The invitation expires on Dec 31, 2026. Sign in with long-address.long-address.long-address.long-address.long-address.long-address.long-address.long-address.long-address.long-address.you@example.com to accept it.
+
+If you were not expecting this, you can ignore it. Nothing happens unless you accept.
+
+LaunchSafe, Inc.

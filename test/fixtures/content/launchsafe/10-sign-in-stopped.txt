@@ -1,0 +1,10 @@
+Someone got past the first step of signing in to your LaunchSafe account (a code sent to this address), then entered too many wrong codes for your second step. They were not let in, and their codes aren’t checked again for a while.
+
+If this wasn’t you, someone can use this email account: secure it now. Your second step kept them out, and LaunchSafe support can help.
+LaunchSafe support: https://launchsafe.com/contact
+
+Open your account: https://app.example.com/account
+
+You get this whenever a sign-in to your LaunchSafe account is stopped.
+
+LaunchSafe, Inc.

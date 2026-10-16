@@ -1,0 +1,9 @@
+LaunchSafe paused deliveries to “hooks.example.com” in “Your org”: it has not accepted a delivery since Sep 24, 2026, after retries for more than a day.
+
+Events that happen while it is paused are not sent to it. Once the endpoint answers again, resume it in Settings and resend what it missed from its delivery log.
+
+Open the endpoint: https://app.example.com/your-org/settings/webhooks/example
+
+You get this because you’re an owner or admin of this organization on LaunchSafe.
+
+LaunchSafe, Inc.

@@ -1,0 +1,14 @@
+The scan of “A “quoted” <title> & 'more' with-a-very-long-unbroken-word-with-a-very-long-unbroken-word-with-a-very-long-unbroken-wor…” found 14459 new findings: 120 critical, 340 high, 999 medium, 1000 low, 12000 info.
+
+It didn’t cover everything: the time limit was reached before 3 of 12 areas were tested.
+
+Test data: this came from the local stand-in runner, not a real scan.
+
+Open the scan: https://app.example.com/your-org/findings?scan=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&status=all
+
+You get this because you started this scan. Sent by “<Org> & "Co" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…” in LaunchSafe.
+
+Stop emails about scans you start: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

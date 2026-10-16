@@ -1,0 +1,61 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    # Code scanning is free on a public repository; on a private one it is a paid GitHub feature (the upload
+    # fails without it). So this runs only where the repository is public: on push, pull request, the weekly
+    # schedule and by hand, in whichever repository is public. Push, pull request and manual events carry the
+    # repository's visibility. A schedule event does not (its payload has no repository, and a missing value
+    # compares equal to false), so the job starts on every schedule event, the first step reads the
+    # visibility from the API, and on a private repository the weekly run stops there.
+    if: >-
+      ${{ github.event_name == 'schedule' ||
+      (github.event_name == 'push' || github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && github.event.repository.private == false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Check that the repository is public
+        id: visibility
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_PRIVATE: ${{ github.event.repository.private }}
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+            # Repository metadata, which the job's token can always read.
+            private="$(gh api "repos/${GITHUB_REPOSITORY}" --jq .private)"
+          else
+            private="${EVENT_PRIVATE}"
+          fi
+          echo "private=${private}" >> "${GITHUB_OUTPUT}"
+          if [ "${private}" != "false" ]; then
+            echo "::notice::${GITHUB_REPOSITORY} is private, where code scanning is a paid feature, so CodeQL does not run."
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: ${{ steps.visibility.outputs.private == 'false' }}
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        if: ${{ steps.visibility.outputs.private == 'false' }}
+        with:
+          languages: javascript-typescript
+          build-mode: none
+      - uses: github/codeql-action/analyze@24c54180a607b1449ed407dd24f251e4e9147c8d # v4.38.3
+        if: ${{ steps.visibility.outputs.private == 'false' }}
+        with:
+          category: /language:javascript-typescript

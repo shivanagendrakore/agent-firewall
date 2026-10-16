@@ -1,0 +1,1655 @@
+[
+  {
+    "id": "anthropic-read-then-send-asks",
+    "description": "A read tool whose results are untrusted, then a send: a person is asked (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "search_docs",
+              "input": {
+                "q": "pricing"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "send_email",
+              "input": {
+                "to": "someone@else.example",
+                "body": "the quarterly numbers"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-private-read-then-send",
+    "description": "A trusted read of private data, then a send (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "get_customer",
+              "input": {
+                "id": "c-1"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(private data placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "send_email",
+              "input": {
+                "to": "someone@else.example",
+                "body": "the quarterly numbers"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-destroy-kind",
+    "description": "A destroy tool (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "delete_account",
+              "input": {
+                "id": "a-1"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-DESTRUCTIVE"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-blocked-kind",
+    "description": "A blocked tool is never allowed (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "wire_money",
+              "input": {
+                "to": "x",
+                "amount": 10
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-BLOCKED-TOOL"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-as-bash-destroys-root",
+    "description": "as Bash with map: deleting the home directory (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "run_shell",
+              "input": {
+                "cmd": "rm -rf ~/"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-DESTROY-ROOT"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-as-webfetch",
+    "description": "as WebFetch with map: a fetch of an ordinary page (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "http_get",
+              "input": {
+                "url": "https://docs.example.org/guide"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-as-read-credentials",
+    "description": "as Read with map: a credentials file (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "read_file",
+              "input": {
+                "path": "/home/agent/.ssh/id_rsa"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CREDENTIAL-READ"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-as-write-workspace",
+    "description": "as Write with two mapped fields: a file in the workspace (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "write_file",
+              "input": {
+                "path": "/srv/app/src/new.ts",
+                "body": "export const x = 1;"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-map-nested-path",
+    "description": "map with a dotted path $.args.cmd (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "nested_shell",
+              "input": {
+                "args": {
+                  "cmd": "git status"
+                }
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-as-without-map",
+    "description": "as without map: the arguments pass unchanged (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "raw_shell",
+              "input": {
+                "command": "git log --oneline -5"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-unregistered-tool",
+    "description": "A tool the registry does not list is FW-UNKNOWN-TOOL (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "summarize_text",
+              "input": {
+                "text": "hello"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-unregistered-engine-name",
+    "description": "A tool named like an engine tool but not in the registry is still unknown (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "Bash",
+              "input": {
+                "command": "ls"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-hold-approve-once",
+    "description": "A hold approved by a person lets the same call run once (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "search_docs",
+              "input": {
+                "q": "x"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "send_email",
+              "input": {
+                "to": "someone@else.example",
+                "body": "the quarterly numbers"
+              }
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "approve",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2"
+        },
+        "expect": {}
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "send_email",
+              "input": {
+                "to": "someone@else.example",
+                "body": "the quarterly numbers"
+              }
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [
+            "FW-APPROVED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "send_email",
+              "input": {
+                "to": "someone@else.example",
+                "body": "the quarterly numbers"
+              }
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-dry-run-records-nothing",
+    "description": "dryRun previews a read without tainting the session: the send after it is as in a trusted session (anthropic)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "search_docs",
+              "input": {
+                "q": "x"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          },
+          "dryRun": true
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": []
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "send_email",
+              "input": {
+                "to": "someone@else.example",
+                "body": "the quarterly numbers"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  }
+]

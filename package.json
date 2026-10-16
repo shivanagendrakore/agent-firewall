@@ -1,0 +1,144 @@
+{
+  "name": "@launchsafe/agent-firewall",
+  "version": "0.3.0",
+  "description": "The firewall for AI agents (preview): fixed rules, outside the model, check each tool call that reaches them through a coding agent's hooks, the library or the MCP gateway, before it runs.",
+  "keywords": [
+    "ai agents",
+    "security",
+    "firewall",
+    "claude code",
+    "codex",
+    "gemini",
+    "cursor",
+    "mcp",
+    "prompt injection",
+    "agent security",
+    "ai agent firewall",
+    "langgraph",
+    "openai agents",
+    "llm security"
+  ],
+  "homepage": "https://github.com/shivanagendrakore/agent-firewall#readme",
+  "bugs": {
+    "url": "https://github.com/shivanagendrakore/agent-firewall/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivanagendrakore/agent-firewall.git"
+  },
+  "author": "LaunchSafe",
+  "license": "Apache-2.0",
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "bin": {
+    "launchsafe-firewall": "dist/cli.js"
+  },
+  "main": "dist/sdk/index.js",
+  "types": "dist/sdk/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/sdk/index.d.ts",
+      "default": "./dist/sdk/index.js"
+    },
+    "./sdk": {
+      "types": "./dist/sdk/index.d.ts",
+      "default": "./dist/sdk/index.js"
+    },
+    "./sdk/node": {
+      "types": "./dist/sdk/node.d.ts",
+      "default": "./dist/sdk/node.js"
+    },
+    "./sdk/vercel-ai": {
+      "types": "./dist/sdk/integrations/vercel-ai.d.ts",
+      "default": "./dist/sdk/integrations/vercel-ai.js"
+    },
+    "./sdk/openai-agents": {
+      "types": "./dist/sdk/integrations/openai-agents.d.ts",
+      "default": "./dist/sdk/integrations/openai-agents.js"
+    },
+    "./sdk/claude-agent-sdk": {
+      "types": "./dist/sdk/integrations/claude-agent-sdk.d.ts",
+      "default": "./dist/sdk/integrations/claude-agent-sdk.js"
+    },
+    "./sdk/langgraph": {
+      "types": "./dist/sdk/integrations/langgraph.d.ts",
+      "default": "./dist/sdk/integrations/langgraph.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "docs"
+  ],
+  "scripts": {
+    "build": "node scripts/clean-dist.mjs && tsc -p tsconfig.build.json && node scripts/chmod-bin.mjs && node scripts/bundle-hook.mjs",
+    "prepack": "npm run build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run test && npm run build && node scripts/sync-agent-safety.mjs --check",
+    "friction": "npm run build && node scripts/friction.mjs",
+    "mail-friction": "npm run build && node scripts/mail-friction.mjs",
+    "bench": "npm run build && node scripts/bench.mjs",
+    "coverage": "LSFW_COVERAGE=1 vitest run --coverage",
+    "lint": "eslint .",
+    "gen:docs": "npm run build && node scripts/gen-cli-docs.mjs && node scripts/gen-coverage.mjs",
+    "check:docs": "npm run build && node scripts/gen-cli-docs.mjs --check && node scripts/gen-coverage.mjs --check",
+    "sync:agent-safety": "node scripts/sync-agent-safety.mjs",
+    "conformance:generate": "tsc -p tsconfig.conformance.json && node dist-conformance/conformance/generate.js",
+    "conformance:check": "tsc -p tsconfig.conformance.json && node dist-conformance/conformance/generate.js --check"
+  },
+  "devDependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.296",
+    "@anthropic-ai/sdk": "^0.133.0",
+    "@eslint/js": "^10.0.1",
+    "@langchain/core": "^1.2.17",
+    "@langchain/langgraph": "^1.4.21",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@openai/agents-core": "^0.20.0",
+    "@types/node": "^24.13.6",
+    "@vitest/coverage-v8": "^5.0.1",
+    "ai": "^7.0.137",
+    "eslint": "^10.12.0",
+    "rolldown": "~1.2.13",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.1",
+    "zod": "^4.6.5"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/claude-agent-sdk": ">=0.3 <0.4",
+    "@langchain/core": ">=1.2 <2",
+    "@langchain/langgraph": ">=1.4 <2",
+    "@openai/agents-core": ">=0.20 <1",
+    "ai": ">=7 <8"
+  },
+  "peerDependenciesMeta": {
+    "@anthropic-ai/claude-agent-sdk": {
+      "optional": true
+    },
+    "@langchain/core": {
+      "optional": true
+    },
+    "@langchain/langgraph": {
+      "optional": true
+    },
+    "@openai/agents-core": {
+      "optional": true
+    },
+    "ai": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,398 @@
+{
+  "about": "Synthetic cases for src/engine/hidden.ts (invisible characters and terminal control sequences). Written for this repository; every smuggled text is a benign marker (LSTEST). Invisible characters are written as JSON \\u escapes so the file stays readable.",
+  "cases": [
+    {
+      "id": "plain-ascii",
+      "text": "All tests passed.\nDone in 2.1s",
+      "kinds": [],
+      "marked": "All tests passed.\nDone in 2.1s"
+    },
+    {
+      "id": "crlf-lines",
+      "text": "line one\r\nline two\r\n",
+      "kinds": [],
+      "marked": "line one\r\nline two\r\n"
+    },
+    {
+      "id": "tabs-and-form-feed",
+      "text": "a\tb\fc\u000bd",
+      "kinds": [],
+      "marked": "a\tb\fc\u000bd"
+    },
+    {
+      "id": "emoji-joiners-and-presentation",
+      "text": "Ship it \ud83d\udc69\u200d\ud83d\udcbb \u2764\ufe0f 1\ufe0f\u20e3",
+      "kinds": [],
+      "marked": "Ship it \ud83d\udc69\u200d\ud83d\udcbb \u2764\ufe0f 1\ufe0f\u20e3"
+    },
+    {
+      "id": "england-flag",
+      "text": "Go \ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f team",
+      "kinds": [],
+      "marked": "Go \ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f team"
+    },
+    {
+      "id": "ideographic-variation-selector",
+      "text": "\u845b\udb40\udd00 city",
+      "kinds": [],
+      "marked": "\u845b\udb40\udd00 city"
+    },
+    {
+      "id": "persian-zwnj",
+      "text": "\u0645\u06cc\u200c\u062e\u0648\u0627\u0647\u0645",
+      "kinds": [],
+      "marked": "\u0645\u06cc\u200c\u062e\u0648\u0627\u0647\u0645"
+    },
+    {
+      "id": "hebrew-with-rlm",
+      "text": "\u05e9\u05dc\u05d5\u05dd\u200f world",
+      "kinds": [],
+      "marked": "\u05e9\u05dc\u05d5\u05dd\u200f world"
+    },
+    {
+      "id": "sgr-colours",
+      "text": "\u001b[32m\u2713\u001b[39m passed \u001b[1mbold\u001b[22m \u001b[0m",
+      "kinds": [],
+      "programKinds": [],
+      "marked": "\u2713 passed bold "
+    },
+    {
+      "id": "charset-designation",
+      "text": "\u001b(Bnormal\u001b[m",
+      "kinds": [],
+      "marked": "normal"
+    },
+    {
+      "id": "tag-smuggling",
+      "text": "Weekly report\udb40\udc4c\udb40\udc53\udb40\udc54\udb40\udc45\udb40\udc53\udb40\udc54 attached",
+      "kinds": [
+        "tag_chars"
+      ],
+      "smuggled": "LSTEST",
+      "marked": "Weekly report\u27e6hidden\u27e7 attached"
+    },
+    {
+      "id": "variation-selector-smuggling",
+      "text": "Note\ufe0f\udb40\udd3c\udb40\udd43\udb40\udd44\udb40\udd35\udb40\udd43\udb40\udd44 end",
+      "kinds": [
+        "variation_selectors"
+      ],
+      "smuggled": "LSTEST",
+      "marked": "Note\u27e6hidden\u27e7 end"
+    },
+    {
+      "id": "variation-selector-pair-no-text",
+      "text": "x\ufe00\ufe01y",
+      "kinds": [
+        "variation_selectors"
+      ],
+      "smuggled": "",
+      "marked": "x\u27e6hidden\u27e7y"
+    },
+    {
+      "id": "dense-zero-width",
+      "text": "please\u200b\u200b\u200b\u200bread this",
+      "kinds": [
+        "zero_width"
+      ],
+      "marked": "please\u27e6hidden\u27e7read this"
+    },
+    {
+      "id": "single-zero-width-is-not-dense",
+      "text": "copy\u200bpasted",
+      "kinds": [],
+      "marked": "copy\u27e6hidden\u27e7pasted"
+    },
+    {
+      "id": "three-zero-width-in-a-row-is-not-dense",
+      "text": "a\u200b\u200b\u200bb",
+      "kinds": [],
+      "marked": "a\u27e6hidden\u27e7b"
+    },
+    {
+      "id": "mixed-zero-width-run-of-four-is-dense",
+      "text": "a\u200b\u200c\u200d\u2060b",
+      "kinds": [
+        "zero_width"
+      ],
+      "programKinds": [
+        "zero_width"
+      ],
+      "marked": "a\u27e6hidden\u27e7b"
+    },
+    {
+      "id": "seven-scattered-zero-width-is-not-dense",
+      "text": "w0\u200b w1\u200b w2\u200b w3\u200b w4\u200b w5\u200b w6\u200b w7",
+      "kinds": [],
+      "marked": "w0\u27e6hidden\u27e7 w1\u27e6hidden\u27e7 w2\u27e6hidden\u27e7 w3\u27e6hidden\u27e7 w4\u27e6hidden\u27e7 w5\u27e6hidden\u27e7 w6\u27e6hidden\u27e7 w7"
+    },
+    {
+      "id": "eight-scattered-zero-width-is-dense",
+      "text": "w0\u200b w1\u200b w2\u200b w3\u200b w4\u200b w5\u200b w6\u200b w7\u200b w8",
+      "kinds": [
+        "zero_width"
+      ],
+      "marked": "w0\u27e6hidden\u27e7 w1\u27e6hidden\u27e7 w2\u27e6hidden\u27e7 w3\u27e6hidden\u27e7 w4\u27e6hidden\u27e7 w5\u27e6hidden\u27e7 w6\u27e6hidden\u27e7 w7\u27e6hidden\u27e7 w8"
+    },
+    {
+      "id": "bidi-trojan-source",
+      "text": "if (isAdmin) {\u202e } \u2066// check later\u2069 {",
+      "kinds": [
+        "bidi"
+      ],
+      "marked": "if (isAdmin) {\u27e6hidden\u27e7 } \u27e6hidden\u27e7// check later\u27e6hidden\u27e7 {"
+    },
+    {
+      "id": "conceal",
+      "text": "Status ok\u001b[8m LSTEST hidden words\u001b[28m",
+      "kinds": [
+        "terminal_conceal"
+      ],
+      "programKinds": [
+        "terminal_conceal"
+      ],
+      "marked": "Status ok LSTEST hidden words"
+    },
+    {
+      "id": "conceal-in-combined-sgr",
+      "text": "\u001b[0;8mLSTEST\u001b[0m",
+      "kinds": [
+        "terminal_conceal"
+      ],
+      "programKinds": [
+        "terminal_conceal"
+      ],
+      "marked": "LSTEST"
+    },
+    {
+      "id": "cursor-up-erase",
+      "text": "LSTEST instruction\n\u001b[1A\u001b[2Kbenign line",
+      "kinds": [
+        "terminal_cursor"
+      ],
+      "programKinds": [],
+      "marked": "LSTEST instruction\nbenign line"
+    },
+    {
+      "id": "carriage-return-overwrite",
+      "text": "LSTEST instruction\rbenign text here",
+      "kinds": [
+        "terminal_overwrite"
+      ],
+      "programKinds": [],
+      "marked": "LSTEST instruction\nbenign text here"
+    },
+    {
+      "id": "progress-carriage-return-at-line-start",
+      "text": "\r[####      ] 40%",
+      "kinds": [
+        "terminal_control"
+      ],
+      "programKinds": [],
+      "marked": "\n[####      ] 40%"
+    },
+    {
+      "id": "backspace-overwrite",
+      "text": "rm\b\bls",
+      "kinds": [
+        "terminal_overwrite"
+      ],
+      "programKinds": [],
+      "marked": "rmls"
+    },
+    {
+      "id": "osc8-hyperlink",
+      "text": "See \u001b]8;;https://attacker.example/x\u0007docs.example.org\u001b]8;;\u0007 for help",
+      "kinds": [
+        "terminal_osc"
+      ],
+      "programKinds": [
+        "terminal_osc"
+      ],
+      "marked": "See docs.example.org for help"
+    },
+    {
+      "id": "osc52-clipboard-st",
+      "text": "done\u001b]52;c;TFNURVNU\u001b\\",
+      "kinds": [
+        "terminal_osc"
+      ],
+      "programKinds": [
+        "terminal_osc"
+      ],
+      "marked": "done"
+    },
+    {
+      "id": "c1-csi",
+      "text": "a\u009b2Kb",
+      "kinds": [
+        "terminal_cursor"
+      ],
+      "programKinds": [],
+      "marked": "ab"
+    },
+    {
+      "id": "bell-and-del",
+      "text": "ding\u0007 x\u007f",
+      "kinds": [
+        "terminal_control"
+      ],
+      "programKinds": [],
+      "marked": "ding x"
+    },
+    {
+      "id": "unterminated-osc",
+      "text": "title\u001b]0;LSTEST",
+      "kinds": [
+        "terminal_osc"
+      ],
+      "programKinds": [
+        "terminal_osc"
+      ],
+      "marked": "title0;LSTEST"
+    },
+    {
+      "id": "lone-escape-at-end",
+      "text": "end\u001b",
+      "kinds": [
+        "terminal_control"
+      ],
+      "programKinds": [],
+      "marked": "end"
+    },
+    {
+      "id": "nul-is-data",
+      "text": "bin\u0000ary",
+      "kinds": [],
+      "marked": "bin\u0000ary"
+    },
+    {
+      "id": "sgr-grey-256-is-not-conceal",
+      "text": "\u001b[38;5;8mgrey text\u001b[0m",
+      "kinds": [],
+      "marked": "grey text"
+    },
+    {
+      "id": "sgr-rgb-8-is-not-conceal",
+      "text": "\u001b[38;2;8;8;8mdark text\u001b[m",
+      "kinds": [],
+      "marked": "dark text"
+    },
+    {
+      "id": "sgr-faint-is-style",
+      "text": "\u001b[2mfaint\u001b[22m",
+      "kinds": [],
+      "marked": "faint"
+    },
+    {
+      "id": "sgr-fg-equals-bg-basic",
+      "text": "ok \u001b[30;40mLSTEST\u001b[0m",
+      "kinds": [
+        "terminal_conceal"
+      ],
+      "programKinds": [
+        "terminal_conceal"
+      ],
+      "marked": "ok LSTEST"
+    },
+    {
+      "id": "sgr-fg-equals-bg-256",
+      "text": "\u001b[38;5;16;48;5;16mLSTEST\u001b[0m",
+      "kinds": [
+        "terminal_conceal"
+      ],
+      "marked": "LSTEST"
+    },
+    {
+      "id": "sgr-colon-rgb-fg-equals-bg",
+      "text": "\u001b[38:2::1:2:3;48:2::1:2:3mLSTEST\u001b[0m",
+      "kinds": [
+        "terminal_conceal"
+      ],
+      "marked": "LSTEST"
+    },
+    {
+      "id": "osc-broken-by-newline-keeps-text",
+      "text": "a\u001b]0;LSTEST\nvisible",
+      "kinds": [
+        "terminal_osc"
+      ],
+      "marked": "a0;LSTEST\nvisible"
+    },
+    {
+      "id": "lrm-in-latin-text",
+      "text": "price\u200e list",
+      "kinds": [
+        "bidi"
+      ],
+      "marked": "price\u27e6hidden\u27e7 list"
+    },
+    {
+      "id": "arabic-letter-mark-in-arabic",
+      "text": "\u0645\u0631\u061c\u062d",
+      "kinds": [],
+      "marked": "\u0645\u0631\u061c\u062d"
+    },
+    {
+      "id": "hangul-fillers",
+      "text": "name\u3164\u3164\u3164\u3164x",
+      "kinds": [
+        "zero_width"
+      ],
+      "marked": "name\u27e6hidden\u27e7x"
+    },
+    {
+      "id": "braille-blank-padding",
+      "text": "a\u2800 \u2800 \u2800 \u2800 \u2800 \u2800 \u2800 \u2800 ",
+      "kinds": [
+        "zero_width"
+      ],
+      "marked": "a\u27e6hidden\u27e7 \u27e6hidden\u27e7 \u27e6hidden\u27e7 \u27e6hidden\u27e7 \u27e6hidden\u27e7 \u27e6hidden\u27e7 \u27e6hidden\u27e7 \u27e6hidden\u27e7 "
+    },
+    {
+      "id": "invisible-operators-and-u2065",
+      "text": "x\u2062\u2063\u2064\u2065y",
+      "kinds": [
+        "zero_width"
+      ],
+      "marked": "x\u27e6hidden\u27e7y"
+    },
+    {
+      "id": "musical-formatting",
+      "text": "a\ud834\udd73\ud834\udd74\ud834\udd75\ud834\udd76b",
+      "kinds": [
+        "zero_width"
+      ],
+      "marked": "a\u27e6hidden\u27e7b"
+    },
+    {
+      "id": "thai-zwsp-word-breaks",
+      "text": "\u0e2a\u0e27\u200b\u0e14\u0e35",
+      "kinds": [],
+      "marked": "\u0e2a\u0e27\u200b\u0e14\u0e35"
+    },
+    {
+      "id": "preheader-padding",
+      "text": "Big sale\u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0",
+      "kinds": [],
+      "marked": "Big sale\u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u034f \u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0\u200c\u00a0"
+    },
+    {
+      "id": "variation-selectors-spread-one-per-letter",
+      "text": "a\udb40\udd3cb\udb40\udd43c\udb40\udd44",
+      "kinds": [
+        "variation_selectors"
+      ],
+      "smuggled": "LST",
+      "marked": "a\u27e6hidden\u27e7b\u27e6hidden\u27e7c\u27e6hidden\u27e7"
+    },
+    {
+      "id": "zwj-run-between-emoji-is-not-ordinary",
+      "text": "\ud83d\udc69\u200d\u200d\u200d\u200d\ud83d\udcbb",
+      "kinds": [
+        "zero_width"
+      ],
+      "marked": "\ud83d\udc69\u27e6hidden\u27e7\ud83d\udcbb"
+    }
+  ]
+}

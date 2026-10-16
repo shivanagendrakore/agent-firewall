@@ -1,0 +1,10 @@
+A recovery code was used on your LaunchSafe account. 1 code is left. Make new recovery codes from your account page soon.
+
+If this wasn’t you, contact LaunchSafe support straight away. Someone else may be able to read your email.
+LaunchSafe support: https://launchsafe.com/contact
+
+Open your account: https://app.example.com/account
+
+You get this whenever your LaunchSafe account’s recovery codes are replaced or used.
+
+LaunchSafe, Inc.

@@ -1,0 +1,6 @@
+{
+  "tools": {
+    "lookup_order": { "kind": "read", "results": "trusted", "privateData": false },
+    "send_email": { "kind": "send" }
+  }
+}

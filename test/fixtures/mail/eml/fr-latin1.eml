@@ -1,0 +1,16 @@
+Authentication-Results: mx.google.com; dkim=pass header.i=@exemple.fr; spf=pass smtp.mailfrom=exemple.fr; dmarc=pass header.from=exemple.fr
+From: =?ISO-8859-1?Q?Ren=E9e_Dupr=E9?= <renee@exemple.fr>
+To: you@example.test
+Subject: =?ISO-8859-1?Q?R=E9union_de_l=27=E9quipe?= =?ISO-8859-1?Q?_=E0_10h?=
+Date: Fri, 10 Oct 2026 08:15:00 +0200
+Message-ID: <reunion-1@exemple.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour =E0 tous,
+
+La r=E9union de l'=E9quipe aura lieu demain =E0 10h dans la grande salle. =
+Merci de r=E9pondre avec vos disponibilit=E9s.
+
+Ren=E9e

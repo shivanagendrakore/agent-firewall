@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>attacker.test: a checkout whose form posts to shop.test</title>
+  </head>
+  <body>
+    <h1>Checkout</h1>
+    <!-- Review fixture (RR3): the page is attacker.test, the form action names shop.test. Only the published test card. -->
+    <form id="pay" action="http://shop.test:__PORT__/actions/checkout/order" method="post">
+      <label>Name on card <input name="ccname" autocomplete="cc-name" value="Test Person" /></label>
+      <label>Card number <input id="card" name="cardnumber" autocomplete="cc-number" value="4242 4242 4242 4242" /></label>
+      <label>Expiry <input name="exp" autocomplete="cc-exp" value="12/34" /></label>
+      <label>CVC <input name="cvc" autocomplete="cc-csc" value="123" /></label>
+      <button id="place" type="submit">Place order</button>
+    </form>
+  </body>
+</html>

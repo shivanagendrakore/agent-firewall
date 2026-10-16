@@ -1,0 +1,13 @@
+{
+  "session_id": "01a12698-379f-7f93-9d53-a9cf0e352516",
+  "turn_id": "01a12698-37d3-7bc2-a5e0-0439feac3ccc",
+  "transcript_path": "/home/user/.codex/sessions/2026/10/10/rollout-2026-10-10T09-14-32-01a12698-379f-7f93-9d53-a9cf0e352516.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "PermissionRequest",
+  "model": "gpt-5.5",
+  "permission_mode": "bypassPermissions",
+  "tool_name": "mcp__echosrv__echo",
+  "tool_input": {
+    "text": "hello mcp"
+  }
+}

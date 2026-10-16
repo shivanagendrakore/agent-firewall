@@ -1,0 +1,1157 @@
+[
+  {
+    "id": "mcp-source-user-send-after-read",
+    "description": "A pull request after an MCP read, source user",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-source-project-send-after-read",
+    "description": "A pull request after an MCP read, source project",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "project"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "project"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-source-sdk-send-after-read",
+    "description": "A pull request after an MCP read, source sdk",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "sdk"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "sdk"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-source-unknown-send-after-read",
+    "description": "A pull request after an MCP read, source unknown",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "unknown"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "unknown"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-source-omitted-send-after-read",
+    "description": "A pull request after an MCP read, source omitted",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo"
+            },
+            "mcp": {
+              "server": "github"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-send-tool-trusted-session",
+    "description": "A send tool of an MCP server in a trusted session",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-send-unattended-is-hold",
+    "description": "An MCP send after a read, with no person there",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-message-to-new-recipient",
+    "description": "A chat message to a number nobody named",
+    "source": "src/scenarios.ts INC-06",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_messages",
+            "input": {
+              "chat_id": "family"
+            },
+            "mcp": {
+              "server": "whatsapp",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(private data placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "send_message",
+            "input": {
+              "recipient": "+10000000000",
+              "message": "summary"
+            },
+            "mcp": {
+              "server": "whatsapp",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-sql-select",
+    "description": "An SQL read",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "execute_sql",
+            "input": {
+              "query": "select id, body from tickets limit 20"
+            },
+            "mcp": {
+              "server": "supabase",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-sql-drop",
+    "description": "An SQL drop",
+    "source": "src/scenarios.ts INC-07",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "execute_sql",
+            "input": {
+              "query": "drop table integration_tokens"
+            },
+            "mcp": {
+              "server": "supabase",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-DESTRUCTIVE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-sql-insert-after-read",
+    "description": "An SQL write after outside content and private rows",
+    "source": "src/scenarios.ts INC-07",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "execute_sql",
+            "input": {
+              "query": "select * from integration_tokens"
+            },
+            "mcp": {
+              "server": "supabase",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(private data placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "execute_sql",
+            "input": {
+              "query": "insert into tickets (body) values ('summary')"
+            },
+            "mcp": {
+              "server": "supabase",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-delete-tool-name",
+    "description": "A tool whose name says it deletes",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "delete_repository",
+            "input": {
+              "owner": "acme",
+              "repo": "app"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CATASTROPHIC"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-server-name-with-dashes",
+    "description": "A server name with dashes",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "search",
+            "input": {
+              "q": "x"
+            },
+            "mcp": {
+              "server": "my-docs-server",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-mcp-then-engine-same-session",
+    "description": "A taint from an MCP result carries to an engine call",
+    "source": "src/scenarios.ts INC-05",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "get_channel_history",
+            "input": {
+              "channel": "general"
+            },
+            "mcp": {
+              "server": "slack",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Write",
+            "input": {
+              "file_path": "/srv/app/.cursor/mcp.json",
+              "content": "{\"mcpServers\":{}}"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-INSTRUCTIONS-HELD"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-engine-named-mcp-tool-is-unknown-source",
+    "description": "engine format with an mcp__ tool name carries no source, so the server is untrusted",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "mcp__github__list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "mcp__github__create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "mcp-dry-run-mcp",
+    "description": "dryRun on an MCP read leaves the session as it was",
+    "source": "docs/api-v0.md, format mcp",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {
+              "owner": "acme",
+              "repo": "x"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          },
+          "dryRun": true
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": []
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "create_pull_request",
+            "input": {
+              "owner": "acme",
+              "repo": "public-repo",
+              "title": "update",
+              "head": "branch",
+              "base": "main",
+              "body": "summary"
+            },
+            "mcp": {
+              "server": "github",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  }
+]

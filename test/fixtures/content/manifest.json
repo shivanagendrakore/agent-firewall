@@ -1,0 +1,521 @@
+{
+ "about": "v0.3 C0 content-scanner corpus (02-email-guard.md, measurable false-positive plan). Measured by test/content-corpus.test.ts. No real mailbox content: everything is written for this repository or rendered from LaunchSafe's own templates with example data. Attack payloads are benign markers (LSTEST).",
+ "groups": {
+  "template": "marketing and transactional HTML templates (preheaders, responsive alternates, Outlook conditional copies, dark mode, tracking pixels) and their text parts: must never quarantine",
+  "newsletter": "AI and security newsletters quoting injection phrases in visible prose: flag at most, never quarantine",
+  "multilingual": "Hindi, Bengali, Persian, Arabic, Urdu, Hebrew, Japanese, Thai, Chinese, Korean, Sinhala, Malayalam, flag emoji: must never quarantine",
+  "mailing_list": "list posts whose sender authentication fails on forwarding (authFail set) with nothing agent-directed: must never quarantine",
+  "calendar": "invites and long agendas: must never quarantine",
+  "ham": "ordinary mail and MCP tool results (JSON, Markdown, diffs, logs): must never quarantine",
+  "attack": "attacks.json: every family must quarantine (recall)"
+ },
+ "notTheFullPlan": "The spec's E1 corpus adds the SpamAssassin ham set (6,000), public list archives and 150 open-source templates; those need downloads and per-file licence checks and belong to E1's mail-friction gate.",
+ "files": {
+  "templates/accessibility-visually-hidden.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/calendar-invite.html": {
+   "group": "calendar",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/dark-mode-swap.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/foundation-style.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/github-style-notification.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/hero-background-white-text.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/hubspot-style-preview.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/hybrid-cerberus-style.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/inline-block-columns.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/litmus-preheader.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/mailgun-pixel-receipt.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/mjml-style.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/multilingual-arabic.html": {
+   "group": "multilingual",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/multilingual-hebrew-rtl.html": {
+   "group": "multilingual",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/multilingual-hindi-bengali.html": {
+   "group": "multilingual",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/multilingual-japanese.html": {
+   "group": "multilingual",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/multilingual-persian.html": {
+   "group": "multilingual",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/multilingual-thai.html": {
+   "group": "multilingual",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/newsletter-merge-style.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/security-newsletter.html": {
+   "group": "newsletter",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/store-promo-mobile-nav.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "templates/transactional-ses-pixel.html": {
+   "group": "template",
+   "source": "written for this repository: common patterns of open-source email frameworks and senders, no copied markup",
+   "licence": "Apache-2.0",
+   "html": true
+  },
+  "launchsafe/01-sign-in-code.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/01-sign-in-code.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/02-confirmation-code.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/02-confirmation-code.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/03-invitation.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/03-invitation.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/04-access-invitation-requested.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/04-access-invitation-requested.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/05-access-invitation-direct.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/05-access-invitation-direct.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/06-two-step-added.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/06-two-step-added.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/07-two-step-removed-last.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/07-two-step-removed-last.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/08-recovery-codes-replaced.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/08-recovery-codes-replaced.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/09-recovery-code-used-low.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/09-recovery-code-used-low.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/10-sign-in-stopped.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/10-sign-in-stopped.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/11-webhook-paused.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/11-webhook-paused.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/12-scan-finished-findings.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/12-scan-finished-findings.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/13-scan-finished-nothing-new.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/13-scan-finished-nothing-new.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/14-scan-finished-partial.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/14-scan-finished-partial.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/15-scan-failed.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/15-scan-failed.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/16-scan-stopped-test-data.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/16-scan-stopped-test-data.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/17-critical-finding-one.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/17-critical-finding-one.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/18-critical-findings-many.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/18-critical-findings-many.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/19-fix-ready.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/19-fix-ready.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-access-invitation.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-access-invitation.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-confirmation-code.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-confirmation-code.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-critical-findings-mixed.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-critical-findings-mixed.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-critical-findings.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-critical-findings.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-fix-ready.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-fix-ready.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-invitation.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-invitation.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-recovery-code-used.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-recovery-code-used.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-scan-failed.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-scan-failed.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-scan-finished.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-scan-finished.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-sign-in-code.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-sign-in-code.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-sign-in-stopped.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-sign-in-stopped.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-webhook-paused.html": {
+   "group": "template",
+   "html": true,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  },
+  "launchsafe/worst-webhook-paused.txt": {
+   "group": "template",
+   "html": false,
+   "source": "LaunchSafe email templates",
+   "licence": "Apache-2.0 (same owner)"
+  }
+ },
+ "cases": "cases.json (written for this repository, Apache-2.0); {{tags:TEXT}} expands to Unicode tag characters",
+ "attacks": "attacks.json (written for this repository, Apache-2.0); {{tags:TEXT}} expands to Unicode tag characters"
+}

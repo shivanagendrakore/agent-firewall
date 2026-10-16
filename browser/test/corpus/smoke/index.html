@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Smoke: shop.test</title>
+  </head>
+  <body>
+    <h1>Shop</h1>
+    <p>A plain page with a cross-origin frame, for the extension smoke test.</p>
+    <form id="order" action="/smoke/order" method="post">
+      <input name="note" value="side door" />
+      <button type="submit">Place order</button>
+    </form>
+    <iframe id="ad" title="ad" src="http://attacker.test:__PORT__/smoke/frame.html" width="300" height="80"></iframe>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Provider frame</title>
+  </head>
+  <body>
+    <form id="charge" action="/actions/payframe/charge" method="post">
+      <label>Card number <input name="number" autocomplete="cc-number" value="4242424242424242" /></label>
+      <label>Expiry <input name="exp" autocomplete="cc-exp" value="12/34" /></label>
+      <label>CVC <input name="cvc" autocomplete="cc-csc" value="123" /></label>
+      <button id="pay" type="submit">Pay $12.00</button>
+    </form>
+  </body>
+</html>

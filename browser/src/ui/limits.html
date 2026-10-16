@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LaunchSafe: what this does not stop</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page">
+    <h1>What LaunchSafe does not stop</h1>
+    <p>
+      LaunchSafe holds sensitive actions on web pages until you approve them here, in the extension. In agent mode, which you
+      turn on, it holds payments, sending messages and deletions, and uploads to a new site or from a session that has seen
+      private data. With agent mode off it still holds account security changes, granting apps access and executable
+      downloads. It can only enforce what a browser extension is allowed to
+      enforce. This page lists what it cannot stop, so you know when not to rely on it.
+    </p>
+
+    <h2>Known bypasses of the action gate</h2>
+    <ul id="bypasses">
+      <li id="bypass-form-submit"><strong>Script calling <code>form.submit()</code>.</strong> A page script, or an agent that runs JavaScript in the page (for example a "run JavaScript" tool or CDP <code>Runtime.evaluate</code>), can submit a form without the submit event LaunchSafe listens for. The form is sent without approval.</li>
+      <li id="bypass-fetch"><strong>Script sending requests directly.</strong> <code>fetch</code>, <code>XMLHttpRequest</code> and <code>navigator.sendBeacon</code> called from page script send data without any click or form. LaunchSafe does not see them as actions. Only requests to about 50 well-known request-catcher, paste and tunnel sites are always blocked.</li>
+      <li><strong>Sites that ignore replayed actions.</strong> After you approve, LaunchSafe carries out the action itself. A few sites ignore actions that do not come from real input; there, approve and then do it yourself with agent mode off.</li>
+      <li><strong>Sends with no labelled control.</strong> Apps that send through their own code, with no recognisable Send button or form, on sites without a LaunchSafe adapter, are not held. The leak guard still checks data typed into forms.</li>
+      <li><strong>Downloads: the first request is already sent.</strong> An executable download is cancelled before the file is saved, but the browser has already asked the website for the file. Files you already have on disk are out of reach.</li>
+      <li id="bypass-download-override"><strong>Downloads under remote automation.</strong> A remote automation tool that takes over the browser's download handling saves files without LaunchSafe seeing them.</li>
+      <li><strong>Text in images.</strong> Instructions drawn inside images are not read.</li>
+      <li><strong>Closed shadow roots and stylesheet text.</strong> Controls, forms and text inside a closed shadow root, and text a page's stylesheet generates, are not seen.</li>
+      <li><strong>Hidden text read first.</strong> In agent mode hidden instructions are removed from the page, but an agent that reads the page before the removal can still see them.</li>
+      <li><strong>Data in addresses opened by script.</strong> A clicked link carrying private data is held; an address opened by script or typed into the address bar is checked only by the navigation rules.</li>
+    </ul>
+
+    <h2>Agents it does not hold against</h2>
+    <table>
+      <thead>
+        <tr><th>How the agent works</th><th>Action gate</th><th>Approval out of the agent's reach</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Page scripts and injected scripts</td><td>Holds</td><td>Holds</td></tr>
+        <tr><td>Another extension driving tabs with the debugger</td><td>Holds for clicks, typing and file inputs</td><td>Holds: it cannot attach to LaunchSafe's own pages</td></tr>
+        <tr><td>The same, running JavaScript in the page</td><td><strong>Does not hold</strong> for <code>form.submit()</code> and direct requests</td><td>Holds</td></tr>
+        <tr><td>Agents built into the browser</td><td>Holds if LaunchSafe runs in the agent's tabs (not verified)</td><td>Not verified</td></tr>
+        <tr><td>Remote automation with LaunchSafe loaded</td><td>Holds for its clicks and typing</td><td><strong>Does not hold</strong>: it can click Approve in LaunchSafe's pages</td></tr>
+        <tr><td>Remote automation in its own browser profile</td><td colspan="2"><strong>Not present</strong>: LaunchSafe is not running there</td></tr>
+        <tr><td>Agents that control your whole computer (mouse and keyboard)</td><td>Holds for their input</td><td><strong>Does not hold</strong>: they can click Approve, or turn the extension off</td></tr>
+        <tr><td>Cloud agents and server-side fetches</td><td colspan="2"><strong>Not present</strong>: they do not use this browser</td></tr>
+      </tbody>
+    </table>
+    <p class="muted small">Tested only against LaunchSafe's own test simulators (page script, a test extension using the debugger, and remote automation); not tested against any named agent product.</p>
+
+    <h2>Also out of reach</h2>
+    <ul>
+      <li>What an agent sends to its own vendor, and its connectors (for example a mail API).</li>
+      <li>The browser's own pages and UI (<code>chrome://</code> pages, the address bar, built-in assistant panels).</li>
+      <li>Other extensions, including malicious ones, and malware on the computer.</li>
+      <li>A person approving without reading: the approval shows what will happen; it cannot make anyone read it.</li>
+    </ul>
+    <p class="muted small">Approvals never happen on a web page. If a page shows a "LaunchSafe approved" button or dialog, it is fake.</p>
+  </body>
+</html>

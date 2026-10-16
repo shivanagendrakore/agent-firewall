@@ -1,0 +1,90 @@
+{
+  "note": "Benign friction corpus: synthetic but realistic pages with the hidden UI real sites carry. Gate: quarantine on 0 pages, flag on under 2%, and agent-mode neutralising changes no visible text.",
+  "pages": [
+    {
+      "file": "docs-guide.html",
+      "host": "shop.test",
+      "path": "/benign/docs-guide.html",
+      "kind": "docs"
+    },
+    {
+      "file": "docs-api.html",
+      "host": "shop.test",
+      "path": "/benign/docs-api.html",
+      "kind": "docs"
+    },
+    {
+      "file": "news-article.html",
+      "host": "mail.test",
+      "path": "/benign/news-article.html",
+      "kind": "news",
+      "late": true
+    },
+    {
+      "file": "news-home.html",
+      "host": "mail.test",
+      "path": "/benign/news-home.html",
+      "kind": "news"
+    },
+    {
+      "file": "shop-product.html",
+      "host": "shop.test",
+      "path": "/benign/shop-product.html",
+      "kind": "shop"
+    },
+    {
+      "file": "shop-cart.html",
+      "host": "shop.test",
+      "path": "/benign/shop-cart.html",
+      "kind": "shop"
+    },
+    {
+      "file": "shop-search.html",
+      "host": "shop.test",
+      "path": "/benign/shop-search.html?q=red+running+shoes&sort=relevance&page=1",
+      "kind": "shop"
+    },
+    {
+      "file": "mail-inbox.html",
+      "host": "mail.test",
+      "path": "/benign/mail-inbox.html",
+      "kind": "mail"
+    },
+    {
+      "file": "mail-message.html",
+      "host": "mail.test",
+      "path": "/benign/mail-message.html",
+      "kind": "mail"
+    },
+    {
+      "file": "settings-account.html",
+      "host": "accounts.test",
+      "path": "/benign/settings-account.html",
+      "kind": "settings"
+    },
+    {
+      "file": "settings-security.html",
+      "host": "accounts.test",
+      "path": "/benign/settings-security.html",
+      "kind": "settings"
+    },
+    {
+      "file": "forum-thread.html",
+      "host": "shop.test",
+      "path": "/benign/forum-thread.html",
+      "kind": "forum"
+    },
+    {
+      "file": "blog-post.html",
+      "host": "shop.test",
+      "path": "/benign/blog-post.html",
+      "kind": "docs"
+    },
+    {
+      "file": "saas-dashboard.html",
+      "host": "accounts.test",
+      "path": "/benign/saas-dashboard.html",
+      "kind": "settings"
+    }
+  ]
+}

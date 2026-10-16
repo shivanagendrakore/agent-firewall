@@ -1,0 +1,144 @@
+# Gitleaks configuration. This repository is a security tool, so its sources and tests contain secret-shaped strings
+# on purpose: decoys the firewall plants, patterns its detectors must catch, and published example values. None is a
+# real credential. Every exception below says what it is; add a real finding here only after proving it is fake.
+#
+# Run it with:  gitleaks dir .        (the working tree, including untracked files)
+#               gitleaks detect --no-git
+# Gitleaks reads this file automatically from the directory it scans. CI runs `gitleaks dir .` on every push and
+# pull request (.github/workflows/secret-scan.yml, job "secrets").
+#
+# Python tests (python/tests) need no entry: their only credential-like values are low-entropy words such as
+# "test-token"; the conformance values they replay are read from conformance/vectors, covered below.
+
+title = "LaunchSafe Agent Firewall"
+
+[extend]
+useDefault = true
+
+# Build and test output. Git ignores these directories; they are generated from the sources below, which are scanned.
+[[allowlists]]
+description = "Generated output (dist, dist-check, coverage): derived from the scanned sources"
+paths = ['''^dist/''', '''^dist-check/''', '''^coverage/''']
+
+# Catalogue decoys: fake credentials the firewall's scenario catalogue and `canary plant` write into decoy files, so
+# that reading or sending one is detectable. They are generated or hand-made to look real and open nothing.
+[[allowlists]]
+description = "Catalogue decoys and canary templates (fake credential-shaped values and a fake key body)"
+paths = ['''^src/catalogue\.ts$''', '''^src/runtime/canaries\.ts$''']
+
+[[allowlists]]
+description = "Catalogue scenario: a curl command naming a Stripe secret key by environment-variable name only; no key value"
+paths = ['''^src/catalogue-scenarios\.ts$''']
+
+# Values that are public by design.
+[[allowlists]]
+description = "AWS documentation-style example access key id (AKIAIOSFODNN7EXAMPLE and its one-letter variant)"
+regexes = ['''AKIAIOSFODNN7EXAMPL[EF]''']
+
+[[allowlists]]
+description = "Stripe's published test-mode example key from its documentation"
+regexes = ['''sk_test_4eC39HqLyjWDarjtT1zdp7d[c]''']
+
+[[allowlists]]
+description = "Slack's documented example webhook URL (all-zero team and bot ids)"
+regexes = ['''hooks\.slack\.com/services/T00000000/B00000000/''']
+
+[[allowlists]]
+description = "The WebSocket handshake sample nonce from RFC 6455 (the base64 of 'the sample nonce')"
+regexes = ['''dGhlIHNhbXBsZSBub25jZQ==''']
+
+[[allowlists]]
+description = "AWS documentation example secret access key (the pair of AKIAIOSFODNN7EXAMPLE); it says EXAMPLEKEY"
+regexes = ['''wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY''']
+
+# Conformance suite (conformance/): the authors in conformance/author write the vectors in conformance/vectors
+# (npm run conformance:generate), and the Python suite (python/tests) replays those vectors. The values below are
+# the exact fake values they carry, allowed only in those files.
+#
+# Decoys: every planted value carries the LSCANARY marker (conformance/setup.ts refuses a decoy without it), the
+# visible "this is fake" tag. They are written into decoy files in a throwaway directory so that sending one is
+# detectable; they open nothing. The SSH decoy's body sits inside OPENSSH key armour, so the private-key rule
+# matches the whole block; the LSCANARY entry below covers it (gitleaks searches the regex inside the match).
+[[allowlists]]
+description = "Conformance decoys marked LSCANARY (conformance/author/prepared.ts and the vectors generated from it)"
+paths = [
+  '''^conformance/author/prepared\.ts$''',
+  '''^conformance/vectors/[a-z-]+\.json$''',
+]
+regexes = [
+  '''LSCANARY7f3a9c2e5b8d1f4a6c0e9b2d5f8a1c3e''',
+  '''AKIALSCANARY4C7E1A9D''',
+  '''sk-proj-LSCANARY4b7e1a9d3c6f0b8e2a5d7c1f9b3e6a0d''',
+  '''ghp_LSCANARYq8Wm2Zr5Tn7Yk3Pv9Bx4Lc6Hd1J''',
+  '''LSCANARYb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAAB''',
+  '''LSCANARYe2c8a4f6b0d9e1c3a5f7b9d2e4c6a8f0''',
+  '''LSCANARYnot-a-planted-value-0000''',
+]
+condition = "AND"
+
+# A made-up Stripe-shaped live key. It cannot carry a FAKE or EXAMPLE marker: the engine treats a value that says
+# fake/example/test as a placeholder (src/engine/secrets.ts isPlaceholder), and these vectors test what happens to
+# a live-looking key. It is the same value src/catalogue.ts uses (that file is allowlisted above).
+[[allowlists]]
+description = "Conformance: a made-up live-looking Stripe key (conformance/author families.ts and prepared.ts, and their vectors)"
+paths = [
+  '''^conformance/author/(families|prepared)\.ts$''',
+  '''^conformance/vectors/[a-z-]+\.json$''',
+]
+regexes = ['''sk_live_9fQ2xLm7Rt4Vb8Nc3Kp6Wd1[Z]''']
+condition = "AND"
+
+# The engine-catalogue vectors are generated from the scenario catalogue (src/catalogue.ts, allowlisted above), so
+# they repeat two of its made-up chat and registry tokens.
+[[allowlists]]
+description = "Conformance: catalogue tokens copied from src/catalogue.ts into conformance/vectors/engine-catalogue.json"
+paths = ['''^conformance/vectors/engine-catalogue\.json$''']
+regexes = [
+  '''xox[b]-48273645[1]9-Hq8Lr2Vt6Np0Ws4Ky9Bz3D[m]''',
+  '''npm_Rk3Vq8Lt2Wp7Yz5Nc9Hm4Bx6Fd1Gs0Jq2TeA''',
+]
+condition = "AND"
+
+# Test fixtures: made-up values the detectors and the redaction code are tested against.
+[[allowlists]]
+description = "Made-up secret-shaped values in tests and the latency benchmark (fake AWS keys, Stripe-shaped keys, a vault test token, a canary key)"
+paths = [
+  '''^test/.*\.(ts|html)$''',
+  '''^scripts/bench\.mjs$''',
+]
+regexes = [
+  '''AKIA[0-9A-Z]{16}''',
+  '''sk_live_[0-9A-Za-z]{16,}''',
+  '''ghp_TESTvaultTOKEN[0-9A-Za-z]+''',
+  '''sk-proj-LSCANARY[0-9a-f]+''',
+  '''q8Vb2Lr9TzX1mN4pK7sJ0wYc3HfG6dRe5aUiOo2B''',
+  '''abcdef0123456789''',
+  '''4f9c2e7d1a8b''',
+]
+condition = "AND"
+
+# The browser extension (browser/). Its sources and tests are scanned like the root's; these entries name single files.
+[[allowlists]]
+description = "Browser extension: made-up values in a unit test (a reset-link token) and in a synthetic docs page (a CLI test token)"
+paths = [
+  '''^browser/src/engine/private-data\.test\.ts$''',
+  '''^browser/test/corpus/benign/docs-guide\.html$''',
+]
+regexes = [
+  '''^abcdef123456$''',
+  '''^nw_test_4f9a2c7e1b$''',
+]
+condition = "AND"
+
+# Conformance credential fixtures (fw/fix-conformance): every credential-shaped value the vectors replay
+# (sk_live_, xoxb-, npm_ and the catalogue tokens) carries the LSFWCONF marker, which the engine still detects
+# as a credential but no real issuer emits.
+[[allowlists]]
+description = "Conformance credential fixtures marked LSFWCONF"
+paths = [
+  '''^conformance/''',
+  '''^python/tests/''',
+]
+regexes = [
+  '''LSFWCONF''',
+]

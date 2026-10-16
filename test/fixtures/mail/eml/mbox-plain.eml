@@ -1,0 +1,9 @@
+From jo@example.com Fri Oct 10 09:00:00 2026
+Authentication-Results: mx.google.com; dkim=pass header.i=@example.com; spf=pass smtp.mailfrom=example.com; dmarc=pass header.from=example.com
+From: Jo <jo@example.com>
+To: you@example.test
+Subject: Train times
+Date: Fri, 10 Oct 2026 09:00:00 +0000
+
+The 8:10 is cancelled; I will take the 8:40.
+>From now on I will check the app first.

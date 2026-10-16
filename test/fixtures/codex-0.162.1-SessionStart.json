@@ -1,0 +1,9 @@
+{
+  "session_id": "01a12695-4204-7db0-ae80-354465a30784",
+  "transcript_path": "/home/user/.codex/sessions/2026/10/10/rollout-2026-10-10T09-11-18-01a12695-4204-7db0-ae80-354465a30784.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "SessionStart",
+  "model": "gpt-5.5",
+  "permission_mode": "bypassPermissions",
+  "source": "startup"
+}

@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "docs": { "command": "npx", "args": ["-y", "@acme/docs-mcp@1.4.2", "--allow-write"], "env": { "DOCS_TOKEN": "${DOCS_TOKEN}" } }
+  }
+}

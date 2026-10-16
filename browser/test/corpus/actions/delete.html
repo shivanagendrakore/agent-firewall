@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Account: delete</title>
+  </head>
+  <body>
+    <h1>Your account</h1>
+    <button id="manage" type="button">Manage account</button>
+    <div id="confirm" hidden>
+      <p>This cannot be undone.</p>
+      <button id="delete" type="button">Delete my account</button>
+    </div>
+    <script>
+      document.getElementById("manage").addEventListener("click", () => (document.getElementById("confirm").hidden = false));
+      document.getElementById("delete").addEventListener("click", () => fetch("/actions/account/delete", { method: "POST", body: "delete" }));
+    </script>
+  </body>
+</html>

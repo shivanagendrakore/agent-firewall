@@ -1,0 +1,8 @@
+{
+  "manifest_version": 3,
+  "name": "LaunchSafe test: debugger agent (simulator B, test only)",
+  "version": "0.0.1",
+  "description": "Test-only. Drives tabs with chrome.debugger like an agent extension. Never ship or install outside the e2e harness.",
+  "permissions": ["debugger", "tabs"],
+  "background": { "service_worker": "background.js" }
+}

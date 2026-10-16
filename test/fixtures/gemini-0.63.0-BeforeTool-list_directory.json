@@ -1,0 +1,11 @@
+{
+  "session_id": "404a4715-76f3-4457-abc3-22deda5cecbb",
+  "transcript_path": "/home/user/.gemini/tmp/work-gemini/chats/session-2026-10-10T16-27-404a4715.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "BeforeTool",
+  "timestamp": "2026-10-10T16:27:55.610Z",
+  "tool_name": "list_directory",
+  "tool_input": {
+    "dir_path": "."
+  }
+}

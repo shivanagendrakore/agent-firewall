@@ -1,0 +1,56 @@
+{
+  "name": "@launchsafe/agent-firewall-browser",
+  "version": "0.0.1",
+  "description": "LaunchSafe Agent Firewall for browsers: a Manifest V3 extension that stops a hijacked browser agent from buying, sending, granting or leaking without a person's approval.",
+  "license": "Apache-2.0",
+  "author": "LaunchSafe",
+  "keywords": [
+    "ai agents",
+    "browser extension",
+    "manifest v3",
+    "security",
+    "firewall",
+    "prompt injection"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivanagendrakore/agent-firewall.git",
+    "directory": "browser"
+  },
+  "homepage": "https://github.com/shivanagendrakore/agent-firewall/tree/main/browser#readme",
+  "bugs": {
+    "url": "https://github.com/shivanagendrakore/agent-firewall/issues"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "test:e2e": "node scripts/e2e.mjs",
+    "icons": "node scripts/make-icons.mjs",
+    "capture:corpus": "node scripts/capture-corpus.mjs",
+    "sync:firewall": "node scripts/sync-firewall.mjs",
+    "check:vendor": "node scripts/sync-firewall.mjs --check",
+    "gen:psl": "node scripts/gen-psl.mjs",
+    "check:psl": "node scripts/gen-psl.mjs --check",
+    "check": "npm run typecheck && npm run lint && npm run check:vendor && npm run check:psl && npm test && npm run build",
+    "e2e:install": "node scripts/e2e.mjs install chromium"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.0",
+    "@types/chrome": "^0.3.5",
+    "@types/node": "^26.6.5",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.12.0",
+    "happy-dom": "^20.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3"
+  }
+}

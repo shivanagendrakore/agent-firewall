@@ -1,0 +1,11 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
+<p></p>
+<p><b>@reviewer</b> commented on this pull request.</p>
+<hr>
+<p>In <a href="https://git.example.com/acme/tools/pull/812#discussion_r1">src/mcp/client.ts</a>:</p>
+<pre style="color:#555">&gt; +  const name = `mcp__${server}__${tool}`;
+&gt; +  return registry.get(name);
+</pre>
+<p>Can we validate <code>server</code> before building the name? A server called <code>a__b</code> would collide. Also, the docs example uses <code>mcp__github__create_issue</code>; worth a test for that exact string.</p>
+<p style="font-size:small;-webkit-text-size-adjust:none;color:#666;">—<br>Reply to this email directly, <a href="https://git.example.com/acme/tools/pull/812#pullrequestreview-1">view it on the site</a>, or <a href="https://git.example.com/notifications/unsubscribe-auth/AB3XYZ">unsubscribe</a>.<br>You are receiving this because you were mentioned.<img src="https://git.example.com/notifications/beacon/AB3XYZQ7K2M4N6P8R0T2V4X6Z8B0D2F4H6J8L0N2P4.gif" height="1" width="1" alt=""><span style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">Message ID: &lt;acme/tools/pull/812/review/1@git.example.com&gt;</span></p>
+</body></html>

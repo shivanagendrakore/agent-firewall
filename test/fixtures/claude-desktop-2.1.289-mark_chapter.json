@@ -1,0 +1,17 @@
+{
+  "_provenance": "tool_input as recorded in a Claude desktop session transcript (Claude Code 2.1.289, 9 Oct 2026); argument names and value shapes kept; free text shortened, paths and ids replaced with placeholders. Envelope fields follow the PreToolUse input schema in the 2.1.289 binary (mcp_server: {name, source}; source 'sdk' = an in-process server registered by the host application).",
+  "session_id": "{SESSION}",
+  "cwd": "{WS}",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_use_id": "toolu_00000000000000000000000000",
+  "tool_name": "mcp__ccd_session__mark_chapter",
+  "tool_input": {
+    "title": "Example chapter",
+    "summary": "A short example summary of this stretch of work"
+  },
+  "mcp_server": {
+    "name": "ccd_session",
+    "source": "sdk"
+  }
+}

@@ -1,0 +1,44 @@
+A scan of “A “quoted” <title> & 'more' with-a-very-long-unbroken-word-with-a-very-long-unbroken-word-with-a-very-long-unbroken-wor…” found 500 new critical findings.
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx0
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx1
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx2
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx3
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx4
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx5
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx6
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx7
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx8
+
+Critical: “""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""A “quoted” <title> & 'more' with-a-very-long-unbroken-word-…”
+https://app.example.com/your-org/findings/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx9
+
+And 490 more.
+
+Test data: this came from the local stand-in runner, not a real scan.
+
+Open the findings: https://app.example.com/your-org/findings?scan=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+You get this because you can see this project’s findings. Sent by “<Org> & "Co" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…” in LaunchSafe.
+
+Stop emails about new critical findings: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability or bypass
+    url: https://github.com/shivanagendrakore/agent-firewall/blob/main/SECURITY.md
+    about: Please report bypasses and other vulnerabilities privately by email (security@launchsafe.com), not in a public issue.

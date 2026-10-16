@@ -1,0 +1,10 @@
+The scan of “api.example.com” found nothing new. That is not proof there is nothing to find.
+
+Open the scan: https://app.example.com/your-org/findings?scan=example
+
+You get this because you started this scan. Sent by “Your org” in LaunchSafe.
+
+Stop emails about scans you start: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

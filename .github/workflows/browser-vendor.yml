@@ -1,0 +1,68 @@
+name: Browser extension (vendored scanners)
+
+# browser/src/vendor/firewall/ holds copies of the firewall's scanner modules, and
+# browser/test/unit/vendor-firewall.test.ts compares them with their sources at
+# the root. browser.yml runs that test (with every other browser check) when
+# browser/ changes; this workflow runs it alone when one of those root sources
+# changes, so a scanner fix there cannot leave the copies stale without a
+# failing check, and does not start the browser workflow's Playwright job.
+# Paths filters apply to a whole workflow, not to one job, hence the separate
+# file. The paths are FILES and EXTRACTS in browser/scripts/sync-firewall.mjs:
+# keep the two lists the same.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/own.ts"
+      - "src/types.ts"
+      - "src/engine/bytes.ts"
+      - "src/engine/network.ts"
+      - "src/engine/secrets.ts"
+      - "src/engine/pii.ts"
+      - "src/engine/content-html.ts"
+      - "src/engine/content-lexicon.ts"
+      - "src/engine/content-scan.ts"
+      - "src/vendor/agent-safety/signals.ts"
+      - ".github/workflows/browser-vendor.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/own.ts"
+      - "src/types.ts"
+      - "src/engine/bytes.ts"
+      - "src/engine/network.ts"
+      - "src/engine/secrets.ts"
+      - "src/engine/pii.ts"
+      - "src/engine/content-html.ts"
+      - "src/engine/content-lexicon.ts"
+      - "src/engine/content-scan.ts"
+      - "src/vendor/agent-safety/signals.ts"
+      - ".github/workflows/browser-vendor.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-vendor-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: browser
+
+jobs:
+  vendor:
+    name: vendored scanners match the root
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: browser/package-lock.json
+      - run: npm ci
+      - run: npx vitest run test/unit/vendor-firewall.test.ts

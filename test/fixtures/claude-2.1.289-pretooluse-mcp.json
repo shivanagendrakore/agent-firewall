@@ -1,0 +1,15 @@
+{
+  "_note": "Recorded from Claude Code 2.1.289 (claude -p, server defined in the project's .mcp.json), 2026-10-09. Ids and paths replaced; field names and shape unchanged.",
+  "session_id": "00000000-0000-0000-0000-000000000000",
+  "transcript_path": "/tmp/transcript.jsonl",
+  "cwd": "{WS}",
+  "scratchpad_dir": "/tmp/scratchpad",
+  "prompt_id": "00000000-0000-0000-0000-000000000001",
+  "permission_mode": "default",
+  "effort": { "level": "medium" },
+  "hook_event_name": "PreToolUse",
+  "tool_name": "mcp__echo__echo",
+  "tool_input": { "text": "hello" },
+  "tool_use_id": "toolu_00000000000000000000000",
+  "mcp_server": { "name": "echo", "source": "project" }
+}

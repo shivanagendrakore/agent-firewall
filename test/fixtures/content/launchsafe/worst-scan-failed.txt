@@ -1,0 +1,14 @@
+The scan of “A “quoted” <title> & 'more' with-a-very-long-unbroken-word-with-a-very-long-unbroken-word-with-a-very-long-unbroken-wor…” failed.
+
+What went wrong: “<error> & "detail" yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy…”
+
+Test data: this came from the local stand-in runner, not a real scan.
+
+Open the scan: https://app.example.com/your-org/scans/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+You get this because you started this scan. Sent by “<Org> & "Co" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…” in LaunchSafe.
+
+Stop emails about scans you start: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Account: API keys</title>
+  </head>
+  <body>
+    <h1>API keys</h1>
+    <button id="create" type="button">Create API key</button>
+    <script>
+      document.getElementById("create").addEventListener("click", () => fetch("/actions/account/api-key", { method: "POST", body: "new" }));
+    </script>
+  </body>
+</html>

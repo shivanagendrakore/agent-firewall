@@ -1,0 +1,156 @@
+name: CI
+
+# The root package. browser/ and python/ are separate packages with their own workflows (browser.yml,
+# browser-vendor.yml, python.yml), and the root's type check, lint and tests skip them, so a change confined
+# to those two folders does not start this suite; a change that also touches any other file does (a workflow
+# starts when any one changed file matches its paths). The filter is paths-ignore written as paths with
+# exclusions, because paths-ignore cannot take a folder back: test/hidden-output.test.ts reads the browser
+# fixtures in browser/test/corpus/benign and fp-cases (its "no new findings on ordinary content" corpus), so
+# a change there starts it too. Patterns apply in order, a later one overriding an earlier one. The secret
+# scan, which covers all three parts, is in secret-scan.yml and runs on every push and pull request.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**"
+      - "!browser/**"
+      - "!python/**"
+      - "browser/test/corpus/benign/**"
+      - "browser/test/corpus/fp-cases/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**"
+      - "!browser/**"
+      - "!python/**"
+      - "browser/test/corpus/benign/**"
+      - "browser/test/corpus/fp-cases/**"
+  # Linux on Node 24, once a week (see the test matrix).
+  schedule:
+    - cron: "41 5 * * 3"
+  workflow_dispatch:
+    inputs:
+      macos:
+        description: "Also test on macOS (on a private repository a macOS minute counts as ten)"
+        type: boolean
+        default: false
+      coverage:
+        description: "Also run the whole suite a second time, with coverage"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  # The event is part of the group, so the weekly run and a run started by hand neither cancel a push's run
+  # on main nor are cancelled by one.
+  group: ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.os }}, Node ${{ matrix.node }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # Which runs start. A maintainer's private copy runs on the free plan's monthly minutes, where a macOS
+        # minute counts as ten; a public repository's minutes are free.
+        #   push, pull request   Linux, Node 22; while the repository is public also Linux, Node 24
+        #                        and macOS, Node 24
+        #   weekly schedule      Linux, Node 24
+        #   by hand              Linux, Node 22 and 24; macOS, Node 24, only when its box is ticked
+        # Push and pull request events carry the repository's visibility, so the extra runs stop if the
+        # repository is private (a schedule event does not carry it, which is why the weekly
+        # run is the same everywhere). Node 22 here is the latest 22.x (not the engines floor, 22.0) and the Node the release is built with
+        # (release.yml), while development uses Node 24, so only CI would notice
+        # a change that needs more than Node 22: every push tests 22. Node 24 is tested here weekly and by
+        # hand.
+        include: >-
+          ${{ fromJSON(
+          github.event_name == 'schedule' && '[{"os":"ubuntu-latest","node":"24"}]' ||
+          ((github.event_name == 'push' || github.event_name == 'pull_request') && github.event.repository.private == false || github.event_name == 'workflow_dispatch' && inputs.macos) && '[{"os":"ubuntu-latest","node":"22"},{"os":"ubuntu-latest","node":"24"},{"os":"macos-latest","node":"24"}]' ||
+          github.event_name == 'workflow_dispatch' && '[{"os":"ubuntu-latest","node":"22"},{"os":"ubuntu-latest","node":"24"}]' ||
+          '[{"os":"ubuntu-latest","node":"22"}]') }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # Full history and tags, so the v0.2 upgrade tests (test/lifecycle) can find their ref.
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      # Tools some suites need, so they run instead of skipping: ripgrep (test/canary.test.ts) everywhere, and
+      # bubblewrap on Linux (test/run-sandbox.test.ts; macOS uses /usr/bin/sandbox-exec, always present).
+      - name: Install ripgrep and bubblewrap (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends ripgrep bubblewrap
+      - name: Install ripgrep (macOS)
+        if: runner.os == 'macOS'
+        run: command -v rg >/dev/null || brew install ripgrep
+      - name: Assert ripgrep is present
+        run: rg --version
+      # Ubuntu 24.04 and later restrict unprivileged user namespaces through AppArmor
+      # (kernel.apparmor_restrict_unprivileged_userns=1), so bwrap cannot create its sandbox and the run tests
+      # would skip. This lifts the restriction on the throwaway runner VM only; `launchsafe-firewall run` prints a hint that names
+      # this setting (src/runtime/run/platform.ts). Then it proves bwrap works, so a skip cannot hide.
+      - name: Let bubblewrap create user namespaces (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          if [ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          if ! bwrap --unshare-all --die-with-parent --ro-bind / / true; then
+            echo "::error::bubblewrap cannot create a sandbox on this runner, so test/run-sandbox.test.ts would skip."
+            exit 1
+          fi
+      - name: Point the v0.2 upgrade tests at their ref
+        shell: bash
+        run: |
+          if git rev-parse -q --verify "refs/tags/v0.2/final^{commit}" >/dev/null; then
+            echo "LSFW_V02_REF=v0.2/final" >> "$GITHUB_ENV"
+          elif git rev-parse -q --verify "refs/remotes/origin/v0.2/final^{commit}" >/dev/null; then
+            echo "LSFW_V02_REF=origin/v0.2/final" >> "$GITHUB_ENV"
+          else
+            echo "::notice::This repository has no v0.2/final ref, so the v0.2 upgrade tests skip (their suite names say why)."
+          fi
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+      # docs/cli.md, docs/coverage.* and the README usage block match the code.
+      - run: npm run check:docs
+      # The vendored agent-safety copy: headers name the pinned commit (bytes are compared only when LAUNCHSAFE_APP_DIR has the source checkout).
+      - run: node scripts/sync-agent-safety.mjs --check
+      # conformance/vectors match what conformance/author generates from the current engine.
+      - run: npm run conformance:check
+      - run: npm test
+      # Gates: 0 normal tasks interrupted; 0 ordinary messages withheld and every attack fixture caught.
+      - run: npm run friction
+      - run: npm run mail-friction
+
+  coverage:
+    # The whole suite a second time: on every push and pull request while the repository is public (the
+    # same condition as the extra test runs above), and by hand anywhere when its box is ticked.
+    if: >-
+      ${{ (github.event_name == 'push' || github.event_name == 'pull_request') && github.event.repository.private == false ||
+      github.event_name == 'workflow_dispatch' && inputs.coverage }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run coverage

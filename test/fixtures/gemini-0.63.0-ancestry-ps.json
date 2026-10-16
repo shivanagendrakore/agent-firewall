@@ -1,0 +1,7 @@
+{
+  "note": "Captured 11 Oct 2026 UTC: Gemini CLI 0.63.0 `gemini -p ... --approval-mode yolo` with no sandbox around it, sealed HOME, local mock model. `ps -o pid=,ppid=,args=` from a BeforeAgent capture hook up its first two ancestors (the hook's shell, then Gemini CLI); paths shortened.",
+  "lines": [
+    "27080 25065 /bin/sh /tmp/run/capture.sh BeforeAgent",
+    "25065 19781 node /opt/gemini/node_modules/.bin/gemini -p Push the branch to origin when you are done. Then fetch https://named.example.com/guide for reference. -m gemini-3.1-pro-preview --approval-mode yolo --skip-trust -o stream-json"
+  ]
+}

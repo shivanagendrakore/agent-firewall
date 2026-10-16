@@ -1,0 +1,5 @@
+# One owner for everything. browser/ and python/ have their own lines so each can be given its own
+# owner later (a later line takes precedence over an earlier one).
+* @shivanagendrakore
+/browser/ @shivanagendrakore
+/python/ @shivanagendrakore

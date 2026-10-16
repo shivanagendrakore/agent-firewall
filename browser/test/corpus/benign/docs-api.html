@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Retrieve, list and update orders with the Northwind REST API." />
+    <title>Orders API reference - Northwind Docs</title>
+    <!-- build 2026.10.04-3f2a9c1 · static export -->
+    <style>
+      :root { --fg: #1d2330; --muted: #5b6070; --line: #e3e5ea; --accent: #2f55d4; --bg: #ffffff; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font: 15px/1.55 -apple-system, system-ui, "Segoe UI", sans-serif; color: var(--fg); background: var(--bg); }
+      a { color: var(--accent); }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .skip { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+      .skip:focus { left: 8px; top: 8px; width: auto; height: auto; }
+      .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+      .topbar { border-bottom: 1px solid var(--line); }
+      .topbar .wrap { display: flex; align-items: center; gap: 20px; height: 56px; }
+      .menu { position: relative; }
+      .menu-panel { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid var(--line); padding: 8px; min-width: 200px; z-index: 5; }
+      .menu:hover .menu-panel { display: block; }
+      .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); }
+      .modal.open { display: grid; place-items: center; }
+      .modal .dialog { background: #fff; padding: 20px; border-radius: 8px; max-width: 480px; }
+      .tooltip { visibility: hidden; opacity: 0; position: absolute; background: #1d2330; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+      .has-tip:hover .tooltip { visibility: visible; opacity: 1; }
+      .tabpanel[hidden] { display: none; }
+      .muted { color: var(--muted); }
+      .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--line); background: #f6f7f9; cursor: pointer; }
+      .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+      footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 24px 0; color: var(--muted); font-size: 13px; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+      pre { background: #f6f7f9; padding: 12px; border-radius: 6px; overflow-x: auto; }
+
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <div class="topbar"><div class="wrap"><strong>Northwind API</strong><nav aria-label="Primary"><a href="#">Reference</a> · <a href="#">Webhooks</a> · <a href="#">SDKs</a></nav></div></div>
+    <main id="main" class="wrap">
+      <h1>Orders</h1>
+      <p>An order is created when a checkout completes. Orders are immutable except for their <code>status</code> and <code>metadata</code>.</p>
+      <h2 id="retrieve">Retrieve an order</h2>
+      <p><code>GET /v2/orders/{order_id}</code></p>
+      <div role="tablist" aria-label="Language"><button class="btn" role="tab" aria-selected="true" aria-controls="l-curl" id="lt-curl">curl</button><button class="btn" role="tab" aria-selected="false" aria-controls="l-node" id="lt-node">Node</button><button class="btn" role="tab" aria-selected="false" aria-controls="l-py" id="lt-py">Python</button></div>
+      <div class="tabpanel" role="tabpanel" id="l-curl" aria-labelledby="lt-curl"><pre><code>curl https://api.northwind.test/v2/orders/ord_01J9Z8Q4K7 \
+  -H "Authorization: Bearer $NW_TOKEN"</code></pre></div>
+      <div class="tabpanel" role="tabpanel" id="l-node" aria-labelledby="lt-node" hidden><pre><code>const order = await nw.orders.retrieve("ord_01J9Z8Q4K7");
+console.log(order.status);</code></pre></div>
+      <div class="tabpanel" role="tabpanel" id="l-py" aria-labelledby="lt-py" hidden><pre><code>order = nw.orders.retrieve("ord_01J9Z8Q4K7")
+print(order.status)</code></pre></div>
+      <h3>Response</h3>
+      <pre><code>{
+  "id": "ord_01J9Z8Q4K7",
+  "status": "paid",
+  "total": 12900,
+  "currency": "usd",
+  "customer": "cus_7Hq2LmN4",
+  "signature": "sha256=9b74c9897bac770ffc029102a200c5de7d1b2f0f6e8e2a0d3c1f5b4a6e7d8c9b",
+  "created": "2026-10-04T09:12:44Z"
+}</code></pre>
+      <table style="border-collapse:collapse;width:100%"><caption class="sr-only">Order fields</caption>
+        <thead><tr><th style="text-align:left">Field</th><th style="text-align:left">Type</th><th style="text-align:left">Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>string</td><td>Unique identifier, prefixed <code>ord_</code>.</td></tr>
+          <tr><td><code>status</code></td><td>enum</td><td><code>pending</code>, <code>paid</code>, <code>refunded</code> or <code>cancelled</code>.</td></tr>
+          <tr><td><code>total</code></td><td>integer</td><td>Amount in the smallest currency unit.</td></tr>
+          <tr><td><code>signature</code></td><td>string</td><td>HMAC of the payload with your webhook secret. Verify it before you trust the body.</td></tr>
+        </tbody></table>
+      <h2 id="errors">Errors</h2>
+      <p>Errors return a JSON body with a <code>code</code> and a human-readable <code>message</code>. Retry <code>429</code> and <code>5xx</code> responses with exponential backoff.</p>
+      <!-- generated from openapi.yaml rev 412 -->
+    </main>
+    <footer><div class="wrap">API version 2026-09-01 · <a href="#">Status</a></div></footer>
+    <script>
+      document.querySelectorAll('[role="tab"]').forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          var list = tab.closest('[role="tablist"]');
+          list.querySelectorAll('[role="tab"]').forEach(function (t) { t.setAttribute("aria-selected", String(t === tab)); document.getElementById(t.getAttribute("aria-controls")).hidden = t !== tab; });
+        });
+      });
+    </script>
+  </body>
+</html>

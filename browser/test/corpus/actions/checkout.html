@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Checkout: shop.test</title>
+    <script>
+      // A page listener registered before the body exists: the gate's capture listener must still run first.
+      window.addEventListener("submit", () => { window.__pageSawSubmit = (window.__pageSawSubmit || 0) + 1; }, true);
+    </script>
+  </head>
+  <body>
+    <h1>Checkout</h1>
+    <p>Fixture: a checkout with card fields. Only the published test card number; nothing contacts a payment provider.</p>
+    <form id="pay" action="/actions/checkout/order" method="post">
+      <label>Name on card <input name="ccname" autocomplete="cc-name" value="Test Person" /></label>
+      <label>Card number <input id="card" name="cardnumber" autocomplete="cc-number" value="4242 4242 4242 4242" /></label>
+      <label>Expiry <input name="exp" autocomplete="cc-exp" value="12/34" /></label>
+      <label>CVC <input name="cvc" autocomplete="cc-csc" value="123" /></label>
+      <button id="place" type="submit">Place order</button>
+    </form>
+  </body>
+</html>

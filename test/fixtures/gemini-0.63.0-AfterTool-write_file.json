@@ -1,0 +1,34 @@
+{
+  "session_id": "404a4715-76f3-4457-abc3-22deda5cecbb",
+  "transcript_path": "/home/user/.gemini/tmp/work-gemini/chats/session-2026-10-10T16-27-404a4715.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "AfterTool",
+  "timestamp": "2026-10-10T16:27:54.806Z",
+  "tool_name": "write_file",
+  "tool_input": {
+    "file_path": "added.txt",
+    "content": "hello added\n"
+  },
+  "tool_response": {
+    "llmContent": "Successfully created and wrote to new file: /work/project/added.txt. Here is the updated code:\nhello added\n",
+    "returnDisplay": {
+      "fileDiff": "Index: added.txt\n===================================================================\n--- added.txt\tOriginal\n+++ added.txt\tWritten\n@@ -0,0 +1,1 @@\n+hello added\n",
+      "fileName": "added.txt",
+      "filePath": "/work/project/added.txt",
+      "originalContent": "",
+      "newContent": "hello added\n",
+      "diffStat": {
+        "model_added_lines": 1,
+        "model_removed_lines": 0,
+        "model_added_chars": 11,
+        "model_removed_chars": 0,
+        "user_added_lines": 0,
+        "user_removed_lines": 0,
+        "user_added_chars": 0,
+        "user_removed_chars": 0
+      },
+      "isNewFile": true,
+      "isBuildFile": false
+    }
+  }
+}

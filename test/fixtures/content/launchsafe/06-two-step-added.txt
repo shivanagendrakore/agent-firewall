@@ -1,0 +1,10 @@
+An authenticator app was added to your LaunchSafe account, and two-step sign-in is now on. Your other sessions were signed out.
+
+If this wasn’t you, contact LaunchSafe support straight away. Someone else may be able to read your email.
+LaunchSafe support: https://launchsafe.com/contact
+
+Open your account: https://app.example.com/account
+
+You get this whenever two-step sign-in on your LaunchSafe account changes.
+
+LaunchSafe, Inc.

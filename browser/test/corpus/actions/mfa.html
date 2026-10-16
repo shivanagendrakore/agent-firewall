@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Account: security</title>
+  </head>
+  <body>
+    <h1>Security</h1>
+    <p>Two-factor authentication is on.</p>
+    <button id="off" type="button">Turn off two-factor authentication</button>
+    <script>
+      document.getElementById("off").addEventListener("click", () => fetch("/actions/account/mfa-off", { method: "POST", body: "off" }));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LaunchSafe Agent Firewall</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>LaunchSafe Agent Firewall</h1>
+    <p id="mode" class="muted">Loading…</p>
+    <div class="switch">
+      <button id="agent-on" type="button" hidden>Turn agent mode on</button>
+      <button id="agent-off" type="button" hidden>Turn agent mode off…</button>
+    </div>
+    <section aria-labelledby="pending-h">
+      <h2 id="pending-h">Waiting for your approval</h2>
+      <div id="pending" class="cards"></div>
+      <p id="pending-empty" class="muted" hidden>Nothing is waiting for your approval.</p>
+      <p class="muted small">Approvals happen only here and in the LaunchSafe approval window, never on a web page.</p>
+    </section>
+    <section aria-labelledby="link-h">
+      <h2 id="link-h">Local firewall</h2>
+      <p id="link-status" class="muted">Link to the local firewall: off.</p>
+      <div class="switch"><button id="link-toggle" type="button">Link to the local firewall…</button></div>
+      <p class="muted small">Optional. Sends this extension's decisions to the LaunchSafe firewall on this computer (its signed log), shares taint with coding agents that drive this browser, and lets held actions be approved there too. Nothing leaves this computer. Turning it on asks the browser for permission to talk to that program.</p>
+    </section>
+    <div id="ls-log-settings"></div>
+    <section aria-labelledby="limits-h">
+      <h2 id="limits-h">What this does not stop</h2>
+      <p id="coverage" class="muted"></p>
+      <p><a id="limits-link" href="limits.html" target="_blank" rel="noopener">The full list of what this does not stop</a></p>
+    </section>
+    <script src="sidepanel.js"></script>
+  </body>
+</html>

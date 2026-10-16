@@ -1,0 +1,14 @@
+{
+  "session_id": "01a1269b-1bcc-75f1-8b1c-72e7f1a0c86e",
+  "turn_id": "01a1269b-1c02-7540-9803-b2445f4d346a",
+  "transcript_path": "/home/user/.codex/sessions/2026/10/10/rollout-2026-10-10T09-17-41-01a1269b-1bcc-75f1-8b1c-72e7f1a0c86e.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "PreToolUse",
+  "model": "gpt-5.5",
+  "permission_mode": "bypassPermissions",
+  "tool_name": "spawn_agent",
+  "tool_input": {
+    "message": "SUBAGENT_TASK: run echo sub"
+  },
+  "tool_use_id": "call_1_1791649061981"
+}

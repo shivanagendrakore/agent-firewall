@@ -1,0 +1,1588 @@
+[
+  {
+    "id": "invalid-unknown-top-level-field",
+    "description": "An unknown field in the body",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "extra": 1
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-unknown-action-field",
+    "description": "An unknown field in action",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            },
+            "extra": 1
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-unknown-context-field",
+    "description": "An unknown field in context",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "user": "x"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-unknown-format",
+    "description": "A format v0 does not have",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.responses",
+            "raw": {}
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-missing-format",
+    "description": "No format",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "tool": "search_docs",
+            "input": {}
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-missing-session",
+    "description": "No session",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-empty-session",
+    "description": "An empty session",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-native-missing-tool",
+    "description": "native without a tool",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "input": {}
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-native-missing-input",
+    "description": "native without input",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-native-input-not-object",
+    "description": "native with input that is not an object",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": "q"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-native-with-raw",
+    "description": "native with a raw field",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            },
+            "raw": {}
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-openai-arguments-not-json",
+    "description": "openai.chat with arguments that are not JSON",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "c",
+              "type": "function",
+              "function": {
+                "name": "search_docs",
+                "arguments": "{q:"
+              }
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-openai-arguments-array",
+    "description": "openai.chat with arguments that are a JSON array",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "c",
+              "type": "function",
+              "function": {
+                "name": "search_docs",
+                "arguments": "[1]"
+              }
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-openai-arguments-object-not-string",
+    "description": "openai.chat with arguments given as an object",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "c",
+              "type": "function",
+              "function": {
+                "name": "search_docs",
+                "arguments": {
+                  "q": "x"
+                }
+              }
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-openai-wrong-type",
+    "description": "openai.chat whose raw type is not function",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "c",
+              "type": "custom",
+              "function": {
+                "name": "search_docs",
+                "arguments": "{}"
+              }
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-openai-with-tool-field",
+    "description": "openai.chat with a tool field beside raw",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "tool": "search_docs",
+            "raw": {
+              "id": "c",
+              "type": "function",
+              "function": {
+                "name": "search_docs",
+                "arguments": "{}"
+              }
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-anthropic-wrong-type",
+    "description": "anthropic whose raw type is not tool_use",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "text",
+              "id": "t",
+              "name": "search_docs",
+              "input": {}
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-anthropic-missing-raw",
+    "description": "anthropic without raw",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-mcp-missing-server",
+    "description": "mcp without mcp.server",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {},
+            "mcp": {
+              "source": "user"
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-mcp-missing-mcp",
+    "description": "mcp without the mcp object",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {}
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-mcp-object-on-native",
+    "description": "An mcp object on a native action",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            },
+            "mcp": {
+              "server": "x"
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-attended-not-boolean",
+    "description": "attended as a string",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": "yes"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-workspace-not-array",
+    "description": "workspace as a string",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "workspace": "/srv/app"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-dry-run-not-boolean",
+    "description": "dryRun as a string",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "dryRun": "true"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-result-missing-output",
+    "description": "A result without output",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-result-unknown-field",
+    "description": "A result with an unknown field",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "x",
+          "extra": 1
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-input-missing-source",
+    "description": "An input without a source",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "input",
+        "request": {
+          "session": "run-1",
+          "content": "x"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-input-private-not-boolean",
+    "description": "An input whose private is a string",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "input",
+        "request": {
+          "session": "run-1",
+          "source": "s",
+          "content": "x",
+          "private": "yes"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-prompt-missing-text",
+    "description": "A prompt without text",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "prompt",
+        "request": {
+          "session": "run-1"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-prompt-text-not-string",
+    "description": "A prompt whose text is a number",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "prompt",
+        "request": {
+          "session": "run-1",
+          "text": 5
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-session-not-string",
+    "description": "A session that is a number",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": 5,
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-call-id-not-string",
+    "description": "An action.callId that is a number",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            },
+            "callId": 5
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-cwd-not-string",
+    "description": "A context.cwd that is a number",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "cwd": 5
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-traffic-unknown",
+    "description": "A context.traffic that is neither tool nor network",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "traffic": "browser"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-mcp-source-not-string",
+    "description": "An mcp.source that is a number",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {},
+            "mcp": {
+              "server": "github",
+              "source": 5
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-mcp-unknown-key",
+    "description": "An unknown field in action.mcp",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "list_issues",
+            "input": {},
+            "mcp": {
+              "server": "github",
+              "trust": "full"
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-native-empty-tool",
+    "description": "native with an empty tool name",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "",
+            "input": {}
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-engine-empty-tool",
+    "description": "engine with an empty tool name",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "",
+            "input": {}
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-anthropic-empty-name",
+    "description": "anthropic whose tool_use name is empty",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "t",
+              "name": "",
+              "input": {}
+            }
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-body-array",
+    "description": "A decide body that is a JSON array",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": [
+          {
+            "session": "run-1",
+            "action": {
+              "format": "native",
+              "tool": "search_docs",
+              "input": {
+                "q": "x"
+              }
+            }
+          }
+        ],
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-body-null",
+    "description": "A decide body that is JSON null",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": null,
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-usage-not-object",
+    "description": "A usage that is a string",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "usage": "600 tokens"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-usage-unknown-key",
+    "description": "A usage with an unknown field",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "usage": {
+            "tokens": 600
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-usage-negative",
+    "description": "A usage with a negative token count",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "usage": {
+            "inputTokens": -1
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-usage-fraction",
+    "description": "A usage with a fractional token count",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "usage": {
+            "outputTokens": 1.5
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-usage-cost-string",
+    "description": "A usage whose cost is a string",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "usage": {
+            "costUsd": "0.01"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-result-failed-not-boolean",
+    "description": "A result whose failed is a string",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "x",
+          "failed": "yes"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-input-unknown-field",
+    "description": "An input with an unknown field",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "input",
+        "request": {
+          "session": "run-1",
+          "source": "s",
+          "content": "x",
+          "trusted": true
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-input-missing-content",
+    "description": "An input without content",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "input",
+        "request": {
+          "session": "run-1",
+          "source": "s"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "invalid-prompt-unknown-field",
+    "description": "A prompt with an unknown field",
+    "source": "docs/api-v0.md, errors",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "prompt",
+        "request": {
+          "session": "run-1",
+          "text": "hello",
+          "from": "user"
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "raw-anthropic-extra-keys-ignored",
+    "description": "anthropic: a tool_use block with keys the contract does not read (cache_control, caller) is accepted",
+    "source": "docs/api-v0.md, decide request (raw)",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "search_docs",
+              "input": {
+                "q": "x"
+              },
+              "cache_control": {
+                "type": "ephemeral"
+              },
+              "caller": {
+                "type": "direct"
+              }
+            }
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "raw-openai-extra-keys-ignored",
+    "description": "openai.chat: a tool_call with keys the contract does not read is accepted",
+    "source": "docs/api-v0.md, decide request (raw)",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "call_1",
+              "type": "function",
+              "index": 0,
+              "function": {
+                "name": "search_docs",
+                "arguments": "{\"q\":\"x\"}",
+                "strict": true
+              }
+            }
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  }
+]

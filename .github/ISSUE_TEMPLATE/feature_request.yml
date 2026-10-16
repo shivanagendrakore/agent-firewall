@@ -1,0 +1,27 @@
+name: Feature request
+description: A new action class to constrain, an agent to support, or a change to how the firewall works.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check [docs/limitations.md](https://github.com/shivanagendrakore/agent-firewall/blob/main/docs/limitations.md) first: many known gaps are listed there with the reason.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What can an agent do today that it should not be able to do, or what normal work is harder than it should be?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like
+      description: Expressed as actions and outcomes where possible (this action, in this kind of session, should be allowed / asked / held / denied).
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other ways to get the same result (policy settings, the agent's own sandbox, managed settings).

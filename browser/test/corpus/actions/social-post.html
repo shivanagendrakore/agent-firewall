@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Social: new post</title>
+  </head>
+  <body>
+    <h1>Home</h1>
+    <p>Fixture: a social post composer (a look-alike of the X, LinkedIn and Reddit post boxes) that posts with an API call.</p>
+    <div role="dialog" aria-label="Create post">
+      <div id="post-body" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Post text">Check out this link.</div>
+      <button id="post" type="button" data-testid="tweetButton">Post</button>
+    </div>
+    <script>
+      document.getElementById("post").addEventListener("click", () => fetch("/actions/social/post", { method: "POST", body: document.getElementById("post-body").textContent }));
+    </script>
+  </body>
+</html>

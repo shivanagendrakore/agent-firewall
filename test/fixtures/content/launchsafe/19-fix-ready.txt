@@ -1,0 +1,14 @@
+The fix for “SQL built from the search box’s input”, a high finding in “api.example.com”, is ready.
+
+Review the change, then approve it to open the pull request. Nothing is pushed until you do.
+
+Repository: your-org/app
+
+Review the fix: https://app.example.com/your-org/fixes/example
+
+You get this because you asked for this fix. Sent by “Your org” in LaunchSafe.
+
+Stop emails about fixes ready for review: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

@@ -1,0 +1,15 @@
+{
+  "session_id": "01a12695-4204-7db0-ae80-354465a30784",
+  "turn_id": "01a12695-4236-7d30-affb-7d98f9a961ef",
+  "transcript_path": "/home/user/.codex/sessions/2026/10/10/rollout-2026-10-10T09-11-18-01a12695-4204-7db0-ae80-354465a30784.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "PostToolUse",
+  "model": "gpt-5.5",
+  "permission_mode": "bypassPermissions",
+  "tool_name": "apply_patch",
+  "tool_input": {
+    "command": "*** Begin Patch\n*** Add File: added.txt\n+hello added\n*** Update File: notes.txt\n@@\n-line one\n+line one changed\n*** End Patch\n"
+  },
+  "tool_response": "Exit code: 0\nWall time: 0 seconds\nOutput:\nSuccess. Updated the following files:\nA added.txt\nM notes.txt\n",
+  "tool_use_id": "call_2_1791648678724"
+}

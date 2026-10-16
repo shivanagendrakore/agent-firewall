@@ -1,0 +1,36 @@
+{
+  "session_id": "404a4715-76f3-4457-abc3-22deda5cecbb",
+  "transcript_path": "/home/user/.gemini/tmp/work-gemini/chats/session-2026-10-10T16-27-404a4715.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "AfterTool",
+  "timestamp": "2026-10-10T16:27:55.157Z",
+  "tool_name": "replace",
+  "tool_input": {
+    "file_path": "notes.txt",
+    "instruction": "change line",
+    "old_string": "line one",
+    "new_string": "line one changed"
+  },
+  "tool_response": {
+    "llmContent": "Successfully modified file: /work/project/notes.txt (1 replacements). Here is the updated code:\nline one changed\n",
+    "returnDisplay": {
+      "fileDiff": "Index: notes.txt\n===================================================================\n--- notes.txt\tCurrent\n+++ notes.txt\tProposed\n@@ -1,1 +1,1 @@\n-line one\n+line one changed\n",
+      "fileName": "notes.txt",
+      "filePath": "/work/project/notes.txt",
+      "originalContent": "line one\n",
+      "newContent": "line one changed\n",
+      "diffStat": {
+        "model_added_lines": 1,
+        "model_removed_lines": 1,
+        "model_added_chars": 16,
+        "model_removed_chars": 8,
+        "user_added_lines": 0,
+        "user_removed_lines": 0,
+        "user_added_chars": 0,
+        "user_removed_chars": 0
+      },
+      "isNewFile": false,
+      "isBuildFile": false
+    }
+  }
+}

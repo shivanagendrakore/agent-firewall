@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mail: compose</title>
+  </head>
+  <body>
+    <h1>Inbox</h1>
+    <p>Fixture: a web-mail compose dialog that sends with an API call (no form), like Gmail and Outlook.</p>
+    <div role="dialog" aria-label="New message">
+      <input name="to" aria-label="To recipients" value="friend@mail.test" />
+      <input name="subject" aria-label="Subject" value="Dinner" />
+      <div id="body" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Message Body">See you at six.</div>
+      <div id="send" role="button" tabindex="0" aria-label="Send" data-tooltip="Send (Ctrl-Enter)">Send</div>
+    </div>
+    <p id="status"></p>
+    <script>
+      function send() {
+        const to = document.querySelector('[name="to"]').value;
+        const body = document.getElementById("body").textContent;
+        fetch("/actions/mail/send", { method: "POST", body: JSON.stringify({ to, body }) });
+        document.getElementById("status").textContent = "Sent";
+      }
+      document.getElementById("send").addEventListener("click", send);
+      document.getElementById("body").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          send();
+        }
+      });
+    </script>
+  </body>
+</html>

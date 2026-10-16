@@ -1,0 +1,2124 @@
+{
+  "schema": 2,
+  "generatedFrom": "src/rules.ts and src/frameworks.ts by scripts/gen-coverage.mjs",
+  "firewallVersion": "0.3.0",
+  "verification": {
+    "checkedOn": "2026-10-09",
+    "owaspLlm2025": {
+      "status": "verified",
+      "source": "https://genai.owasp.org/llm-top-10/",
+      "note": "All ten ids and names read from the official page."
+    },
+    "owaspAgentic2026": {
+      "status": "verified (names); descriptions from the OWASP announcement",
+      "source": "https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/",
+      "note": "ASI01 to ASI10 ids and names read from the OWASP announcement post. The resource page https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/ lists no items in its text and the PDF was not read."
+    },
+    "mitreAtlas": {
+      "status": "verified against MITRE's published data, not the atlas.mitre.org pages",
+      "source": "https://github.com/mitre-atlas/atlas-data (dist/ATLAS.yaml, version 5.6.0)",
+      "note": "atlas.mitre.org technique pages returned 404 to the fetch tool. The data file carries a notice that it is deprecated in favour of newer data in the same repository; ids and names were checked in that file, so a rename in a later release would not be seen."
+    },
+    "attack": {
+      "status": "verified except T1562.001",
+      "source": "https://attack.mitre.org/techniques/",
+      "note": "Titles of T1048, T1071.004, T1552, T1059, T1027, T1485, T1548, T1546, T1053, T1195.001, T1030 and T1105 were read from attack.mitre.org. T1562.001 could not be fetched and is unverified."
+    },
+    "mcpSpec": {
+      "status": "verified",
+      "source": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools and /basic/security_best_practices",
+      "note": "Requirement wording read from both pages. The security best practices page now serves the 2025-11-25 text, which cross-references the 2025-11-25 authorization spec; the tools page is 2025-06-18. Requirement levels (MUST, SHOULD) are as on those pages."
+    },
+    "unverified": [
+      "An ATLAS technique for triggers hidden in multimodal inputs was considered but not found in ATLAS data 5.6.0, so none is used (AML.T0068 LLM Prompt Obfuscation is used for FW-HIDDEN-TEXT instead).",
+      "ATT&CK T1562.001 (Impair Defenses: Disable or Modify Tools): the page could not be fetched, so its id and title were not checked against attack.mitre.org.",
+      "OWASP Agentic Top 10 item descriptions beyond the names (taken from the announcement post, not the full PDF)."
+    ]
+  },
+  "rules": {
+    "FW-SEND": {
+      "title": "Sending data out after reading outside content",
+      "owaspLlm": [
+        "LLM01:2025",
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0086",
+        "AML.T0051"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL",
+        "MCP-TOOLS-CONFIRM"
+      ]
+    },
+    "FW-MESSAGE": {
+      "title": "Sending a message to people after reading outside content",
+      "owaspLlm": [
+        "LLM01:2025",
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0086",
+        "AML.T0051"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL",
+        "MCP-TOOLS-CONFIRM"
+      ]
+    },
+    "FW-SEND-ARGS": {
+      "title": "Sending tool arguments to an outside service while holding private data",
+      "owaspLlm": [
+        "LLM01:2025",
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0086",
+        "AML.T0051",
+        "AML.T0057"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL",
+        "MCP-TOOLS-CONFIRM"
+      ]
+    },
+    "FW-FETCH": {
+      "title": "Contacting a destination you did not name after reading outside content",
+      "owaspLlm": [
+        "LLM01:2025",
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0086",
+        "AML.T0025"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-FETCH-DATA": {
+      "title": "An address that can carry data out",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0025",
+        "AML.T0057"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-NEW-HOST": {
+      "title": "Contacting a host this project has never contacted",
+      "owaspLlm": [
+        "LLM01:2025",
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0086",
+        "AML.T0025"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-DLP-CREDENTIAL": {
+      "title": "A credential leaving for a destination that did not issue it",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057",
+        "AML.T0098"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": [
+        "MCP-TOKEN-PASSTHROUGH"
+      ]
+    },
+    "FW-DLP-SEEN-SECRET": {
+      "title": "A secret this session read, leaving the machine",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057",
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": [
+        "MCP-TOKEN-PASSTHROUGH"
+      ]
+    },
+    "FW-DLP-PERSONAL": {
+      "title": "Personal or financial data leaving the machine",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": []
+    },
+    "FW-CREDENTIAL-READ": {
+      "title": "Reading a credential store",
+      "owaspLlm": [
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0055",
+        "AML.T0083",
+        "AML.T0098"
+      ],
+      "attack": [
+        "T1552"
+      ],
+      "mcp": []
+    },
+    "FW-SECRET-FLOW": {
+      "title": "Reading a secret and contacting the network in one command",
+      "owaspLlm": [
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0055",
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1552",
+        "T1048"
+      ],
+      "mcp": []
+    },
+    "FW-SECRET-VARIABLE": {
+      "title": "A secret environment variable sent to a service that did not issue it",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0055"
+      ],
+      "attack": [
+        "T1552"
+      ],
+      "mcp": [
+        "MCP-TOKEN-PASSTHROUGH"
+      ]
+    },
+    "FW-METADATA": {
+      "title": "Asking the cloud metadata service for credentials",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0055"
+      ],
+      "attack": [
+        "T1552"
+      ],
+      "mcp": [
+        "MCP-SSRF"
+      ]
+    },
+    "FW-CREDENTIAL-FLOW": {
+      "title": "Sending data out after reading credentials",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0055",
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1552",
+        "T1048"
+      ],
+      "mcp": []
+    },
+    "FW-SECRET-FILE-PUBLISH": {
+      "title": "Publishing after credentials were copied into a file",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0055",
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1552"
+      ],
+      "mcp": []
+    },
+    "FW-CAPTURE-HOST": {
+      "title": "A data-capture, tunnelling or denied host",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": []
+    },
+    "FW-DNS-EXFIL": {
+      "title": "A host name built to carry data",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1048",
+        "T1071.004"
+      ],
+      "mcp": []
+    },
+    "FW-RAW-IP": {
+      "title": "Contacting a bare IP address",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": [
+        "MCP-SSRF"
+      ]
+    },
+    "FW-INSTRUCTIONS-HELD": {
+      "title": "Changing the agent's instructions or memory after outside content",
+      "owaspLlm": [
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI06"
+      ],
+      "atlas": [
+        "AML.T0080",
+        "AML.T0081"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-INSTRUCTIONS": {
+      "title": "Changing the agent's instructions or memory (strict mode)",
+      "owaspLlm": [
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI06"
+      ],
+      "atlas": [
+        "AML.T0080",
+        "AML.T0081"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-AGENT-SETTINGS": {
+      "title": "Changing settings that make code run in every session",
+      "owaspLlm": [
+        "LLM03:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI04",
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0081",
+        "AML.T0109"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-LOCAL-SERVER"
+      ]
+    },
+    "FW-PERSISTENCE": {
+      "title": "Writing something that runs code later on its own",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [],
+      "attack": [
+        "T1546",
+        "T1053"
+      ],
+      "mcp": []
+    },
+    "FW-OUTSIDE-WRITE": {
+      "title": "Writing outside the project after outside content",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-DESTRUCTIVE": {
+      "title": "Destroying data or infrastructure",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0101"
+      ],
+      "attack": [
+        "T1485"
+      ],
+      "mcp": []
+    },
+    "FW-CATASTROPHIC": {
+      "title": "An action that cannot be undone",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0101"
+      ],
+      "attack": [
+        "T1485"
+      ],
+      "mcp": []
+    },
+    "FW-DESTROY-ROOT": {
+      "title": "Erasing the home directory, the disk or the root",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0101"
+      ],
+      "attack": [
+        "T1485"
+      ],
+      "mcp": []
+    },
+    "FW-PRIVILEGE": {
+      "title": "Running with elevated privileges",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [],
+      "attack": [
+        "T1548"
+      ],
+      "mcp": []
+    },
+    "FW-SYMLINK": {
+      "title": "A link to a protected file",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-REMOTE-CODE": {
+      "title": "Downloading code and running it directly",
+      "owaspLlm": [
+        "LLM05:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [
+        "T1059",
+        "T1105"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-OBFUSCATED": {
+      "title": "Decoding hidden text and running it",
+      "owaspLlm": [
+        "LLM05:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [
+        "T1059",
+        "T1027"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-UNTRUSTED-CODE": {
+      "title": "Running code that came from outside the project",
+      "owaspLlm": [
+        "LLM05:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [
+        "T1059"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-TAINTED-MANIFEST": {
+      "title": "Running a build or task file changed after outside content",
+      "owaspLlm": [
+        "LLM05:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [
+        "T1059"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-INSTALL": {
+      "title": "Downloading and running packages after outside content",
+      "owaspLlm": [
+        "LLM03:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI04",
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0010"
+      ],
+      "attack": [
+        "T1195.001"
+      ],
+      "mcp": []
+    },
+    "FW-OPAQUE-CODE": {
+      "title": "Running code the firewall cannot see into, after outside content",
+      "owaspLlm": [
+        "LLM05:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [
+        "T1059"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-UNCLASSIFIABLE": {
+      "title": "Part of the action is only known at run time",
+      "owaspLlm": [
+        "LLM05:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [
+        "T1059"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-AGENT-BYPASS": {
+      "title": "Starting a coding agent with its safety switched off",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02",
+        "ASI10"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-AGENT-SPAWN": {
+      "title": "Starting another coding agent after outside content",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI10"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-TAMPER": {
+      "title": "Changing the firewall itself",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI10"
+      ],
+      "atlas": [
+        "AML.T0081"
+      ],
+      "attack": [
+        "T1562.001"
+      ],
+      "mcp": []
+    },
+    "FW-POLICY-ERROR": {
+      "title": "The policy file is invalid",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-HIDDEN-TEXT": {
+      "title": "Invisible characters in a path, address or command",
+      "owaspLlm": [
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01"
+      ],
+      "atlas": [
+        "AML.T0051",
+        "AML.T0068"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-UNKNOWN-TOOL": {
+      "title": "A tool the firewall does not know",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-NET-REFUSED": {
+      "title": "A network request the sandbox middleware refused",
+      "owaspLlm": [
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": []
+    },
+    "FW-BLOCKED-TOOL": {
+      "title": "A tool the policy blocks",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [
+        "AML.T0053"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-APPROVED": {
+      "title": "Approved once by a person",
+      "kind": "marker"
+    },
+    "FW-LEARNED-ALLOW": {
+      "title": "Always allowed in this project by your choice",
+      "kind": "marker"
+    },
+    "FW-LEARNED-DENY": {
+      "title": "Never allowed in this project by your choice",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-LOG-UNRECORDED": {
+      "title": "An action the decision log could not record",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI10"
+      ],
+      "atlas": [],
+      "attack": [
+        "T1562.001"
+      ],
+      "mcp": []
+    },
+    "FW-INPUT-SHAPE": {
+      "title": "A tool call whose input cannot be judged",
+      "owaspLlm": [
+        "LLM10:2025"
+      ],
+      "owaspAgentic": [],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-RESULT-UNRECORDED": {
+      "title": "A tool result whose decision was forgotten",
+      "owaspLlm": [
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-UNAVAILABLE": {
+      "title": "The firewall API could not be reached",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI10"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-RATE-LIMITED": {
+      "title": "The firewall API asked the agent to slow down",
+      "owaspLlm": [
+        "LLM06:2025",
+        "LLM10:2025"
+      ],
+      "owaspAgentic": [
+        "ASI08"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-API-ERROR": {
+      "title": "The firewall API refused the request",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI10"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-SCOPE": {
+      "title": "Acting outside the task you gave",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI02"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-MCP-CHANGED": {
+      "title": "An MCP server changed since it was pinned",
+      "owaspLlm": [
+        "LLM03:2025",
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI04",
+        "ASI06"
+      ],
+      "atlas": [
+        "AML.T0109",
+        "AML.T0110",
+        "AML.T0104",
+        "AML.T0080"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-LIST-CHANGED",
+        "MCP-ANNOTATIONS-UNTRUSTED",
+        "MCP-LOCAL-SERVER"
+      ]
+    },
+    "FW-MALICIOUS-PACKAGE": {
+      "title": "A package version listed as malicious",
+      "owaspLlm": [
+        "LLM03:2025"
+      ],
+      "owaspAgentic": [
+        "ASI04"
+      ],
+      "atlas": [
+        "AML.T0010"
+      ],
+      "attack": [
+        "T1195.001"
+      ],
+      "mcp": []
+    },
+    "FW-TYPOSQUAT": {
+      "title": "A misspelt popular package",
+      "owaspLlm": [
+        "LLM03:2025"
+      ],
+      "owaspAgentic": [
+        "ASI04"
+      ],
+      "atlas": [
+        "AML.T0010"
+      ],
+      "attack": [
+        "T1195.001"
+      ],
+      "mcp": []
+    },
+    "FW-AUTORUN": {
+      "title": "A change that makes code run automatically",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [],
+      "attack": [
+        "T1546",
+        "T1053"
+      ],
+      "mcp": []
+    },
+    "FW-PERSISTENCE-HELD": {
+      "title": "A git hook or auto-run file held as a proposal",
+      "owaspLlm": [
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI05"
+      ],
+      "atlas": [],
+      "attack": [
+        "T1546",
+        "T1053"
+      ],
+      "mcp": []
+    },
+    "FW-BUDGET-BYTES": {
+      "title": "Outbound data budget reached",
+      "owaspLlm": [
+        "LLM10:2025",
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [],
+      "atlas": [],
+      "attack": [
+        "T1030"
+      ],
+      "mcp": []
+    },
+    "FW-BUDGET-REQUESTS": {
+      "title": "Outbound request budget reached",
+      "owaspLlm": [
+        "LLM10:2025",
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [],
+      "atlas": [],
+      "attack": [
+        "T1030"
+      ],
+      "mcp": []
+    },
+    "FW-BUDGET-MCP": {
+      "title": "MCP call budget reached",
+      "owaspLlm": [
+        "LLM10:2025",
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI08"
+      ],
+      "atlas": [],
+      "attack": [
+        "T1030"
+      ],
+      "mcp": []
+    },
+    "FW-LOOP": {
+      "title": "The agent seems stuck",
+      "owaspLlm": [
+        "LLM10:2025"
+      ],
+      "owaspAgentic": [
+        "ASI08",
+        "ASI10"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-STOPPED": {
+      "title": "The session or agent is stopped",
+      "owaspLlm": [
+        "LLM06:2025",
+        "LLM10:2025"
+      ],
+      "owaspAgentic": [
+        "ASI08",
+        "ASI10"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-CAP": {
+      "title": "Spending limit reached",
+      "owaspLlm": [
+        "LLM10:2025"
+      ],
+      "owaspAgentic": [],
+      "atlas": [
+        "AML.T0034"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-CAP-WARN": {
+      "title": "Spending limit nearly reached",
+      "owaspLlm": [
+        "LLM10:2025"
+      ],
+      "owaspAgentic": [
+        "ASI08"
+      ],
+      "atlas": [
+        "AML.T0034"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-CANARY-READ": {
+      "title": "A decoy file was touched",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-CANARY-EGRESS": {
+      "title": "A decoy value leaving the machine",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01"
+      ],
+      "atlas": [
+        "AML.T0086",
+        "AML.T0057"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-VAULT-EGRESS": {
+      "title": "A vaulted secret leaving for a destination it is not bound to",
+      "owaspLlm": [
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057",
+        "AML.T0025"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": [
+        "MCP-TOKEN-PASSTHROUGH"
+      ]
+    },
+    "FW-VAULT-UNBOUND": {
+      "title": "A vault reference that names no secret, or goes where its secret is not bound",
+      "owaspLlm": [
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": [
+        "MCP-TOKEN-PASSTHROUGH"
+      ]
+    },
+    "FW-VAULT-INDEX": {
+      "title": "Sending while the vault index cannot be trusted",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": []
+    },
+    "FW-VAULT-UNSUPPORTED": {
+      "title": "A vault reference where the firewall cannot put the value in safely",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-VAULT-OPTION": {
+      "title": "A vault value given to curl or wget with an option off the allowlist",
+      "owaspLlm": [
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [
+        "AML.T0057"
+      ],
+      "attack": [
+        "T1048"
+      ],
+      "mcp": []
+    },
+    "FW-VAULT-APPROVE": {
+      "title": "Using a financial or personal value from the vault",
+      "owaspLlm": [
+        "LLM02:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-OUTSIDE-COMMAND": {
+      "title": "Running a command that outside content suggested",
+      "owaspLlm": [
+        "LLM01:2025",
+        "LLM05:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI05"
+      ],
+      "atlas": [
+        "AML.T0051",
+        "AML.T0053"
+      ],
+      "attack": [
+        "T1059"
+      ],
+      "mcp": [
+        "MCP-TOOLS-HITL"
+      ]
+    },
+    "FW-HIDDEN-OUTPUT": {
+      "title": "Invisible characters or terminal tricks in what the agent read",
+      "owaspLlm": [
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01"
+      ],
+      "atlas": [
+        "AML.T0051",
+        "AML.T0068"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-RESULTS"
+      ]
+    },
+    "FW-MCP-TOOL-HELD": {
+      "title": "A changed or new MCP tool, hidden until reviewed",
+      "owaspLlm": [
+        "LLM03:2025",
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI04",
+        "ASI06"
+      ],
+      "atlas": [
+        "AML.T0109",
+        "AML.T0110"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-LIST-CHANGED",
+        "MCP-ANNOTATIONS-UNTRUSTED"
+      ]
+    },
+    "FW-MCP-WITHHELD": {
+      "title": "An MCP result carrying hidden instructions, withheld",
+      "owaspLlm": [
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01",
+        "ASI06"
+      ],
+      "atlas": [
+        "AML.T0051"
+      ],
+      "attack": [],
+      "mcp": [
+        "MCP-TOOLS-RESULTS"
+      ]
+    },
+    "FW-MCP-SAMPLING": {
+      "title": "An MCP server asking to run your model",
+      "owaspLlm": [
+        "LLM01:2025",
+        "LLM06:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01"
+      ],
+      "atlas": [
+        "AML.T0051"
+      ],
+      "attack": [],
+      "mcp": []
+    },
+    "FW-MCP-METHOD": {
+      "title": "An MCP method the gateway does not know",
+      "owaspLlm": [],
+      "owaspAgentic": [
+        "ASI02"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": [
+        "MCP-STDIO-PROXY"
+      ]
+    },
+    "FW-MCP-AUTH": {
+      "title": "An upstream token kept to its own server",
+      "owaspLlm": [
+        "LLM02:2025"
+      ],
+      "owaspAgentic": [
+        "ASI03"
+      ],
+      "atlas": [],
+      "attack": [],
+      "mcp": [
+        "MCP-TOKEN-PASSTHROUGH"
+      ]
+    },
+    "FW-MAIL-WITHHELD": {
+      "title": "A mail message with hidden instructions for the agent withheld",
+      "owaspLlm": [
+        "LLM01:2025"
+      ],
+      "owaspAgentic": [
+        "ASI01"
+      ],
+      "atlas": [
+        "AML.T0051"
+      ],
+      "attack": [],
+      "mcp": []
+    }
+  },
+  "planned": {},
+  "frameworks": {
+    "owaspLlm2025": [
+      {
+        "id": "LLM01:2025",
+        "name": "Prompt Injection",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-FETCH",
+          "FW-NEW-HOST",
+          "FW-INSTRUCTIONS-HELD",
+          "FW-INSTRUCTIONS",
+          "FW-HIDDEN-TEXT",
+          "FW-RESULT-UNRECORDED",
+          "FW-MCP-CHANGED",
+          "FW-OUTSIDE-COMMAND",
+          "FW-HIDDEN-OUTPUT",
+          "FW-MCP-TOOL-HELD",
+          "FW-MCP-WITHHELD",
+          "FW-MCP-SAMPLING",
+          "FW-MAIL-WITHHELD"
+        ],
+        "gap": "The firewall does not stop a model being fooled. It limits what a fooled agent may do after reading outside content. An injected instruction that only asks for an action inside the allowed envelope (an edit in the workspace, a misleading answer to the user) is not stopped.",
+        "mitigation": "Run the agent in an OS sandbox; deploy managed settings; review diffs before merging."
+      },
+      {
+        "id": "LLM02:2025",
+        "name": "Sensitive Information Disclosure",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-FETCH",
+          "FW-FETCH-DATA",
+          "FW-NEW-HOST",
+          "FW-DLP-CREDENTIAL",
+          "FW-DLP-SEEN-SECRET",
+          "FW-DLP-PERSONAL",
+          "FW-CREDENTIAL-READ",
+          "FW-SECRET-FLOW",
+          "FW-SECRET-VARIABLE",
+          "FW-METADATA",
+          "FW-CREDENTIAL-FLOW",
+          "FW-SECRET-FILE-PUBLISH",
+          "FW-CAPTURE-HOST",
+          "FW-DNS-EXFIL",
+          "FW-RAW-IP",
+          "FW-NET-REFUSED",
+          "FW-BUDGET-BYTES",
+          "FW-BUDGET-REQUESTS",
+          "FW-BUDGET-MCP",
+          "FW-CANARY-READ",
+          "FW-CANARY-EGRESS",
+          "FW-VAULT-EGRESS",
+          "FW-VAULT-UNBOUND",
+          "FW-VAULT-INDEX",
+          "FW-VAULT-UNSUPPORTED",
+          "FW-VAULT-OPTION",
+          "FW-VAULT-APPROVE",
+          "FW-MCP-AUTH"
+        ],
+        "gap": "Covers disclosure through the agent's own tool actions (network sends, fetches, messages, DNS, credential reads). Does not cover what the model provider sees in the prompt, leaks into the chat transcript, or data sent to a host the policy allows.",
+        "mitigation": "Keep secrets out of the working tree; use a sandbox with network egress rules; review allow-host lists (sendAllowHosts, dataAllowHosts)."
+      },
+      {
+        "id": "LLM03:2025",
+        "name": "Supply Chain",
+        "status": "partly",
+        "rules": [
+          "FW-AGENT-SETTINGS",
+          "FW-INSTALL",
+          "FW-MCP-CHANGED",
+          "FW-MALICIOUS-PACKAGE",
+          "FW-TYPOSQUAT",
+          "FW-MCP-TOOL-HELD"
+        ],
+        "gap": "Checks every install and package runner offline: a version listed in the local OSV malicious-package snapshot (downloaded by the person with update; none ships) is denied by default (packageIntel.malicious can make it ask or turn it off), including versions a lockfile install would fetch (FW-MALICIOUS-PACKAGE), and a look-alike of a popular name needs a person (FW-TYPOSQUAT). Also gates installs after outside content and changes to agent and MCP configuration, and pins each MCP server (FW-MCP-CHANGED). Does not catch a malicious package not yet listed, a snapshot the person has not downloaded (none ships) or refreshed, or a malicious model.",
+        "mitigation": "Run launchsafe-firewall update regularly; set a release-age cooldown (doctor --fix); pin and lock dependencies; use managed settings to allow-list MCP servers."
+      },
+      {
+        "id": "LLM04:2025",
+        "name": "Data and Model Poisoning",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Out of scope: training, fine-tuning and embedding-store poisoning are outside a coding-agent firewall. (Changes to the agent's own instruction and memory files after outside content are held as proposals; that is mapped under LLM01 and ASI06, not here.)",
+        "mitigation": "Control training and RAG data at the pipeline; review instruction-file changes in code review."
+      },
+      {
+        "id": "LLM05:2025",
+        "name": "Improper Output Handling",
+        "status": "partly",
+        "rules": [
+          "FW-REMOTE-CODE",
+          "FW-OBFUSCATED",
+          "FW-UNTRUSTED-CODE",
+          "FW-TAINTED-MANIFEST",
+          "FW-OPAQUE-CODE",
+          "FW-UNCLASSIFIABLE",
+          "FW-OUTSIDE-COMMAND"
+        ],
+        "gap": "Covers the agent executing code the model or an outsider supplied on the developer's machine (downloaded scripts, decoded payloads, build files changed after outside content, opaque code). Does not cover output rendered by a downstream web application (XSS, injection into other systems).",
+        "mitigation": "Validate and encode model output in the application that consumes it; sandbox code execution."
+      },
+      {
+        "id": "LLM06:2025",
+        "name": "Excessive Agency",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-NEW-HOST",
+          "FW-CREDENTIAL-READ",
+          "FW-SECRET-FLOW",
+          "FW-AGENT-SETTINGS",
+          "FW-PERSISTENCE",
+          "FW-OUTSIDE-WRITE",
+          "FW-DESTRUCTIVE",
+          "FW-CATASTROPHIC",
+          "FW-DESTROY-ROOT",
+          "FW-PRIVILEGE",
+          "FW-SYMLINK",
+          "FW-REMOTE-CODE",
+          "FW-OBFUSCATED",
+          "FW-UNTRUSTED-CODE",
+          "FW-TAINTED-MANIFEST",
+          "FW-INSTALL",
+          "FW-OPAQUE-CODE",
+          "FW-UNCLASSIFIABLE",
+          "FW-AGENT-BYPASS",
+          "FW-AGENT-SPAWN",
+          "FW-TAMPER",
+          "FW-POLICY-ERROR",
+          "FW-UNKNOWN-TOOL",
+          "FW-NET-REFUSED",
+          "FW-BLOCKED-TOOL",
+          "FW-LEARNED-DENY",
+          "FW-LOG-UNRECORDED",
+          "FW-UNAVAILABLE",
+          "FW-RATE-LIMITED",
+          "FW-API-ERROR",
+          "FW-SCOPE",
+          "FW-AUTORUN",
+          "FW-PERSISTENCE-HELD",
+          "FW-STOPPED",
+          "FW-VAULT-EGRESS",
+          "FW-VAULT-UNBOUND",
+          "FW-VAULT-OPTION",
+          "FW-VAULT-APPROVE",
+          "FW-OUTSIDE-COMMAND",
+          "FW-MCP-SAMPLING"
+        ],
+        "gap": "The firewall's core job: every tool call the hooks see is classified and gated by effect, with approval required for send, destructive, persistence, privilege, agent-settings and code-execution classes, and denial for the worst. Remaining gap: shell analysis is static, so code it cannot see into is judged strictly but not understood, and programs the agent starts act unseen; it limits autonomy per action but does not reduce the permissions the agent's tools hold; and only agents with hook support are covered (Claude Code first).",
+        "mitigation": "Give the agent least-privilege credentials; use a sandbox for process, file-system and network isolation."
+      },
+      {
+        "id": "LLM07:2025",
+        "name": "System Prompt Leakage",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Out of scope: the firewall governs actions, not what the model says about its own prompt. (Credential-shaped content leaving the machine is covered under LLM02.)",
+        "mitigation": "Do not put secrets in system prompts; treat the system prompt as public."
+      },
+      {
+        "id": "LLM08:2025",
+        "name": "Vector and Embedding Weaknesses",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Out of scope: no vector store or embedding pipeline is in the firewall's path.",
+        "mitigation": "Access control and tenant isolation in the vector store; validate documents before embedding."
+      },
+      {
+        "id": "LLM09:2025",
+        "name": "Misinformation",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Out of scope: the firewall cannot judge whether the model's claims or generated code are correct.",
+        "mitigation": "Tests, code review, and grounding the model in trusted sources."
+      },
+      {
+        "id": "LLM10:2025",
+        "name": "Unbounded Consumption",
+        "status": "partly",
+        "rules": [
+          "FW-INPUT-SHAPE",
+          "FW-RATE-LIMITED",
+          "FW-BUDGET-BYTES",
+          "FW-BUDGET-REQUESTS",
+          "FW-BUDGET-MCP",
+          "FW-LOOP",
+          "FW-STOPPED",
+          "FW-CAP",
+          "FW-CAP-WARN"
+        ],
+        "gap": "Per-session budgets make volume visible: outbound bytes per host and in total, requests per host and calls per MCP server in 10 minutes, and loop detection (the same action 8 times with no write in between, or 25 non-allowed verdicts in 10 minutes) turn the next action into an approval. Spending limits (FW-CAP) stop the agent at a cap per session and per day on tool calls, data sent and identical failures, and on model tokens and cost an agent reports through the local API or the library. Remaining gap: coding agents' hooks report no model usage, so their token and cost caps do not apply.",
+        "mitigation": "Provider-side spend limits and rate limits; agent turn and budget limits in the agent's own settings."
+      }
+    ],
+    "owaspAgentic2026": [
+      {
+        "id": "ASI01",
+        "name": "Agent Goal Hijack",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-FETCH",
+          "FW-NEW-HOST",
+          "FW-HIDDEN-TEXT",
+          "FW-SCOPE",
+          "FW-CANARY-READ",
+          "FW-CANARY-EGRESS",
+          "FW-OUTSIDE-COMMAND",
+          "FW-HIDDEN-OUTPUT",
+          "FW-MCP-WITHHELD",
+          "FW-MCP-SAMPLING",
+          "FW-MAIL-WITHHELD"
+        ],
+        "gap": "Same gap as LLM01: the hijack itself is not prevented; the damaging actions it depends on (exfiltration, destructive, persistence, instruction rewrite) are gated. A hijack that stays inside permitted actions is not stopped.",
+        "mitigation": "Sandbox; managed settings; human review of the agent's output."
+      },
+      {
+        "id": "ASI02",
+        "name": "Tool Misuse",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-FETCH",
+          "FW-FETCH-DATA",
+          "FW-NEW-HOST",
+          "FW-CAPTURE-HOST",
+          "FW-DNS-EXFIL",
+          "FW-RAW-IP",
+          "FW-OUTSIDE-WRITE",
+          "FW-DESTRUCTIVE",
+          "FW-CATASTROPHIC",
+          "FW-DESTROY-ROOT",
+          "FW-SYMLINK",
+          "FW-AGENT-BYPASS",
+          "FW-UNKNOWN-TOOL",
+          "FW-NET-REFUSED",
+          "FW-BLOCKED-TOOL",
+          "FW-LEARNED-DENY",
+          "FW-SCOPE",
+          "FW-MCP-METHOD"
+        ],
+        "gap": "MCP tools are classified by their name and arguments (a verb in the tool name decides read, send or destroy) plus the effects of paths, URLs, SQL and shell commands; a tool whose name misdescribes it can be misclassified. A legitimate tool bent to a harmful use is still gated: sends, fetches, destructive commands, writes outside the project, unknown tools. Remaining gap: misuse within an allowed envelope (an allowed host, an in-project edit), and shell effects the static analysis does not model (see docs/limitations.md).",
+        "mitigation": "Narrow allow-lists; sandbox; scoped credentials."
+      },
+      {
+        "id": "ASI03",
+        "name": "Identity and Privilege Abuse",
+        "status": "partly",
+        "rules": [
+          "FW-DLP-CREDENTIAL",
+          "FW-DLP-SEEN-SECRET",
+          "FW-DLP-PERSONAL",
+          "FW-CREDENTIAL-READ",
+          "FW-SECRET-FLOW",
+          "FW-SECRET-VARIABLE",
+          "FW-METADATA",
+          "FW-CREDENTIAL-FLOW",
+          "FW-SECRET-FILE-PUBLISH",
+          "FW-PRIVILEGE",
+          "FW-VAULT-EGRESS",
+          "FW-VAULT-UNBOUND",
+          "FW-VAULT-INDEX",
+          "FW-VAULT-UNSUPPORTED",
+          "FW-VAULT-OPTION",
+          "FW-VAULT-APPROVE",
+          "FW-MCP-AUTH"
+        ],
+        "gap": "Gates credential-store reads, credentials sent to a service that did not issue them, metadata endpoints and elevated privileges. There is no agent identity, per-agent credential or token-scope management in the firewall.",
+        "mitigation": "Per-agent scoped, short-lived credentials; secret manager; sandbox that does not mount credential stores."
+      },
+      {
+        "id": "ASI04",
+        "name": "Agentic Supply Chain Vulnerabilities",
+        "status": "partly",
+        "rules": [
+          "FW-AGENT-SETTINGS",
+          "FW-INSTALL",
+          "FW-MCP-CHANGED",
+          "FW-MALICIOUS-PACKAGE",
+          "FW-TYPOSQUAT",
+          "FW-MCP-TOOL-HELD"
+        ],
+        "gap": "Once the person has downloaded the malicious-package snapshot with update (none ships), denies by default installs of versions listed as malicious (packageIntel.malicious can make it ask or turn it off), and asks before a look-alike of a popular package (FW-MALICIOUS-PACKAGE, FW-TYPOSQUAT), gates changes to agent and MCP configuration and installs after outside content, and pins each MCP server: a changed launch command, a tool added after the grace window or a changed description it sees makes the session untrusted (FW-MCP-CHANGED). A hook never sees a server's full tool list, so description pinning covers only what Claude Code shows through ToolSearch. Plugins, unlisted malicious packages and a snapshot the person has not downloaded or refreshed are not vetted.",
+        "mitigation": "Allow-list MCP servers and plugins with managed settings; pin versions; use a package-reputation scanner."
+      },
+      {
+        "id": "ASI05",
+        "name": "Unexpected Code Execution",
+        "status": "partly",
+        "rules": [
+          "FW-AGENT-SETTINGS",
+          "FW-PERSISTENCE",
+          "FW-REMOTE-CODE",
+          "FW-OBFUSCATED",
+          "FW-UNTRUSTED-CODE",
+          "FW-TAINTED-MANIFEST",
+          "FW-INSTALL",
+          "FW-OPAQUE-CODE",
+          "FW-UNCLASSIFIABLE",
+          "FW-AUTORUN",
+          "FW-PERSISTENCE-HELD",
+          "FW-OUTSIDE-COMMAND"
+        ],
+        "gap": "Gates download-and-run, code from outside the project, obfuscated and opaque code, installs and build files changed after outside content. Shell analysis is static: code the firewall cannot see into is sent to a person (or denied), not understood.",
+        "mitigation": "Sandbox or container for execution; managed settings."
+      },
+      {
+        "id": "ASI06",
+        "name": "Memory and Context Poisoning",
+        "status": "partly",
+        "rules": [
+          "FW-INSTRUCTIONS-HELD",
+          "FW-INSTRUCTIONS",
+          "FW-MCP-CHANGED",
+          "FW-MCP-TOOL-HELD",
+          "FW-MCP-WITHHELD"
+        ],
+        "gap": "Covers the agent's file-based instructions and memory (CLAUDE.md, AGENTS.md, memory, rules) and agent settings: after outside content, writes are held as proposals. Does not cover vector or database memory, or memory managed by a third-party MCP server.",
+        "mitigation": "Review instruction-file changes; scope and expire memory in the memory system itself."
+      },
+      {
+        "id": "ASI07",
+        "name": "Insecure Inter-Agent Communication",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Not covered: the firewall has no authentication or integrity check on messages between agents. (Starting another coding agent after outside content needs a person; that is mapped under ASI10, FW-AGENT-SPAWN.)",
+        "mitigation": "Authenticated agent-to-agent channels in the multi-agent framework; do not let agents act on each other's output unchecked."
+      },
+      {
+        "id": "ASI08",
+        "name": "Cascading Failures",
+        "status": "partly",
+        "rules": [
+          "FW-RATE-LIMITED",
+          "FW-BUDGET-MCP",
+          "FW-LOOP",
+          "FW-STOPPED",
+          "FW-CAP-WARN"
+        ],
+        "gap": "Loop detection and MCP-call budgets catch retry storms and one-message-per-contact fan-out inside one session; unattended, the run is held with a notification. The behaviour monitor stops a session that crosses its limits (non-allowed verdicts, new hosts, configuration changes, repeated identical failures) and a person can stop a session or every session of an agent (FW-STOPPED). Remaining gap: no model of failures propagating across agents or systems beyond what one machine's firewall sees.",
+        "mitigation": "Circuit breakers, rate limits and blast-radius limits in the orchestration layer."
+      },
+      {
+        "id": "ASI09",
+        "name": "Human-Agent Trust Exploitation",
+        "status": "not covered",
+        "rules": [],
+        "gap": "The firewall's approvals are written in plain words from the action itself, not from the agent's explanation, which helps, but nothing stops a person approving a harmful action out of trust.",
+        "mitigation": "User training; keep approval requests rare and specific; require a second reviewer for sensitive actions."
+      },
+      {
+        "id": "ASI10",
+        "name": "Rogue Agents",
+        "status": "partly",
+        "rules": [
+          "FW-AGENT-BYPASS",
+          "FW-AGENT-SPAWN",
+          "FW-TAMPER",
+          "FW-LOG-UNRECORDED",
+          "FW-UNAVAILABLE",
+          "FW-API-ERROR",
+          "FW-LOOP",
+          "FW-STOPPED"
+        ],
+        "gap": "Denies tampering with the firewall and hooks, and starting another agent with its safety switched off; spawning needs a person. A kill switch (session stop, agent stop) and a deterministic behaviour monitor (counters per session: non-allowed verdicts, new hosts, configuration changes, repeated identical failures) stop a session until a person resumes it with the approval passphrase. Remaining gap: the monitor counts behaviour, it does not judge intent: an agent that drifts slowly, below every limit and within allowed actions, is not stopped; and an agent the firewall does not see (no hook, no gateway, no API) cannot be stopped by it.",
+        "mitigation": "Managed settings make the hook unremovable; sandbox; monitoring and revocation at the platform level."
+      }
+    ],
+    "mitreAtlas": [
+      {
+        "id": "AML.T0051",
+        "name": "LLM Prompt Injection",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-HIDDEN-TEXT",
+          "FW-OUTSIDE-COMMAND",
+          "FW-HIDDEN-OUTPUT",
+          "FW-MCP-WITHHELD",
+          "FW-MCP-SAMPLING",
+          "FW-MAIL-WITHHELD"
+        ],
+        "gap": "As LLM01: consequences gated, injection not prevented (includes AML.T0051.001 Indirect).",
+        "mitigation": "Sandbox; managed settings."
+      },
+      {
+        "id": "AML.T0053",
+        "name": "AI Agent Tool Invocation",
+        "status": "partly",
+        "rules": [
+          "FW-REMOTE-CODE",
+          "FW-OBFUSCATED",
+          "FW-UNTRUSTED-CODE",
+          "FW-TAINTED-MANIFEST",
+          "FW-OPAQUE-CODE",
+          "FW-UNCLASSIFIABLE",
+          "FW-AGENT-BYPASS",
+          "FW-AGENT-SPAWN",
+          "FW-UNKNOWN-TOOL",
+          "FW-BLOCKED-TOOL",
+          "FW-OUTSIDE-COMMAND"
+        ],
+        "gap": "Tool invocations are gated by effect after outside content. Invocations that are within policy are allowed.",
+        "mitigation": "Least-privilege tool configuration; sandbox."
+      },
+      {
+        "id": "AML.T0057",
+        "name": "LLM Data Leakage",
+        "status": "partly",
+        "rules": [
+          "FW-SEND-ARGS",
+          "FW-FETCH-DATA",
+          "FW-DLP-CREDENTIAL",
+          "FW-DLP-SEEN-SECRET",
+          "FW-DLP-PERSONAL",
+          "FW-CANARY-EGRESS",
+          "FW-VAULT-EGRESS",
+          "FW-VAULT-UNBOUND",
+          "FW-VAULT-INDEX",
+          "FW-VAULT-UNSUPPORTED",
+          "FW-VAULT-OPTION"
+        ],
+        "gap": "Covers leakage through agent actions; not leakage through the model's replies.",
+        "mitigation": "Keep secrets out of the context; output filtering."
+      },
+      {
+        "id": "AML.T0086",
+        "name": "Exfiltration via AI Agent Tool Invocation",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-FETCH",
+          "FW-NEW-HOST",
+          "FW-CANARY-EGRESS"
+        ],
+        "gap": "Sends, fetches, messages, MCP writes and SQL write-backs the firewall can see after outside content need a person; recognised credentials and previously seen secrets are denied from leaving. Gap: an allowed or named host, an approved action, the contents of files a command uploads (not scanned), and programs the hooks cannot see.",
+        "mitigation": "Egress allow-list at the network layer; sandbox."
+      },
+      {
+        "id": "AML.T0025",
+        "name": "Exfiltration via Cyber Means",
+        "status": "partly",
+        "rules": [
+          "FW-FETCH",
+          "FW-FETCH-DATA",
+          "FW-NEW-HOST",
+          "FW-DLP-SEEN-SECRET",
+          "FW-SECRET-FLOW",
+          "FW-CREDENTIAL-FLOW",
+          "FW-SECRET-FILE-PUBLISH",
+          "FW-CAPTURE-HOST",
+          "FW-DNS-EXFIL",
+          "FW-RAW-IP",
+          "FW-VAULT-EGRESS"
+        ],
+        "gap": "Covers the agent's own network actions, DNS-label encoding, capture hosts and bare IPs. Does not see traffic from processes the agent starts and then leaves running.",
+        "mitigation": "Network egress controls; sandbox."
+      },
+      {
+        "id": "AML.T0055",
+        "name": "Unsecured Credentials",
+        "status": "partly",
+        "rules": [
+          "FW-CREDENTIAL-READ",
+          "FW-SECRET-FLOW",
+          "FW-SECRET-VARIABLE",
+          "FW-METADATA",
+          "FW-CREDENTIAL-FLOW",
+          "FW-SECRET-FILE-PUBLISH"
+        ],
+        "gap": "Gates agent reads of credential stores and secret files and the use of secret environment variables. Does not remove credentials that sit unprotected on disk.",
+        "mitigation": "Secret manager; remove long-lived credentials from developer machines."
+      },
+      {
+        "id": "AML.T0083",
+        "name": "Credentials from AI Agent Configuration",
+        "status": "partly",
+        "rules": [
+          "FW-CREDENTIAL-READ"
+        ],
+        "gap": "Credential-store patterns include the agent's own credentials file (for example ~/.claude/.credentials.json); other agent configuration that embeds tokens depends on the secret patterns.",
+        "mitigation": "Keep tokens out of agent configuration files; use environment-scoped secrets."
+      },
+      {
+        "id": "AML.T0098",
+        "name": "AI Agent Tool Credential Harvesting",
+        "status": "partly",
+        "rules": [
+          "FW-DLP-CREDENTIAL",
+          "FW-CREDENTIAL-READ"
+        ],
+        "gap": "Reads of credential stores and secret flows are gated. Tokens a tool legitimately holds in its own process are out of reach.",
+        "mitigation": "Scoped, short-lived tool credentials."
+      },
+      {
+        "id": "AML.T0080",
+        "name": "AI Agent Context Poisoning",
+        "status": "partly",
+        "rules": [
+          "FW-INSTRUCTIONS-HELD",
+          "FW-INSTRUCTIONS",
+          "FW-MCP-CHANGED"
+        ],
+        "gap": "Includes AML.T0080.000 Memory. File-based instructions and memory are held after outside content; other memory stores are not covered.",
+        "mitigation": "Review instruction-file changes; memory hygiene in the memory system."
+      },
+      {
+        "id": "AML.T0081",
+        "name": "Modify AI Agent Configuration",
+        "status": "partly",
+        "rules": [
+          "FW-INSTRUCTIONS-HELD",
+          "FW-INSTRUCTIONS",
+          "FW-AGENT-SETTINGS",
+          "FW-TAMPER"
+        ],
+        "gap": "Changes to .mcp.json, agent settings and hook registration through actions the firewall can see need a person even when trusted; tampering with the firewall is denied. A write from code the shell analysis cannot see into (a script, inline code that builds the path) is not recognised as such; Claude Code's ConfigChange event and managed settings are the backstop.",
+        "mitigation": "Managed settings make the registration unremovable."
+      },
+      {
+        "id": "AML.T0101",
+        "name": "Data Destruction via AI Agent Tool Invocation",
+        "status": "partly",
+        "rules": [
+          "FW-DESTRUCTIVE",
+          "FW-CATASTROPHIC",
+          "FW-DESTROY-ROOT"
+        ],
+        "gap": "Destructive commands, cloud deletions and destructive SQL the firewall recognises need a person; wiping root or home is denied. Destruction from a fixed list of commands, not every way to do it: a script or program that deletes is judged as running code, not as a deletion.",
+        "mitigation": "Backups; scoped credentials; sandbox."
+      },
+      {
+        "id": "AML.T0104",
+        "name": "Publish Poisoned AI Agent Tool",
+        "status": "partly",
+        "rules": [
+          "FW-MCP-CHANGED"
+        ],
+        "gap": "A resource-development technique performed by an attacker on a registry. The firewall cannot see publication; it notices only a pinned MCP server whose launch command or tool descriptions change (FW-MCP-CHANGED).",
+        "mitigation": "Allow-list MCP servers and plugins; review sources before installing."
+      },
+      {
+        "id": "AML.T0109",
+        "name": "AI Supply Chain Rug Pull",
+        "status": "partly",
+        "rules": [
+          "FW-AGENT-SETTINGS",
+          "FW-MCP-CHANGED",
+          "FW-MCP-TOOL-HELD"
+        ],
+        "gap": "Swapping an approved MCP configuration is gated (the CVE-2025-54136 pattern), and a pinned server whose launch command, tool names or observed tool descriptions change makes the session untrusted (FW-MCP-CHANGED). Tools a server reveals only to the model, never through ToolSearch, are not seen.",
+        "mitigation": "Pin server versions; allow-list servers; managed settings."
+      },
+      {
+        "id": "AML.T0110",
+        "name": "AI Agent Tool Poisoning",
+        "status": "partly",
+        "rules": [
+          "FW-MCP-CHANGED",
+          "FW-MCP-TOOL-HELD"
+        ],
+        "gap": "A pinned server whose tool description changes, or a tool added later, is held or makes the session untrusted (FW-MCP-CHANGED, FW-MCP-TOOL-HELD). A poisoned description present from the start is not detected as such; the firewall constrains the resulting actions.",
+        "mitigation": "Review tool descriptions; allow-list servers."
+      },
+      {
+        "id": "AML.T0010",
+        "name": "AI Supply Chain Compromise",
+        "status": "partly",
+        "rules": [
+          "FW-INSTALL",
+          "FW-MALICIOUS-PACKAGE",
+          "FW-TYPOSQUAT"
+        ],
+        "gap": "Package installs after outside content need a person; versions listed in the local OSV malicious-package snapshot are denied by default, lockfile installs included, and typosquats ask. The snapshot is downloaded by the person with update (none ships), and packageIntel.malicious can make a listed version ask or turn the check off. A compromise not yet listed, listed after the last update, or checked before the snapshot was downloaded is not caught.",
+        "mitigation": "Run launchsafe-firewall update regularly; release-age cooldowns (doctor --fix); pin and lock dependencies."
+      },
+      {
+        "id": "AML.T0068",
+        "name": "LLM Prompt Obfuscation",
+        "status": "partly",
+        "rules": [
+          "FW-HIDDEN-TEXT",
+          "FW-HIDDEN-OUTPUT"
+        ],
+        "gap": "Invisible and hidden text in tool inputs is denied; obfuscation inside content the agent reads is not detected.",
+        "mitigation": "Normalise untrusted input before it reaches the model."
+      },
+      {
+        "id": "AML.T0093",
+        "name": "Prompt Infiltration via Public-Facing Application",
+        "status": "not covered",
+        "rules": [],
+        "gap": "The entry vector: the firewall assumes the attacker can place text where the agent reads it (see the threat model) and gates the consequences.",
+        "mitigation": "Limit what untrusted sources the agent reads; use a separate low-privilege agent for untrusted content."
+      },
+      {
+        "id": "AML.T0054",
+        "name": "LLM Jailbreak",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Model-level behaviour; out of scope.",
+        "mitigation": "Model and provider guardrails."
+      },
+      {
+        "id": "AML.T0056",
+        "name": "Extract LLM System Prompt",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Out of scope (see LLM07).",
+        "mitigation": "Treat the system prompt as public."
+      },
+      {
+        "id": "AML.T0034",
+        "name": "Cost Harvesting",
+        "status": "partly",
+        "rules": [
+          "FW-CAP",
+          "FW-CAP-WARN"
+        ],
+        "gap": "Includes AML.T0034.002 Agentic Resource Consumption. Spending limits (FW-CAP) stop an agent at a cap on tool calls, data sent and identical failures per session and per day, and on model tokens and cost when the agent reports them through the local API or the library. Coding agents' hooks report no model usage, so their model spend is not capped, and reported cost is the agent's own figure.",
+        "mitigation": "Provider spend limits."
+      }
+    ],
+    "mcpSpec": [
+      {
+        "id": "MCP-TOOLS-HITL",
+        "name": "Tools: a human in the loop with the ability to deny tool invocations (server/tools, User Interaction Model, SHOULD)",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS",
+          "FW-FETCH",
+          "FW-FETCH-DATA",
+          "FW-NEW-HOST",
+          "FW-REMOTE-CODE",
+          "FW-OBFUSCATED",
+          "FW-UNTRUSTED-CODE",
+          "FW-TAINTED-MANIFEST",
+          "FW-OPAQUE-CODE",
+          "FW-UNCLASSIFIABLE",
+          "FW-UNKNOWN-TOOL",
+          "FW-BLOCKED-TOOL",
+          "FW-LEARNED-DENY",
+          "FW-SCOPE",
+          "FW-VAULT-APPROVE",
+          "FW-OUTSIDE-COMMAND"
+        ],
+        "gap": "Risky tool calls are held for a person who can approve or reject (ask, or a queue when no one is there); the rest are allowed. Applies only to agents that run the hook.",
+        "mitigation": "Managed settings so the hook cannot be removed."
+      },
+      {
+        "id": "MCP-TOOLS-CONFIRM",
+        "name": "Tools: clients SHOULD prompt for confirmation on sensitive operations and show tool inputs before calling (server/tools, Security Considerations)",
+        "status": "partly",
+        "rules": [
+          "FW-SEND",
+          "FW-MESSAGE",
+          "FW-SEND-ARGS"
+        ],
+        "gap": "Prompts appear for the sensitive classes, in plain words and with the exact action. Calls the policy allows are not shown to the user first.",
+        "mitigation": "Agent-side permission prompts for everything else."
+      },
+      {
+        "id": "MCP-ANNOTATIONS-UNTRUSTED",
+        "name": "Tools: clients MUST consider tool annotations untrusted unless from trusted servers (server/tools, Tool)",
+        "status": "partly",
+        "rules": [
+          "FW-MCP-CHANGED",
+          "FW-MCP-TOOL-HELD"
+        ],
+        "gap": "Annotations are never trusted: the gateway reads descriptions and annotations only to pin them and hide a changed or new tool, and a server's trust comes from its source in config, not from its claims. But the hooks classify an MCP tool by its name and arguments (a verb in the tool name decides read, send or destroy) plus the effects of what it touches, so a tool whose name misdescribes it can be misclassified.",
+        "mitigation": "List a server's read, send and destructive tools by name in your policy (mcpServers.<server>); allow-list servers with managed settings."
+      },
+      {
+        "id": "MCP-TOOLS-RESULTS",
+        "name": "Tools: clients SHOULD validate tool results before passing them to the LLM (server/tools, Security Considerations)",
+        "status": "partly",
+        "rules": [
+          "FW-HIDDEN-OUTPUT",
+          "FW-MCP-WITHHELD"
+        ],
+        "gap": "Through the MCP gateway, every result is scanned: hidden text aimed at the agent is withheld into quarantine (FW-MCP-WITHHELD), other hidden text is stripped, and visible agent-directed text is annotated. The scan is pattern-based (not paraphrased or semantic injections, not text in images). Without the gateway, results are recorded as outside content, which taints the session and tightens later actions.",
+        "mitigation": "Wrap MCP servers with launchsafe-firewall mcp wrap-config; the taint rule stays the primary control."
+      },
+      {
+        "id": "MCP-LIST-CHANGED",
+        "name": "Tools: notifications/tools/list_changed (rug pull); server/tools, List Changed Notification",
+        "status": "partly",
+        "rules": [
+          "FW-MCP-CHANGED",
+          "FW-MCP-TOOL-HELD"
+        ],
+        "gap": "A pinned server that exposes a new tool after the grace window makes the session untrusted until you accept it (FW-MCP-CHANGED). The hook does not receive list_changed notifications; it sees new tools when they are called or shown through ToolSearch. Through the MCP gateway every tools/list is pinned, and a changed or new tool is hidden until reviewed (FW-MCP-TOOL-HELD).",
+        "mitigation": "Pin versions; managed-settings allow-list of servers."
+      },
+      {
+        "id": "MCP-LOCAL-SERVER",
+        "name": "Security best practices: Local MCP Server Compromise (consent before executing startup commands, sandboxing)",
+        "status": "partly",
+        "rules": [
+          "FW-AGENT-SETTINGS",
+          "FW-MCP-CHANGED"
+        ],
+        "gap": "Writing a config that launches a server needs a person. The firewall does not sandbox the server or highlight dangerous patterns inside its startup command beyond the normal shell analysis.",
+        "mitigation": "Run servers in a sandbox or container with minimal file-system and network access."
+      },
+      {
+        "id": "MCP-SSRF",
+        "name": "Security best practices: Server-Side Request Forgery (private ranges, metadata endpoints, redirects)",
+        "status": "partly",
+        "rules": [
+          "FW-METADATA",
+          "FW-RAW-IP"
+        ],
+        "gap": "The agent's own requests to metadata endpoints and bare IPs are denied. The MCP client's OAuth-discovery fetches are not routed through the hook.",
+        "mitigation": "Egress proxy for MCP clients; block private ranges at the network layer."
+      },
+      {
+        "id": "MCP-TOKEN-PASSTHROUGH",
+        "name": "Security best practices: Token Passthrough (servers MUST NOT accept tokens not issued to them)",
+        "status": "partly",
+        "rules": [
+          "FW-DLP-CREDENTIAL",
+          "FW-DLP-SEEN-SECRET",
+          "FW-SECRET-VARIABLE",
+          "FW-VAULT-EGRESS",
+          "FW-VAULT-UNBOUND",
+          "FW-MCP-AUTH"
+        ],
+        "gap": "A server-side requirement. The firewall stops the agent carrying a credential to a destination that did not issue it, which is the client-side half; the MCP gateway never forwards a client's Authorization header and sends an upstream token only to the origin of the resource it was issued for (FW-MCP-AUTH).",
+        "mitigation": "Server operators validate token audience."
+      },
+      {
+        "id": "MCP-CONFUSED-DEPUTY",
+        "name": "Security best practices: Confused Deputy Problem (OAuth proxy servers MUST implement per-client consent)",
+        "status": "not covered",
+        "rules": [],
+        "gap": "A requirement on OAuth proxy servers; nothing in an agent hook can enforce it.",
+        "mitigation": "Use only servers that implement it; allow-list servers."
+      },
+      {
+        "id": "MCP-SESSION-HIJACKING",
+        "name": "Security best practices: Session Hijacking",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Server-side transport requirement.",
+        "mitigation": "Server operators: non-deterministic session ids, verify every request."
+      },
+      {
+        "id": "MCP-OAUTH-URL",
+        "name": "Security best practices: OAuth Authorization URL Validation",
+        "status": "not covered",
+        "rules": [],
+        "gap": "A client-implementation requirement on URL schemes and how URLs are opened.",
+        "mitigation": "Use an MCP client that validates schemes."
+      },
+      {
+        "id": "MCP-STDIO-PROXY",
+        "name": "Security best practices: stdio Transport Security in Proxy Scenarios",
+        "status": "partly",
+        "rules": [
+          "FW-MCP-METHOD"
+        ],
+        "gap": "The MCP gateway is itself a proxy: it frames stdio strictly (one bounded message per line), refuses unknown methods both ways (FW-MCP-METHOD), binds its HTTP listener to 127.0.0.1 with Origin and Host checks and a per-client bearer, and validates header-body agreement. It does not sandbox the wrapped server.",
+        "mitigation": "Run servers in a sandbox or container."
+      },
+      {
+        "id": "MCP-SCOPE",
+        "name": "Security best practices: Scope Minimization",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Token scopes are granted outside the agent's tool calls; the firewall does not inspect them.",
+        "mitigation": "Request narrow scopes; avoid omnibus tokens."
+      },
+      {
+        "id": "MCP-SERVER-DUTIES",
+        "name": "Tools: servers MUST validate inputs, apply access control, rate limit, sanitise outputs (server/tools, Security Considerations)",
+        "status": "not covered",
+        "rules": [],
+        "gap": "Server obligations; the firewall is client-side.",
+        "mitigation": "Choose servers that meet them; managed-settings allow-list."
+      }
+    ]
+  }
+}

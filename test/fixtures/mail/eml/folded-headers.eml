@@ -1,0 +1,18 @@
+Received: from mail.example.org (mail.example.org [192.0.2.25])
+	by mx.google.com with ESMTPS id x1
+	for <you@example.test>; Fri, 10 Oct 2026 09:00:00 -0700 (PDT)
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@example.org header.s=s1 header.b=AbCd;
+       spf=pass (google.com: domain of news@example.org designates 192.0.2.25 as permitted sender) smtp.mailfrom=news@example.org;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=example.org
+From: Example News
+ <news@example.org>
+To: you@example.test
+Subject: This is a long subject line that the sender folded across
+ two lines of the header block
+Date: Fri, 10 Oct 2026 09:00:00 -0700
+Content-Type: text/plain;
+ charset="utf-8";
+ format=flowed
+
+The monthly update: three releases, two talks, one new maintainer.

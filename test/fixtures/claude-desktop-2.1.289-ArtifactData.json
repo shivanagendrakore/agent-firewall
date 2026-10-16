@@ -1,0 +1,17 @@
+{
+  "_provenance": "Not seen in a recorded event: the tool name and the input fields are the tool's published schema as offered to a Claude Code desktop session on 10 Oct 2026 (R2). Reads are catalogued as outside content; writes as publishing.",
+  "session_id": "{SESSION}",
+  "cwd": "{WS}",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_use_id": "toolu_00000000000000000000000000",
+  "tool_name": "ArtifactData",
+  "tool_input": {
+    "action": "query",
+    "url": "https://claude.ai/artifact/00000000",
+    "collection": "rows",
+    "query": {
+      "limit": 100
+    }
+  }
+}

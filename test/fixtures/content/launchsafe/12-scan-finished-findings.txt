@@ -1,0 +1,10 @@
+The scan of “api.example.com” found 3 new findings: 1 critical, 2 high.
+
+Open the scan: https://app.example.com/your-org/findings?scan=example
+
+You get this because you started this scan. Sent by “Your org” in LaunchSafe.
+
+Stop emails about scans you start: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

@@ -1,0 +1,14 @@
+{
+  "session_id": "01a126a2-e858-7fe2-a84a-85eb44c0043e",
+  "turn_id": "01a126a2-e892-77d0-bb74-cc05dfe65812",
+  "transcript_path": "/home/user/.codex/sessions/2026/10/10/rollout-2026-10-10T09-26-12-01a126a2-e858-7fe2-a84a-85eb44c0043e.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "PreToolUse",
+  "model": "gpt-5.5",
+  "permission_mode": "bypassPermissions",
+  "tool_name": "view_image",
+  "tool_input": {
+    "path": "/tmp/nonexistent.png"
+  },
+  "tool_use_id": "call_3_1791649573122"
+}

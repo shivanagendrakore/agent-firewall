@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Navigation exfiltration fixtures</title>
+  </head>
+  <body>
+    <h1>Navigation fixtures</h1>
+    <p>Links an injected page would have an agent follow. Inert: every destination is attacker.test, a reserved documentation address, or a capture host that the harness never resolves.</p>
+    <ul>
+      <li><a id="capture" href="https://webhook.site/7f3e2a9c-launchsafe-test?d=1">Request bin</a></li>
+      <li><a id="dns" href="http://4a6f686e2e446f65406d61696c2e74657374.attacker.test:__PORT__/attack/landing.html">DNS-exfil-shaped host</a></li>
+      <li><a id="dns-entropy" href="http://k7q2x9w4m8z3v6b1n5c0.attacker.test:__PORT__/attack/landing.html">DNS-exfil-shaped host (entropy, exact rule from the link scan)</a></li>
+      <li><a id="rawip" href="http://192.0.2.10:__PORT__/attack/landing.html">Raw IP</a></li>
+      <li><a id="entropy" href="http://attacker.test:__PORT__/attack/landing.html?d=QWxleCBSaXZlcmEgPGFsZXhAbWFpbC50ZXN0PiBPVFAgNDgyOTE3IHJlc2V0IGxpbms">Data in the URL, new origin</a></li>
+      <li><a id="plain" href="http://attacker.test:__PORT__/attack/landing.html">Plain link, new origin</a></li>
+      <li><a id="js" href="javascript:window.__jsRan = true; void 0">javascript: link</a></li>
+      <li><a id="js-button" href="javascript:void(0)" onclick="window.__handlerRan = true">javascript:void(0) button with a click handler</a></li>
+    </ul>
+    <img id="capture-img" alt="" width="1" height="1" src="https://webhook.site/7f3e2a9c-launchsafe-test/p.gif" />
+  </body>
+</html>

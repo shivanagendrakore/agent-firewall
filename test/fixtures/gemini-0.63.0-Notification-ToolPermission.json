@@ -1,0 +1,15 @@
+{
+  "session_id": "d6927a67-cbdb-4775-b055-e7107805b0bd",
+  "transcript_path": "/home/user/.gemini/tmp/work-gemini/chats/session-2026-10-10T16-31-d6927a67.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "Notification",
+  "timestamp": "2026-10-10T16:31:11.235Z",
+  "notification_type": "ToolPermission",
+  "message": "Tool Confirm Shell Command requires execution",
+  "details": {
+    "type": "exec",
+    "title": "Confirm Shell Command",
+    "command": "touch marker_bash",
+    "rootCommand": "touch"
+  }
+}

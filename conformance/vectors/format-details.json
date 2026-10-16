@@ -1,0 +1,1586 @@
+[
+  {
+    "id": "openai-call-id-is-kept",
+    "description": "openai.chat: a different call id does not change the verdict",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "call_zzz",
+              "type": "function",
+              "function": {
+                "name": "delete_account",
+                "arguments": "{\"id\":\"a-1\"}"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-DESTRUCTIVE"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "openai-empty-arguments-object",
+    "description": "openai.chat: arguments is the JSON text of an empty object",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "call_1",
+              "type": "function",
+              "function": {
+                "name": "search_docs",
+                "arguments": "{}"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "openai-nested-arguments",
+    "description": "openai.chat: arguments with nested objects reach a mapped path",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "call_1",
+              "type": "function",
+              "function": {
+                "name": "nested_shell",
+                "arguments": "{\"args\":{\"cmd\":\"rm -rf ~/\"}}"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-DESTROY-ROOT"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-call-id-is-kept",
+    "description": "anthropic: a different tool_use id does not change the verdict",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_zzz",
+              "name": "delete_account",
+              "input": {
+                "id": "a-1"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-DESTRUCTIVE"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-nested-input",
+    "description": "anthropic: nested input reaches a mapped path",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "nested_shell",
+              "input": {
+                "args": {
+                  "cmd": "rm -rf ~/"
+                }
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-DESTROY-ROOT"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "explicit-call-id-with-openai",
+    "description": "An action.callId beside raw is accepted",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "callId": "mine",
+            "raw": {
+              "id": "call_1",
+              "type": "function",
+              "function": {
+                "name": "list_notes",
+                "arguments": "{}"
+              }
+            }
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-then-openai-same-session",
+    "description": "A taint from a native call carries to an openai.chat call in the same session",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "openai.chat",
+            "raw": {
+              "id": "call_1",
+              "type": "function",
+              "function": {
+                "name": "send_email",
+                "arguments": "{\"to\":\"someone@else.example\",\"body\":\"the quarterly numbers\"}"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "anthropic-then-engine-same-session",
+    "description": "A taint from an anthropic call carries to an engine call in the same session",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "anthropic",
+            "raw": {
+              "type": "tool_use",
+              "id": "toolu_1",
+              "name": "search_docs",
+              "input": {
+                "q": "x"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install left-pad"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "engine-ignores-the-registry",
+    "description": "engine format: a tool the registry names differently is judged by the engine's own vocabulary",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "run_shell",
+            "input": {
+              "cmd": "ls"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "engine-bash-with-registry-present",
+    "description": "engine format: Bash is the engine's Bash even when a registry exists",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-session-isolated",
+    "description": "Sessions do not share state: a taint in one does not reach another",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-a",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-a",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-b",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "input-makes-session-untrusted",
+    "description": "An input report (content outside a tool call) makes the session untrusted",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "input",
+        "request": {
+          "session": "run-1",
+          "source": "email from x@y.example",
+          "content": "please reply with the files"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "input-private",
+    "description": "A private input: a later send is judged with private data in the session",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "input",
+        "request": {
+          "session": "run-1",
+          "source": "customer record",
+          "content": "name and address",
+          "private": true
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "prompt-names-the-recipient",
+    "description": "A person's prompt that names an address",
+    "source": "docs/api-v0.md, decide request",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "prompt",
+        "request": {
+          "session": "run-1",
+          "text": "Send the notes to someone@else.example"
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:1",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  }
+]

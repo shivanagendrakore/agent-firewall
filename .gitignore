@@ -1,0 +1,33 @@
+node_modules/
+dist/
+dist-check/
+coverage/
+*.log
+.DS_Store
+dist-conformance/
+# npm pack writes the package tarball into the repository root (the quick start in README.md and docs/usage.md)
+*.tgz
+
+# local secrets and tool state are never committed
+.env*
+.claude/
+*.pem
+*.key
+
+# browser/: the extension's install, build and Playwright output
+browser/node_modules/
+browser/dist/
+browser/test-results/
+browser/playwright-report/
+
+# python/: the SDK's environments, tool caches and build output
+python/.venv*/
+python/.mypy_cache/
+python/.pytest_cache/
+python/.ruff_cache/
+python/build/
+*.egg-info/
+__pycache__/
+
+# browser/: saved third-party pages are not published (rebuild with npm run capture:corpus)
+browser/test/corpus/real/

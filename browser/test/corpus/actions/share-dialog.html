@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Docs: share</title>
+  </head>
+  <body>
+    <h1>Quarterly plan</h1>
+    <p>Fixture: a document sharing dialog (a look-alike of the Drive and OneDrive share dialogs) that sends access with an API call.</p>
+    <div role="dialog" aria-label="Share Quarterly plan">
+      <input type="email" name="people" aria-label="Add people, groups, spaces and calendar events" value="outsider@attacker.test" />
+      <textarea name="message" aria-label="Message">Here is the plan.</textarea>
+      <button id="send" type="button">Send</button>
+    </div>
+    <script>
+      document.getElementById("send").addEventListener("click", () => fetch("/actions/share/send", { method: "POST", body: document.querySelector('[name="people"]').value }));
+    </script>
+  </body>
+</html>

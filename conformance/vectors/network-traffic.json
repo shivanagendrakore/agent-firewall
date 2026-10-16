@@ -1,0 +1,932 @@
+[
+  {
+    "id": "network-get-trusted",
+    "description": "A middleware's GET of a documentation page in a trusted session",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-response-taints",
+    "description": "A middleware's GET, then an install by the agent: the response was outside content",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install lodash"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-post-after-taint",
+    "description": "A middleware's POST with a body after the agent read outside content",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "POST",
+              "url": "https://upload.example.net/in",
+              "body": "report=1"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-post-after-taint-unattended",
+    "description": "A middleware's POST with a body after outside content, with no person there",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://blog.example.org/post",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(outside content placeholder)"
+        },
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "POST",
+              "url": "https://upload.example.net/in",
+              "body": "report=1"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "hold",
+          "ruleIds": [
+            "FW-SEND"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-metadata",
+    "description": "A middleware's request to the cloud metadata service",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-METADATA"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-unparseable-wrapper",
+    "description": "A middleware's request whose body it could not read",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:unparseable",
+            "input": {
+              "tool": "HttpRequest",
+              "reason": "the body is compressed with an unknown encoding"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-UNCLASSIFIABLE",
+            "FW-UNKNOWN-TOOL"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-refused",
+    "description": "A middleware's record of a request to this machine it refused",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:network-refused",
+            "input": {
+              "method": "GET",
+              "url": "http://127.0.0.1:8080/admin",
+              "code": "loopback",
+              "reason": "the target is this machine"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-NET-REFUSED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-refused-unattended",
+    "description": "A middleware's record of a refused request, with no person there",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:network-refused",
+            "input": {
+              "method": "GET",
+              "url": "http://127.0.0.1:8080/admin",
+              "code": "loopback",
+              "reason": "the target is this machine"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-NET-REFUSED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-refused-host-header",
+    "description": "A middleware's record of a request whose Host header named another target",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:network-refused",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/",
+              "code": "host-mismatch",
+              "reason": "the Host header names another target"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-NET-REFUSED"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-agent-token",
+    "description": "Network traffic sent with the agent's ordinary token",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-refused-agent-token",
+    "description": "A refused-request record sent with the agent's ordinary token",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:network-refused",
+            "input": {
+              "method": "GET",
+              "url": "http://127.0.0.1:8080/admin",
+              "code": "loopback",
+              "reason": "the target is this machine"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-refused-not-network",
+    "description": "A refused-request record sent with the network token but not as network traffic",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:network-refused",
+            "input": {
+              "method": "GET",
+              "url": "http://127.0.0.1:8080/admin",
+              "code": "loopback",
+              "reason": "the target is this machine"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-refused-agent-plain",
+    "description": "A refused-request record sent by the agent as an ordinary tool call",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:network-refused",
+            "input": {
+              "method": "GET",
+              "url": "http://127.0.0.1:8080/admin",
+              "code": "loopback",
+              "reason": "the target is this machine"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-tool-bash",
+    "description": "Network traffic whose tool is Bash",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "curl https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-tool-webfetch",
+    "description": "Network traffic whose tool is WebFetch",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "WebFetch",
+            "input": {
+              "url": "https://docs.example.org/guide",
+              "prompt": "read"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-unparseable-other-tool",
+    "description": "Network traffic wrapping an unreadable call of another tool",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "launchsafe:unparseable",
+            "input": {
+              "tool": "Bash",
+              "reason": "x"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-format-native",
+    "description": "Network traffic in the native format",
+    "source": "docs/api-v0.md, context.traffic",
+    "agentTools": {
+      "tools": {
+        "http_get": {
+          "as": "HttpRequest",
+          "map": {
+            "url": "$.url"
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "native",
+            "tool": "http_get",
+            "input": {
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-400-format-mcp",
+    "description": "Network traffic in the mcp format",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "mcp",
+            "tool": "fetch",
+            "input": {
+              "url": "https://docs.example.org/guide"
+            },
+            "mcp": {
+              "server": "web",
+              "source": "user"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "error": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-token-tool-call",
+    "description": "An ordinary tool call sent with the network token",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "network-token-result",
+    "description": "A middleware's GET and its response recorded with the network token",
+    "source": "docs/api-v0.md, context.traffic; src/api/request.ts",
+    "agentTools": {
+      "tools": {}
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "(page)"
+        },
+        "token": "network",
+        "expect": {
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm install lodash"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "/srv/app"
+            ],
+            "cwd": "/srv/app"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-INSTALL"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  }
+]

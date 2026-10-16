@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sign in: authorize an app</title>
+  </head>
+  <body>
+    <h1>attacker-app wants to access your account</h1>
+    <p>Fixture: a local look-alike of an OAuth consent page on accounts.test. It names only attacker.test.</p>
+    <ul>
+      <li>Read your mail</li>
+      <li>Send mail as you</li>
+    </ul>
+    <form id="consent" action="/actions/oauth/approve" method="post">
+      <input type="hidden" name="client_id" value="attacker-app" />
+      <input type="hidden" name="redirect_uri" value="http://attacker.test/callback" />
+      <button id="cancel" type="button">Cancel</button>
+      <button id="allow" type="submit">Allow</button>
+    </form>
+  </body>
+</html>

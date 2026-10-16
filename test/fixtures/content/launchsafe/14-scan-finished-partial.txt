@@ -1,0 +1,12 @@
+The scan of “api.example.com” found nothing new in what it covered.
+
+It didn’t cover everything: the time limit was reached.
+
+Open the scan: https://app.example.com/your-org/findings?scan=example
+
+You get this because you started this scan. Sent by “Your org” in LaunchSafe.
+
+Stop emails about scans you start: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

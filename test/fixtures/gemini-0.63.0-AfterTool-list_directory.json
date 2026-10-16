@@ -1,0 +1,21 @@
+{
+  "session_id": "404a4715-76f3-4457-abc3-22deda5cecbb",
+  "transcript_path": "/home/user/.gemini/tmp/work-gemini/chats/session-2026-10-10T16-27-404a4715.jsonl",
+  "cwd": "/work/project",
+  "hook_event_name": "AfterTool",
+  "timestamp": "2026-10-10T16:27:55.653Z",
+  "tool_name": "list_directory",
+  "tool_input": {
+    "dir_path": "."
+  },
+  "tool_response": {
+    "llmContent": "Directory listing for /work/project:\nadded.txt (12 bytes)\nnotes.txt (17 bytes)\n\n(1 ignored)",
+    "returnDisplay": {
+      "summary": "Found 2 item(s). (1 ignored)",
+      "files": [
+        "added.txt",
+        "notes.txt"
+      ]
+    }
+  }
+}

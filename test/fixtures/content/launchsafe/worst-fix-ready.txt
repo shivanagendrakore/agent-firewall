@@ -1,0 +1,16 @@
+The fix for “A “quoted” <title> & 'more' with-a-very-long-unbroken-word-with-a-very-long-unbroken-word-with-a-very-long-unbroken-wor…”, a critical finding in “A “quoted” <title> & 'more' with-a-very-long-unbroken-word-with-a-very-long-unbroken-word-with-a-very-long-unbroken-wor…”, is ready.
+
+Review the change, then approve it to open the pull request. Nothing is pushed until you do.
+
+Repository: your-org/rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+
+Test data: this came from the local stand-in runner, not a real scan.
+
+Review the fix: https://app.example.com/your-org/fixes/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+You get this because you asked for this fix. Sent by “<Org> & "Co" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…” in LaunchSafe.
+
+Stop emails about fixes ready for review: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

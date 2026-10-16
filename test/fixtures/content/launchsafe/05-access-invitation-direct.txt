@@ -1,0 +1,9 @@
+LaunchSafe invited you to create an account.
+
+Create your account: https://app.example.com/signup
+
+Create it with you@example.com: the invitation works for no other, and expires on Oct 26, 2026.
+
+If you weren’t expecting this, you can ignore it: nothing happens unless you sign up.
+
+LaunchSafe, Inc.

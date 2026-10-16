@@ -1,0 +1,56 @@
+name: Bug report
+description: Something the firewall does wrong that is not a security bypass.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not report a bypass here.** If the firewall allowed something it should have denied, asked or held, if it can be made to fail open, or if its log can be tampered with undetected, email security@launchsafe.com instead (see SECURITY.md).
+
+        Never paste real secrets, tokens, private file contents or your passphrase. Replace them with obviously fake values.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: The action, the decision the firewall made, and the decision you expected. For a false positive, say what normal task was interrupted.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Steps, or the recorded hook input (redacted) and the command you ran. `launchsafe-firewall explain <log seq>` output helps.
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent or part
+      options:
+        - Claude Code
+        - Codex
+        - Gemini CLI
+        - Cursor
+        - Library (TypeScript SDK)
+        - Python SDK
+        - Browser extension
+        - MCP gateway
+        - run (OS sandbox)
+        - Not agent-specific
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: "`launchsafe-firewall version`, the agent's version, Node version and OS. For the browser extension, its version and the browser's; for the Python SDK, its version and Python's."
+      placeholder: "launchsafe-firewall 0.3.0, Claude Code 2.1.289, Node 22.x, macOS 15"
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: doctor output (optional)
+      description: "`launchsafe-firewall doctor` output, with paths and anything private removed."
+      render: text

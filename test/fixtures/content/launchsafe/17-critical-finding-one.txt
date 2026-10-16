@@ -1,0 +1,13 @@
+A scan of “api.example.com” found a new critical finding.
+
+Critical: “Invoices readable across accounts”
+https://app.example.com/your-org/findings/1
+
+Open the finding: https://app.example.com/your-org/findings/1
+
+You get this because you can see this project’s findings. Sent by “Your org” in LaunchSafe.
+
+Stop emails about new critical findings: https://app.example.com/unsubscribe?token=example
+Choose your emails: https://app.example.com/your-org/settings/notifications
+
+LaunchSafe, Inc.

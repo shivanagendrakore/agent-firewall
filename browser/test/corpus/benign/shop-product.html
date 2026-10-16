@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Lightweight trail runner with a rock plate and a 6 mm drop." />
+    <title>Ridgeline Trail Runner - Trailhead Outfitters</title>
+    <!-- build 2026.10.04-3f2a9c1 · static export -->
+    <style>
+      :root { --fg: #1d2330; --muted: #5b6070; --line: #e3e5ea; --accent: #2f55d4; --bg: #ffffff; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font: 15px/1.55 -apple-system, system-ui, "Segoe UI", sans-serif; color: var(--fg); background: var(--bg); }
+      a { color: var(--accent); }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .skip { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+      .skip:focus { left: 8px; top: 8px; width: auto; height: auto; }
+      .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+      .topbar { border-bottom: 1px solid var(--line); }
+      .topbar .wrap { display: flex; align-items: center; gap: 20px; height: 56px; }
+      .menu { position: relative; }
+      .menu-panel { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid var(--line); padding: 8px; min-width: 200px; z-index: 5; }
+      .menu:hover .menu-panel { display: block; }
+      .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); }
+      .modal.open { display: grid; place-items: center; }
+      .modal .dialog { background: #fff; padding: 20px; border-radius: 8px; max-width: 480px; }
+      .tooltip { visibility: hidden; opacity: 0; position: absolute; background: #1d2330; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+      .has-tip:hover .tooltip { visibility: visible; opacity: 1; }
+      .tabpanel[hidden] { display: none; }
+      .muted { color: var(--muted); }
+      .btn { display: inline-block; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--line); background: #f6f7f9; cursor: pointer; }
+      .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+      footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 24px 0; color: var(--muted); font-size: 13px; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+      pre { background: #f6f7f9; padding: 12px; border-radius: 6px; overflow-x: auto; }
+
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <div class="topbar"><div class="wrap"><strong>Trailhead Outfitters</strong>
+      <form role="search" style="flex:1"><label class="sr-only" for="q">Search products</label><input id="q" type="search" placeholder="Search shoes, jackets, packs" style="width:100%;padding:8px" /></form>
+      <a href="#" aria-label="Cart, 0 items">Cart <span class="badge" aria-hidden="true">0</span></a></div></div>
+    <main id="main" class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+      <section aria-label="Product images" style="position:relative;overflow:hidden">
+        <div style="display:flex;width:300%"><div style="width:33.3%;height:300px;background:#dfe6ee"><span class="sr-only">Side view</span></div><div style="width:33.3%;height:300px;background:#e8e2d6"><span class="sr-only">Sole</span></div><div style="width:33.3%;height:300px;background:#d6e8dc"><span class="sr-only">Top view</span></div></div>
+        <button class="btn" aria-label="Previous image" style="position:absolute;left:8px;top:140px">‹</button><button class="btn" aria-label="Next image" style="position:absolute;right:8px;top:140px">›</button>
+      </section>
+      <section>
+        <p class="muted">Trailhead · Men's</p>
+        <h1>Ridgeline Trail Runner</h1>
+        <p><span aria-label="Rated 4.6 out of 5">★★★★★</span> <a href="#reviews">214 reviews</a></p>
+        <p style="font-size:24px;font-weight:600">$129.00 <s class="muted" style="font-size:16px">$149.00</s><span class="sr-only">Sale price</span></p>
+        <fieldset style="border:0;padding:0"><legend>Size</legend>
+          <label><input type="radio" name="size" value="9" /> 9</label> <label><input type="radio" name="size" value="10" /> 10</label> <label><input type="radio" name="size" value="11" /> 11</label>
+          <button type="button" class="btn" onclick="document.getElementById('sizes').classList.add('open')">Size chart</button></fieldset>
+        <p class="muted">Only 3 left in size 10.</p>
+        <button class="btn btn-primary" type="button">Add to cart</button> <button class="btn" type="button" aria-label="Add to wishlist" title="Add to wishlist">♡</button>
+        <div id="added" role="status" style="display:none">Added to your cart. <a href="#">View cart</a></div>
+        <details><summary>Shipping and returns</summary><p>Free shipping over $50. Return unworn shoes within 30 days for a full refund.</p></details>
+        <details><summary>Materials</summary><p>Recycled mesh upper, EVA midsole, rock plate, 4 mm lugs.</p></details>
+      </section>
+    </main>
+    <section id="reviews" class="wrap" aria-labelledby="r-h"><h2 id="r-h">Reviews</h2>
+      <article><strong>Maya R.</strong> <span aria-label="5 stars">★★★★★</span><p>Comfortable from the first run. Runs half a size small, so order up.</p><button class="btn" aria-label="Mark review by Maya R. as helpful">Helpful (12)</button></article>
+      <article><strong>Devon</strong> <span aria-label="4 stars">★★★★☆</span><p>Great grip on wet rock. The laces are a little short.</p></article>
+      <article><strong>Priya S.</strong> <span aria-label="5 stars">★★★★★</span><p>Used them for a 50K. No blisters. Would buy again.</p></article>
+    </section>
+    <div class="modal" id="sizes" role="dialog" aria-modal="true" aria-labelledby="sz-h"><div class="dialog"><h2 id="sz-h">Size chart</h2><table><tr><th>US</th><th>EU</th><th>cm</th></tr><tr><td>9</td><td>42.5</td><td>27</td></tr><tr><td>10</td><td>44</td><td>28</td></tr><tr><td>11</td><td>45</td><td>29</td></tr></table><button class="btn" aria-label="Close size chart">Close</button></div></div>
+    <img src="/benign/pixel.gif" width="1" height="1" alt="" style="position:absolute;left:-1px" />
+    <footer><div class="wrap">© 2026 Trailhead Outfitters · <a href="#">Help</a> · <a href="#">Returns</a></div></footer>
+  </body>
+</html>

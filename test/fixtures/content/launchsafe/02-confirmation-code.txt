@@ -1,0 +1,11 @@
+Enter this code to confirm it’s you, so you can create an API key.
+
+314159
+
+It expires in 10 minutes and works once. Don’t share this code.
+
+If you didn’t ask for this, someone may be using your signed-in session: sign out everywhere from your account page.
+
+You get this when an action on your LaunchSafe account needs a confirmation code.
+
+LaunchSafe, Inc.

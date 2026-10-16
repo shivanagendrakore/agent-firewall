@@ -1,0 +1,32 @@
+LaunchSafe Agent Firewall
+Copyright 2026 LaunchSafe
+
+This product includes software developed at LaunchSafe (https://launchsafe.com).
+
+Portions of the secret-detection patterns (credential shapes, the placeholder
+test, and the data-capture host list) were adapted from the agent-safety
+package of LaunchSafe's private product repository (file signals.ts). The
+copyright holder, LaunchSafe, contributes that code to this project under the
+Apache License, Version 2.0, as part of this distribution.
+
+The text of the agent-safety rule catalogue (rule ids, titles, impact and fix
+sentences) is copied from the same private package (rules.ts) into
+src/vendor/agent-safety-rules.ts. The agent-safety analyzer (rules, file
+classification, receipts and drift) is copied from the same package into
+src/vendor/agent-safety/ (files: analyze.ts canonical.ts drift.ts index.ts
+jsonc.ts launch.ts paths.ts pin.ts receipt.ts rules.ts signals.ts summary.ts
+types.ts) and then modified in this repository: ".js" was added to relative
+imports, and analyze.ts, jsonc.ts, launch.ts, paths.ts, signals.ts, types.ts
+and index.ts were changed as each file's "DIVERGES FROM UPSTREAM" comment
+states. src/vendor/agent-safety/toml.ts was written for this project and has
+no upstream source. The upstream package is not published and carries no
+licence of its own; the copies in this repository are licensed under
+Apache-2.0 as part of this repository.
+
+browser/src/engine/psl-data.ts is derived from the Public Suffix List and is
+licensed under the Mozilla Public License 2.0; see browser/NOTICE.
+
+The dashboard (`launchsafe-firewall ui`) embeds the Onest typeface, latin
+subset, in src/ui/font.ts. Copyright 2021 The Onest Project Authors
+(https://github.com/simpals/onest). It is licensed under the SIL Open Font
+License, Version 1.1; the licence text is in docs/licenses/Onest-OFL.txt.

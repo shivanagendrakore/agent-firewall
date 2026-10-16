@@ -1,0 +1,1856 @@
+[
+  {
+    "id": "caps-tool-calls",
+    "description": "A session limit of 4 tool calls, warning at 50%: five ordinary commands",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "warnPercent": 50,
+          "session": {
+            "toolCalls": 4
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tool-calls-unattended",
+    "description": "A session limit of 4 tool calls, warning at 50%, with no person there: the warning is a note on an allow",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "warnPercent": 50,
+          "session": {
+            "toolCalls": 4
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": false,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tool-calls-warn-note",
+    "description": "A session limit of 4 tool calls, warning at 50% as a note (caps.warn note)",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "warnPercent": 50,
+          "warn": "note",
+          "session": {
+            "toolCalls": 4
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tool-calls-disabled",
+    "description": "A session limit of 2 tool calls with caps switched off: four commands",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "enabled": false,
+          "session": {
+            "toolCalls": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tool-calls-per-session",
+    "description": "A session limit of 2 tool calls: two commands in one session, then one in another",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "toolCalls": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-2",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tool-calls-dry-run",
+    "description": "A session limit of 2 tool calls: dry runs are not counted",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "toolCalls": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "dryRun": true
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": []
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "dryRun": true
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": []
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "dryRun": true
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": []
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tool-calls-denied-not-counted",
+    "description": "A session limit of 2 tool calls: a denied command does not count",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "toolCalls": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "rm -rf ~/"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-DESTROY-ROOT"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tool-calls-project-cannot-raise",
+    "description": "The user's session limit of 2 tool calls and a project policy that raises it",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "toolCalls": 2
+          }
+        }
+      },
+      "files": {
+        "workspace/.launchsafe-firewall.json": "{\"version\":3,\"caps\":{\"session\":{\"toolCalls\":100}}}"
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-network-not-counted",
+    "description": "A session limit of 2 tool calls: three middleware requests, then three commands by the agent",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "toolCalls": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-FETCH"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-FETCH"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-network-then-over",
+    "description": "A session limit of 2 tool calls: a middleware request, then three commands by the agent",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "toolCalls": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "HttpRequest",
+            "input": {
+              "method": "GET",
+              "url": "https://docs.example.org/guide"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}",
+            "traffic": "network"
+          }
+        },
+        "token": "network",
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": true,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tokens",
+    "description": "A session limit of 1000 tokens: calls reporting 600 tokens each",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "tokens": 1000
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "usage": {
+            "inputTokens": 500,
+            "outputTokens": 100
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "usage": {
+            "inputTokens": 500,
+            "outputTokens": 100
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-tokens-warn",
+    "description": "A session limit of 1000 tokens: a call reporting 850 tokens is past the warning",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "tokens": 1000
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "usage": {
+            "inputTokens": 800,
+            "outputTokens": 50
+          }
+        },
+        "expect": {
+          "verdict": "ask",
+          "ruleIds": [
+            "FW-CAP-WARN"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "usage": {
+            "inputTokens": 10
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-cost",
+    "description": "A session limit of 1 US dollar: calls reporting 0.6 each",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "costUsd": 1
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "usage": {
+            "costUsd": 0.6
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "usage": {
+            "costUsd": 0.6
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-usage-without-limit",
+    "description": "No token limit: a call reporting a large usage",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "files": {
+        "workspace/README.md": "# App\n"
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "ls -la"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          },
+          "usage": {
+            "inputTokens": 900000,
+            "outputTokens": 100000,
+            "costUsd": 12.5
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-identical-failures",
+    "description": "A limit of 2 identical failures: the same command fails twice (failed: true), then runs again",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "identicalFailures": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "1 test failed: expected 2, got 3",
+          "failed": true
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "1 test failed: expected 2, got 3",
+          "failed": true
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "deny",
+          "ruleIds": [
+            "FW-CAP"
+          ],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "caps-identical-failures-not-failed",
+    "description": "A limit of 2 identical failures: the same output twice without failed, then the command again",
+    "source": "src/engine/caps.ts (policy caps)",
+    "agentTools": {
+      "tools": {}
+    },
+    "setup": {
+      "policy": {
+        "version": 3,
+        "caps": {
+          "session": {
+            "identicalFailures": 2
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:0",
+          "output": "1 test failed: expected 2, got 3"
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "result",
+        "request": {
+          "session": "run-1",
+          "decisionId": "@step:2",
+          "output": "1 test failed: expected 2, got 3"
+        },
+        "expect": {
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      },
+      {
+        "kind": "decide",
+        "request": {
+          "session": "run-1",
+          "action": {
+            "format": "engine",
+            "tool": "Bash",
+            "input": {
+              "command": "npm test"
+            }
+          },
+          "context": {
+            "attended": true,
+            "workspace": [
+              "{{workspace}}"
+            ],
+            "cwd": "{{workspace}}"
+          }
+        },
+        "expect": {
+          "verdict": "allow",
+          "ruleIds": [],
+          "sessionUntrusted": false,
+          "holdsPrivateData": false
+        }
+      }
+    ]
+  }
+]

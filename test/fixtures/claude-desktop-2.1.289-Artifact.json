@@ -1,0 +1,14 @@
+{
+  "_provenance": "Not seen in a recorded event: the tool name is in the Claude Code 2.1.289 binary (tools:Artifact) and the input fields are the tool's published schema as offered to a desktop session on 9 Oct 2026. Only action 'publish' (the default) is catalogued.",
+  "session_id": "{SESSION}",
+  "cwd": "{WS}",
+  "permission_mode": "default",
+  "hook_event_name": "PreToolUse",
+  "tool_use_id": "toolu_00000000000000000000000000",
+  "tool_name": "Artifact",
+  "tool_input": {
+    "file_path": "{SCRATCH}/report.html",
+    "description": "Weekly report",
+    "icon": "chart"
+  }
+}

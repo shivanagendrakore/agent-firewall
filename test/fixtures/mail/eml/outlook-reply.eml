@@ -1,0 +1,40 @@
+Authentication-Results: mx.google.com; dkim=pass header.i=@corp.example; spf=pass smtp.mailfrom=corp.example; dmarc=pass header.from=corp.example
+From: "Lee, Morgan" <morgan.lee@corp.example>
+To: "you@example.test" <you@example.test>
+Subject: RE: Contract draft
+Thread-Topic: Contract draft
+Date: Fri, 10 Oct 2026 10:02:11 +0000
+Message-ID: <DM6PR01MB1234@corp.example>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="_000_DM6PR01MB1234_"
+
+--_000_DM6PR01MB1234_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Looks good to me. Please send the signed copy to legal@corp.example by Frid=
+ay.
+
+From: you@example.test
+Sent: Thursday, October 9, 2026 4:10 PM
+Subject: Contract draft
+
+Here is the draft.
+
+--_000_DM6PR01MB1234_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office"><head><style><!--=
+ p.MsoNormal {margin:0cm;font-size:11.0pt;font-family:"Calibri",sans-serif;=
+} --></style><!--[if gte mso 9]><xml><o:shapedefaults v:ext=3D"edit" spidm=
+ax=3D"1026" /></xml><![endif]--></head><body lang=3D"EN-GB"><div class=3D"Wo=
+rdSection1"><p class=3D"MsoNormal">Looks good to me. Please send the signed=
+ copy to legal@corp.example by Friday.<o:p></o:p></p><div style=3D"border:n=
+one;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0cm 0cm 0cm"><p class=3D"M=
+soNormal"><b>From:</b> you@example.test<br><b>Sent:</b> Thursday, October 9=
+, 2026 4:10 PM<br><b>Subject:</b> Contract draft<o:p></o:p></p></div><p cla=
+ss=3D"MsoNormal">Here is the draft.<o:p></o:p></p></div></body></html>
+
+--_000_DM6PR01MB1234_--
