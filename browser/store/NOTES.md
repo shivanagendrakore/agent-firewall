@@ -6,10 +6,9 @@ holds what must not be pasted.
 
 ## Owner to-dos before submitting
 
-- Host `privacy-policy.md` at a public URL and set its effective date (the
-  policy still says "set at publication").
-- Real homepage URL and privacy policy URL for the dashboard (none exist yet;
-  do not invent them).
+- Privacy policy URL: https://github.com/shivanagendrakore/agent-firewall/blob/main/browser/store/privacy-policy.md
+  (effective 16 October 2026).
+- Homepage URL: https://github.com/shivanagendrakore/agent-firewall/tree/main/browser
 - Screenshots at 1280x800 and a 440x280 promo tile.
 - The listing has not been submitted to the Chrome Web Store yet.
 - Re-check the Privacy practices form's checkbox wording at submission; the

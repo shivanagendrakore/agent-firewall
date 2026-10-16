@@ -1,8 +1,7 @@
 # Privacy policy: LaunchSafe Agent Firewall for browsers
 
-To be hosted at a public URL before the extension is submitted (the Web Store
-needs a link, not a file).
-Effective date: set at publication. Version: matches extension 0.0.1.
+Published at <https://github.com/shivanagendrakore/agent-firewall/blob/main/browser/store/privacy-policy.md>.
+Effective date: 16 October 2026. Version: matches extension 0.0.1.
 
 ## The short version
 
