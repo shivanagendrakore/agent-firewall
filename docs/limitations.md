@@ -383,6 +383,22 @@ what it does is hidden inside the construct. Each is a known gap.
   Cursor have shown the model the text before the hook runs: the session
   becomes untrusted and the agent is warned, nothing is removed.
 
+- **The HTML scanner does not read every place a person cannot see.** Not
+  scanned for hidden instructions: bogus comments (`<!x ...>`, `<? ...>`),
+  the bodies of `<script>`, `<noframes>`, `<noembed>` and `<iframe>`, text placed
+  directly in `<head>`, and the values of `<meta content>`, `data-*` and
+  `aria-*` attributes. A closed `<details>` block counts as visible text.
+- **Hiding by colour covers about thirty named colours and the common
+  numeric forms.** Text hidden with another CSS colour name or a modern colour
+  function (`hwb()`, `lab()`, `oklch()`, `color()`) is read as visible, so it
+  is flagged instead of quarantined at most.
+- **A terminal conceal trick split over two escape sequences is not
+  detected.** Foreground and background colours set in separate sequences
+  that end up equal are judged one sequence at a time.
+- **Hebrew or Arabic letters next to a bidirectional override exempt it.** Two
+  such letters within 16 characters are enough, which real right-to-left text
+  needs and an attacker can copy.
+
 ## Data leaving the machine
 
 - **Secret fingerprints catch the documented encodings only.** Verbatim,
@@ -485,7 +501,7 @@ what it does is hidden inside the construct. Each is a known gap.
   a default entry from the same entry you wrote yourself, so it does not try.
 - **Package checks are only as good as their data.** A malicious version
   published after your last `update`, or not yet in OSV, is not denied. A
-  typosquat of a name outside the shipped popular lists is not flagged. The
+  typosquat of a name outside the shipped popular lists is not flagged. The npm list is the hand-kept seed list: npm's search no longer ranks packages by popularity, so it could not be regenerated for 0.3. The
   cooldown setting covers the first days of a release; npm and pip have no
   rolling cooldown.
 - **Task scope is log-only by default** (`taskScope.mode: "log"`). It records
@@ -683,6 +699,18 @@ what it does is hidden inside the construct. Each is a known gap.
   Its keys, vault and signing material are denied; anything else there (the log,
   the queue, policy, session state) is asked as a credential store.
 
+- **A Cursor subagent's remembered outside commands are not carried to its
+  parent or back.** Taint, fingerprints and credential reads are carried;
+  commands that outside content showed to the child are not, so
+  FW-OUTSIDE-COMMAND stays empty for text the parent received from it.
+- **Twenty protected-file or persistence writes in ten minutes stop the
+  agent.** Heavy but ordinary editing of workflow files or `CLAUDE.md` can reach
+  it; resuming needs the approval passphrase.
+- **The browser extension cannot check an approval's signature.** The firewall
+  sends it only the signature, without the id, nonce, expiry and bindings it
+  covers, so the extension relies on the native-messaging channel itself.
+  Sending the whole grant needs a protocol change on both sides.
+
 ## Watch mode
 
 - **Watch mode lets some risky actions run.** Every rule outside the reviewed
@@ -797,6 +825,22 @@ what it does is hidden inside the construct. Each is a known gap.
   repository, and with no network it will be unreachable while the terminal
   still works.
 
+## Ordinary commands that are asked or denied
+
+Some read-only forms of dangerous programs are denied or asked, because the
+analyser judges the program and not every option:
+
+- `fdisk -l`, `parted ... print`, `sfdisk -l`, `gdisk -l` and a plain `wipefs`
+  are denied as disk-erasing commands, and `diskutil eject` and `unmount` are
+  denied as disk commands.
+- `systemctl` and `launchctl` read verbs such as `list-unit-files` and
+  `list-timers` are treated as changing a service.
+- `security find-identity` (routine for code signing) is asked as a keychain
+  read, and `aws configure get` and `list` are asked as credential reads.
+- `docker system prune` without `--volumes` is denied.
+
+Use `allow add` for the cases you need, or run them yourself.
+
 ## Fewer prompts (learned project allows)
 
 - **Narrow on purpose.** Only the low-risk rule class can become "always in
@@ -858,6 +902,18 @@ what it does is hidden inside the construct. Each is a known gap.
 - **Fields shorter than 12 characters cannot be fingerprinted** (a CVC, an
   expiry date). `vault add` says which.
 - **Not built:** `vault import --from-config` and `vault unlock` / `lock`.
+
+- **A vault grant made for an `ask` outlives a refusal.** When a call that
+  names `vault://` references is asked and you deny it, the gateway grant made
+  for it stays for up to 180 seconds. A client without the hook that sends the
+  same call, with the same arguments, to the same wrapped server in that time
+  gets the values. The grant names the server, the tool and the arguments, not
+  the session, because the gateway cannot know the hook's session.
+- **The sender program must be root-owned.** `vault://` values reach only a
+  `curl` or `wget` that is root-owned in root-owned, not group- or
+  world-writable folders. A user-owned one (a Homebrew prefix owned by you,
+  `~/.local/bin`) is refused, so on some Macs only `/usr/bin/curl` works. Run
+  as root, the hook accepts root-owned programs.
 
 ## The MCP gateway
 
@@ -988,6 +1044,14 @@ what it does is hidden inside the construct. Each is a known gap.
   budgets bound how much. The proxy cannot ask, so a new host is refused until
   you approve it.
 
+- **On macOS a command may write to every terminal device.** The profile
+  allows writes to `/dev/tty*`, so a run can write escape sequences to your
+  other terminal windows. Denying it needs the run's own terminal name and has
+  not been done.
+- **On macOS a process that leaves its process group can outlive the run.**
+  A command that starts a background program with `setsid` and then ends the
+  bridge is not always cleaned up. This has not been tested on a Mac.
+
 ## OpenShell middleware
 
 - **Two sessions, not one.** The hooks inside an OpenShell sandbox and the
@@ -1082,12 +1146,39 @@ what it does is hidden inside the construct. Each is a known gap.
   judged by the presets, which is stricter than the library (which applies its
   tool specs' servers to every call).
 
+- **A streaming Vercel AI tool is not recorded.** When a tool's `execute`
+  returns an async iterable, the wrapper does not read its chunks, so their
+  text is not scanned or fingerprinted.
+- **Python SDK, Google ADK.** `firewall_callbacks` attached only to the root
+  agent do not reach sub-agents or `AgentTool`s; use `FirewallPlugin` for those.
+- **Python SDK, parallel approvals.** Each integration waits for approvals in a
+  thread from Python's default pool. Many approvals pending at once can use all
+  of it and delay other calls.
+- **Gateway events in hook mode go to every session file** in the state
+  directory, not only the client's, so one result's taint and fingerprints can
+  reach unrelated sessions and the write costs more as sessions pile up.
+
 ## Dashboard
 
 - **It is read-only and as current as the page was when rendered.**
 - **A process running as you can read the browser history that holds the
   dashboard's private address.** It gets the read-only view only. Approvals
   stay behind the passphrase. Run `ui` in a terminal the agent cannot read.
+
+## Browser extension
+
+- **A held download is fetched twice.** The extension cancels an executable
+  download and, when you approve it, downloads the address again. The second
+  response can differ from the first (cookies, redirects, one-time URLs), and
+  the log records only the first address.
+- **The leak guard rescans mutating pages.** On a live feed or chat stream it
+  scans every 400 ms while the page changes, which costs CPU even with agent
+  mode off.
+- **An approval binds the form's target, not the page's later scripts.** A
+  click approval covers the form action and method at approval time; a page
+  script that changes them inside the click handler is not seen again.
+- More in [the extension's limits page](https://github.com/shivanagendrakore/agent-firewall/blob/main/browser/src/ui/limits.html) and
+  [its README](https://github.com/shivanagendrakore/agent-firewall/blob/main/browser/README.md).
 
 ## What is tested, and what is not
 
