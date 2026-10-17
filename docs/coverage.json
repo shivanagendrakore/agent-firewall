@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "generatedFrom": "src/rules.ts and src/frameworks.ts by scripts/gen-coverage.mjs",
-  "firewallVersion": "0.3.1",
+  "firewallVersion": "0.3.2",
   "verification": {
     "checkedOn": "2026-10-09",
     "owaspLlm2025": {
