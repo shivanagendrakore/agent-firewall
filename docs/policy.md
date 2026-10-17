@@ -20,7 +20,7 @@ FW-TAMPER and the others marked "deny" in `launchsafe-firewall explain`) have no
 switch that turns them into a question: not a user, administrator or project
 file, not an approval, and not a permission mode. For the permission modes, the
 hooks were captured firing in Codex's `codex exec` and in Gemini CLI's yolo
-mode; Claude Code's bypass mode is read from its documentation, not captured;
+mode; Claude Code's bypass mode was run live once (a workspace delete was denied, 2.1.302);
 it is not verified for Cursor (`docs/agents/`). The exceptions
 are the keys that say what such a rule covers or whether it runs, listed with
 each key below: for example `protectedBranches` adds branches FW-CATASTROPHIC

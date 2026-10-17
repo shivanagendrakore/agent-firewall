@@ -41,7 +41,14 @@ cleared Node loader variables).
   schema (read from the binary, `claude-2.1.289-sandbox-schema.json`) and the
   desktop app's own tool events (`claude-desktop-2.1.289-*`). The other events
   follow Claude Code's hooks documentation.
-- `updatedToolOutput`, `updatedInput`, `onFailure` and bypass mode are from the
+- `updatedToolOutput`, `updatedInput` and `onFailure` are from the
   documentation, not captured ([overview.md](overview.md#not-verified)).
+- Bypass mode was run live once: Claude Code 2.1.302 with
+  `--dangerously-skip-permissions` was told to run `rm -rf` on the workspace in
+  a throwaway container; the hook denied it (FW-CATASTROPHIC), the workspace was
+  untouched, and the session was recorded as `bypassPermissions` (unattended).
+  The same container run allowed `ls`, blocked a read of a credentials file,
+  blocked sending `.env` to a request-capture site, and denied a force-push
+  over `main` (one run, one model, `claude -p`; not a test suite).
 - No version at or after 2.1.295 was captured, so `onFailure: "block"` being
   honoured is not seen.

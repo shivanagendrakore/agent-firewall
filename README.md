@@ -130,8 +130,8 @@ and so do new-host checks when `knownHosts` is on (it is off by default). See
   dropping a database or deleting cloud resources is denied from a fixed list of
   commands, also in Codex's `codex exec` and Gemini CLI's yolo mode (their
   hooks were captured firing in those modes; that the agent enforces the deny
-  there was not captured) and in Claude Code's bypass mode (from its
-  documentation, not captured); whether Cursor's hooks run in its bypass mode
+  there was not captured) and in Claude Code's bypass mode (run live once
+  on 2.1.302: a workspace delete was denied); whether Cursor's hooks run in its bypass mode
   is unverified. Not
   every way to do the damage
   ([per agent](docs/agents/overview.md#bypass-and-yolo-modes)).

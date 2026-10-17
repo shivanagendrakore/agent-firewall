@@ -43,8 +43,8 @@ There has been no third-party audit. Known limits are in
   dropping a database, deleting cloud resources) are denied from a fixed list of
   commands in the bypass modes. The hooks were captured firing for Codex
   (`codex exec`) and Gemini CLI (yolo mode); a deny there was not captured, and
-  that the agent enforces it is not verified. For Claude Code's bypass mode this
-  is from its documentation, not captured. The Cursor bypass mode is not
+  that the agent enforces it is not verified. For Claude Code's bypass mode, one live run on 2.1.302
+  denied a workspace delete. The Cursor bypass mode is not
   verified. The denials cover a fixed list of commands, not every way to do the
   damage
   ([agents](docs/agents/overview.md#bypass-and-yolo-modes),
