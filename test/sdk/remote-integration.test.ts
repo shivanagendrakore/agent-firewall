@@ -82,7 +82,13 @@ describe("Vercel AI SDK with the remote guard", () => {
     const messages: ModelMessage[] = [...prompt, ...first.response.messages, { role: "tool", content: [{ type: "tool-approval-response", approvalId: req.approvalId, approved: true }] }];
     // The person approves the queue item (terminal, phone) while the run waits.
     // The ask had no queue item; the person's yes queued it as a hold (apr_2).
-    setTimeout(() => s.settle("apr_2", "approved"), 30);
+    // Wait for the hold to exist: on a slow runner (coverage) it is queued later than any fixed delay.
+    const settleWhenQueued = setInterval(() => {
+      if (s.approvals.has("apr_2")) {
+        clearInterval(settleWhenQueued);
+        s.settle("apr_2", "approved");
+      }
+    }, 10);
     await generateText({ model: textModel(), tools, toolApproval: fw.toolApproval, messages });
     expect(ran).toEqual(["email bob@example.com"]);
     // The result is recorded under the retry's decision (the allow that used the approval).
