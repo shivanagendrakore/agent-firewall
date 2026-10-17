@@ -40,7 +40,7 @@ Store). It is not part of the npm package built from the repository root.
 | `test/e2e/` | Playwright: fixtures (fresh temp profile, loopback only), corpus server, specs |
 | `test/corpus/` | pages served from 127.0.0.1 as `shop.test`, `mail.test`, `attacker.test`, `accounts.test`, and false-positive cases; the snapshots of real pages used for false-positive checks are kept outside the repository (`scripts/capture-corpus.mjs` makes them; the counts in `docs/real-corpus-findings.md` are from a capture dated 2026-10-11) |
 | `test/agents/` | agent simulators: A (page script), D (Playwright input), B (test-only `chrome.debugger` extension) |
-| `store/` | Chrome Web Store listing, permission justifications and privacy policy (not yet submitted) |
+| `store/` | Chrome Web Store listing, permission justifications and privacy policy (submitted for review on 16 October 2026) |
 
 ## Commands
 

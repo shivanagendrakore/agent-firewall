@@ -2,7 +2,9 @@
 
 The maintainers' release checklist for `@launchsafe/agent-firewall` (npm). The
 Python SDK (`python/`, PyPI `launchsafe-firewall`) and the browser extension
-(`browser/`) are released separately and are not covered here.
+(`browser/`) are released separately; see
+[The Python SDK](#the-python-sdk) and [The browser extension](#the-browser-extension)
+at the end of this file.
 
 Nothing in this file needs a secret. The npm workflow publishes with npm
 trusted publishing (OIDC): there is no `NPM_TOKEN`, and none should be created.
@@ -387,6 +389,24 @@ this process does not use.
 From the next version on, the tag push publishes through the workflow, with
 provenance, and nothing is published by hand.
 
+### What happened with 0.3.0 and 0.3.1
+
+- 0.3.0 was published by hand on 16 October 2026 (`npm publish --provenance=false
+  --access public`) by an account that is a *developer* in the `launchsafe` npm
+  organization. npm held it as a *staged* publish until an organization owner
+  approved it (a second `npm publish` of the same version fails with
+  `409 Cannot publish over previously staged version`). npm also created a
+  placeholder version `0.0.0-stage`, which is deprecated and not tagged `latest`.
+  An organization owner role avoids the approval step.
+- The trusted publisher was added after 0.3.0 and shows *Pending validation*
+  until one publish goes through it. 0.3.1 (tag `v0.3.1`) was that publish: it
+  ran in the `npm-release` environment, published with provenance and no token,
+  and the page then no longer showed the pending state.
+- `release.yml` refuses a real release unless the repository variable
+  `MACOS_VERIFIED_SHA` equals the commit being tagged (step 6 of "Before the
+  release"). The macOS CI job on that commit is the evidence; set it with
+  `gh variable set MACOS_VERIFIED_SHA --body <sha>` before pushing the tag.
+
 ## After the release
 
 1. Check the package page on npmjs.com: the version, the file list, and the
@@ -418,3 +438,50 @@ If a release is broken, publish a fixed patch version. Use `npm deprecate` on
 the broken version rather than `npm unpublish`.
 
 A push that replaces the repository's history can skip the path-filtered workflows (CI, the Python SDK, the browser extension). Start CI and the browser extension by hand (`gh workflow run ci.yml`, `gh workflow run browser.yml`), or push a small change that touches each part.
+
+## The Python SDK
+
+`python/` is released on its own. PyPI trusts `.github/workflows/python-release.yml` in this
+repository, in the `pypi` GitHub environment, through PyPI trusted publishing: no token is stored.
+
+1. Set the version in `python/pyproject.toml` and `python/src/launchsafe_firewall/__init__.py`
+   (a test checks they match) and update the changelog if the change is user-visible.
+2. Merge to `main` with the Python SDK workflow green.
+3. Optional dry run: `gh workflow run python-release.yml --ref main -f publish=false` builds the sdist
+   and wheel and runs `twine check --strict` without publishing.
+4. Push the tag `python-v<version>` (for example `python-v0.1.1`). The workflow checks the tag against
+   `pyproject.toml`, builds, checks and publishes.
+5. Check https://pypi.org/project/launchsafe-firewall/ and install the new version in a clean virtual
+   environment.
+
+The first release (`0.1.0`, 16 October 2026) was set up with a *pending trusted publisher* on PyPI
+(project name, owner, repository, workflow `python-release.yml`, environment `pypi`).
+
+## The browser extension
+
+`browser/` is released through the Chrome Web Store dashboard by hand; there is no workflow that publishes it.
+
+1. Bump `version` in `browser/package.json` (and its lockfile). Run `npm run check` in `browser/`.
+   `npm run sync:firewall` re-pins the vendored scanners to the current commit when
+   `src/engine/` scanner files changed (`check:vendor` verifies it).
+2. Build the upload file: `npm run build` in `browser/`, then zip the contents of `browser/dist/`
+   (not the folder itself). Check that `manifest.json` has the new version.
+3. Store pictures come from the real extension: run the `Store screenshots` workflow
+   (`gh workflow run store-screenshots.yml`), then download its `store-screenshots` artifact
+   (four 1280x800 screenshots and a 440x280 promo tile).
+4. In the dashboard: **Package** > **Upload new package** (one version at a time: the dashboard does
+   not take a new version while one is in review), then check **Store listing** and **Privacy**
+   against `browser/store/` (the paste-ready files; `NOTES.md` holds what must not be pasted),
+   and **Submit for review**.
+5. Text that changes behaviour (a permission, a stored field) must change in the privacy policy, the
+   data-usage answers and the permission justifications first.
+
+0.0.1 was submitted on 16 October 2026; 0.0.2 changes only the icons (the LaunchSafe mark) and the
+vendored scanners' pinned commit.
+
+## Repository settings
+
+`main` is protected by a ruleset: no deletion, no force-push, changes through a pull request, with
+repository administrators allowed to bypass (so a maintainer can still push a release). Tags `v*` and
+`python-v*` cannot be deleted, moved or re-pointed. The CI workflow does not run when only `browser/` or
+`python/` changes, so required status checks are not set on the ruleset; check CI before merging.

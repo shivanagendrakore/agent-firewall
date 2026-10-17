@@ -210,7 +210,7 @@ without TLS answers any process that reaches its port), and
 | [`python/`](python/README.md) | The Python SDK for the local API, with plug-ins for the OpenAI Agents SDK, LangGraph, Claude Agent SDK, Pydantic AI, Google ADK and CrewAI | `launchsafe-firewall` on PyPI |
 
 Each part has its own package file, tests and release. The npm package and
-the Python SDK are published; the browser extension is not yet.
+the Python SDK are published; the browser extension is submitted to the Chrome Web Store and in review.
 
 ## Documentation
 
