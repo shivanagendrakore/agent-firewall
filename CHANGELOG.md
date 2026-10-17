@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- The agent-file scan no longer flags a vendor skill that only decodes a file (a base64 helper whose result is never run) or that tells the model what to say to the person ("don't tell the user to ..."). Both were found in a live run with Anthropic's own google-workspace skill, and each put every session into the untrusted state. A decode still counts when something on the same line runs it, and an order to hide things from the person still counts.
+
 ## [0.3.1] - 2026-10-16
 
 Maintenance release. The installed firewall behaves as in 0.3.0; this is the

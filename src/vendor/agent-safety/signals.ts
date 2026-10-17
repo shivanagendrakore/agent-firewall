@@ -151,8 +151,10 @@ const OBFUSCATION: readonly RegExp[] = [
   /\bbase64\s+(?:-d|--decode|-D)\b[^\n]{0,512}?\|\s*(?:(?:sudo\s+)?(?:ba|z|da)?sh|python[0-9.]*|node|perl|eval)\b/i,
   /\|\s*base64\s+(?:-d|--decode|-D)\b[^\n]{0,512}?\|\s*(?:(?:ba|z|da)?sh|python[0-9.]*|node|perl)\b/i,
   /\beval\b[^\n]{0,512}?\bbase64\s+(?:-d|--decode|-D)\b/i,
-  /\b(?:b64decode|atob|frombase64string)\s*\(/i,
-  /\bBuffer\.from\([^)]{0,512}['"]base64['"]\s*\)/,
+  // A decode only counts with something that runs the result on the same line: a helper that decodes a file for the program to read is ordinary.
+  /\b(?:b64decode|atob|frombase64string)\s*\([^\n]{0,512}\b(?:eval|exec|execSync|system|popen|subprocess|spawn|new\s+Function|invoke-expression|iex)\b/i,
+  /\b(?:eval|exec|execSync|system|popen|subprocess|spawn|new\s+Function|invoke-expression|iex)\b[^\n]{0,512}\b(?:b64decode|atob|frombase64string)\s*\(/i,
+  /\bBuffer\.from\([^)]{0,512}['"]base64['"]\s*\)[^\n]{0,512}\b(?:eval|exec|execSync|spawn|new\s+Function)\b/,
   /-(?:e|en|enc|encodedcommand)\s+[A-Za-z0-9+/=]{40,}/i,
   /(?:\\x[0-9a-f]{2}){8,}/i,
 ];
@@ -672,8 +674,8 @@ export function negatedAround(line: string, start: number, end: number): boolean
 /** Text that tries to override the agent's instructions or hide what it does from the person. */
 const INJECTION: readonly RegExp[] = [
   /\b(?:ignore|disregard|forget|override)\s+(?:all\s+|any\s+|the\s+)?(?:previous|prior|above|earlier|preceding|system|your)\s+(?:instructions|rules|prompts?|directions|guidelines)\b/i,
-  /\b(?:do\s+not|don't|never)\s+(?:tell|inform|mention\s+(?:this\s+)?to|reveal\s+(?:this\s+)?to|show)\s+the\s+user\b/i,
-  /\bwithout\s+(?:telling|informing|notifying|alerting)\s+the\s+user\b/i,
+  /\b(?:do\s+not|don't|never)\s+(?:tell|inform|mention\s+(?:this\s+)?to|reveal\s+(?:this\s+)?to|show)\s+the\s+user\b(?!\s+to\b)/i,
+  /\bwithout\s+(?:telling|informing|notifying|alerting)\s+the\s+user\b(?!\s+to\b)/i,
   /\b(?:hide|conceal)\s+(?:this|these|the)\s+(?:step|command|action|instructions?)s?\s+from\s+the\s+user\b/i,
   /\byou\s+are\s+now\s+in\s+(?:developer|god|jailbreak|dan|unrestricted)\s+mode\b/i,
   /\bnew\s+system\s+prompt\s*:/i,
