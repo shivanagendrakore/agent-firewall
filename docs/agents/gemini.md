@@ -53,8 +53,8 @@ Two things Gemini CLI does that weaken any hook, reported by `doctor`:
   headless runs). Seen on 18 Oct 2026 with Gemini CLI 0.64.0: a headless
   `gemini -p` in an untrusted folder refused to start ("Gemini CLI is not
   running in a trusted directory"), and `--yolo` there was overridden to the
-  default approval mode. Don't use `--skip-trust` to get past it: that runs
-  the agent in a folder where the firewall's hooks are skipped.
+  default approval mode. Whether `--skip-trust` makes Gemini CLI run the
+  hooks has not been checked; prefer trusting the folder.
 - **A repository can switch your hooks off.** A project `.gemini/settings.json`
   with `"hooksConfig": {"enabled": false}` or a `disabled` list naming the
   firewall's hook (`launchsafe-firewall`) turned off user-level hooks silently
