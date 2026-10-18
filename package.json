@@ -1,6 +1,6 @@
 {
   "name": "@launchsafe/agent-firewall",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "The firewall for AI agents (preview): fixed rules, outside the model, check each tool call that reaches them through a coding agent's hooks, the library or the MCP gateway, before it runs.",
   "keywords": [
     "ai agents",
