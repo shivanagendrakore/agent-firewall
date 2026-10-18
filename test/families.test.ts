@@ -131,3 +131,19 @@ describe("policy", () => {
     expect(inUnattendedHours(hours, new Date("2026-01-01T12:00:00"))).toBe(false);
   });
 });
+
+describe("MCP tool names: a reading verb followed by a noun that doubles as a verb is a read", () => {
+  // Live test, 18 Oct 2026: Claude Code could not read a Gmail inbox at night because
+  // "read_message" was classed as sending a message.
+  const mail = serverPolicy("gmail", defaultConfig());
+  it.each(["read_message", "get_email", "list_messages", "get_comment", "fetch_logs", "readMessage", "get_thread_messages"])("%s reads", (t) => {
+    expect(toolKind(t, mail)).toBe("read");
+  });
+  it.each(["send_message", "reply_to_message", "message_user", "search_replace", "get_and_update_message", "read_and_mark", "post_message", "create_email"])("%s still sends", (t) => {
+    expect(toolKind(t, mail)).toBe("send");
+  });
+  it("a delete stays a delete", () => {
+    expect(toolKind("read_and_delete_message", mail)).toBe("destroy");
+  });
+});
+

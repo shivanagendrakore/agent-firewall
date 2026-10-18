@@ -4,6 +4,12 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- MCP tools named with a reading verb followed by a noun that is also a verb (`read_message`, `get_email`, `list_messages`) are reads again. They were classed as sending a message, so after a session read outside content an agent could not read its own inbox: a live run with Claude Code and a Gmail-style server held every `read_message` with the reason "It sends a message to people". A writing verb later in the name (`search_replace`, `get_and_update_message`) still makes it a send.
+
 ## [0.3.2] - 2026-10-17
 
 ### Fixed

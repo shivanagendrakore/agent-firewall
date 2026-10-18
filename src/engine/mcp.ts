@@ -127,6 +127,9 @@ const DESTROY_WORDS = /^(?:delete|remove|drop|destroy|purge|truncate|wipe|erase|
 const SEND_WORDS = /^(?:create|update|edit|write|send|post|publish|push|merge|comment|reply|forward|share|invite|upload|insert|upsert|execute|exec|run|apply|deploy|set|add|put|patch|move|rename|assign|close|reopen|submit|transfer|approve|trigger|dispatch|fork|star|navigate|goto|open|click|type|fill|press|select|hover|drag|evaluate|eval|install|tag|label|react|pin|schedule|book|pay|charge|refund|transfer|mint|sign|grant|enable|start|stop|restart|resolve|assign|mention|message|dm|email|notify|call|invoke|request|import|export|sync|save|store|remember|record|log|track|link|attach|mark|complete|claim|lock|unlock|join|leave|subscribe|unsubscribe|follow|like|vote|rate|replace|clear)$/i;
 const READ_WORDS = /^(?:get|list|search|read|fetch|find|describe|show|view|retrieve|lookup|count|check|status|inspect|browse|screenshot|snapshot|query|select|download|preview|info|explain|summarize|resolve_library_id|docs|diff|compare|analyze|validate|lint|test|ping|whoami|me|current|recent|history|logs?|metrics|stats|scan|recall|load|open_nodes|search_nodes|read_graph)$/i;
 
+/** Words that are also things a tool reads (a message, an email, a comment, a log), not only actions. */
+const NOUN_VERBS = /^(?:message|messages|email|emails|mail|dm|dms|comment|comments|reply|replies|log|logs|record|records|link|links|tag|tags|label|labels|request|requests|call|calls|schedule|note|notes|track|tracks|event|events|mention|mentions|status|export|exports|import|imports)$/i;
+
 /** Splits a tool name into lower-case words (create_issue, createIssue, create-issue). */
 export function toolWords(tool: string): string[] {
   return tool
@@ -149,6 +152,11 @@ export function toolKind(tool: string, policy: McpServerPolicy): ToolKind {
   // "get_or_create_user", "search_and_replace": a reading verb joined to a writing one by and/or/then does both.
   const joint = words.findIndex((w) => w === "and" || w === "or" || w === "then");
   if (joint !== -1 && words.slice(joint + 1).some((w) => SEND_WORDS.test(w))) return "send";
+  // A reading verb first, followed only by what it reads, is a read: "read_message", "get_email",
+  // "list_comments". Those nouns double as verbs ("message someone"), so without this the last word
+  // turned a mail read into a send, and an unattended agent could not read its inbox. A real writing
+  // verb later in the name ("search_replace", "get_and_update") still makes it a send.
+  if (words.length > 1 && READ_WORDS.test(words[0] ?? "") && !SEND_WORDS.test(words[0] ?? "") && words.slice(1).every((w) => !SEND_WORDS.test(w) || NOUN_VERBS.test(w))) return "read";
   // The verb is usually the first word (get_issue, create_issue); some servers put it last (issue_create).
   const verb = [words[0] ?? "", words[words.length - 1] ?? ""];
   if (verb.some((w) => SEND_WORDS.test(w))) return "send";
