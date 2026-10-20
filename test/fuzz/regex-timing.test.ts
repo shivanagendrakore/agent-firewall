@@ -3,7 +3,7 @@
  * pattern in prompts) and the review's COPY ... PROGRAM pattern were each quadratic: a pattern tried from every
  * position of a long run backtracked over the rest of it. For random short alphabets repeated to a length n and
  * 2n, a scanner whose time more than triples from n to 2n (and is past a floor, so noise does not count) is
- * reported with its input shape. The shell analyzer is not timed here (test/fuzz/shell.test.ts covers it).
+ * reported with its input shape, once three re-measurements agree. The shell analyzer is not timed here (test/fuzz/shell.test.ts covers it).
  * Every string is data given to a pure function; nothing is run.
  */
 import { describe, it } from "vitest";
@@ -44,10 +44,10 @@ const SCANNERS: Record<string, (s: string) => unknown> = {
   guardMcp: (s) => createGuard({ workspace: "/w", home: "/home/u", session: "rt" }).check({ tool: "mcp__notes__search", input: { q: s }, mcpSource: "user" }),
 };
 
-/** The faster of two runs, in ms. */
-function time(f: () => unknown): number {
+/** The fastest of `runs` runs, in ms. */
+function time(f: () => unknown, runs = 2): number {
   let best = Number.POSITIVE_INFINITY;
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < runs; i++) {
     const t0 = performance.now();
     f();
     best = Math.min(best, performance.now() - t0);
@@ -70,9 +70,22 @@ describe("fuzz: the engine's text scanners are linear in their input", () => {
         const n = r.pick([20_000, 40_000, 80_000]);
         const a = unit.repeat(Math.ceil(n / unit.length)).slice(0, n);
         const b = unit.repeat(Math.ceil((2 * n) / unit.length)).slice(0, 2 * n);
-        const ta = time(() => f(a));
-        const tb = time(() => f(b));
-        if (tb > FLOOR_MS && tb > 3 * Math.max(ta, 1)) throw new Error(`superlinear: ${name} on ${JSON.stringify(unit)} repeated: ${n} chars ${ta.toFixed(0)} ms, ${2 * n} chars ${tb.toFixed(0)} ms`);
+        const over = (ta: number, tb: number) => tb > FLOOR_MS && tb > 3 * Math.max(ta, 1);
+        let ta = time(() => f(a));
+        let tb = time(() => f(b));
+        // A pause (garbage collection, a busy neighbour: CI runs hundreds of test files at once) can stretch one
+        // run past 3x of a linear scanner (42 ms then 130 ms, "\n(" repeated, in CI, where alone it is 2.00x
+        // from 20,000 to 640,000 characters). So a suspect pair is measured again, three more times with the
+        // best of three runs each, and is reported only if every measurement is over: a quadratic scanner is
+        // over every time (about 4x), a pause is not.
+        for (let again = 0; again < 3 && over(ta, tb); again++) {
+          const ta2 = time(() => f(a), 3);
+          const tb2 = time(() => f(b), 3);
+          if (!over(ta2, tb2)) return;
+          ta = ta2;
+          tb = tb2;
+        }
+        if (over(ta, tb)) throw new Error(`superlinear: ${name} on ${JSON.stringify(unit)} repeated: ${n} chars ${ta.toFixed(0)} ms, ${2 * n} chars ${tb.toFixed(0)} ms`);
       },
       { capSec: 20 },
     );
