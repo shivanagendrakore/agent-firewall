@@ -334,13 +334,27 @@ function itemPath(l: Layout, id: string): string {
   return join(l.queue, `${id}.json`);
 }
 
-export function newQueueId(): string {
-  // Short enough to type; 40 bits of randomness.
-  const alphabet = "abcdefghjkmnpqrstuvwxyz23456789";
-  const bytes = randomBytes(8);
+const QUEUE_ID_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
+
+/**
+ * A queue id drawn from `source` (random bytes). Bytes at or above the largest multiple of the alphabet's size
+ * are drawn again: 256 is not a multiple of 31, and a plain modulo would make the first symbols likelier.
+ */
+export function queueIdFrom(source: (n: number) => Uint8Array): string {
+  const n = QUEUE_ID_ALPHABET.length;
+  const limit = 256 - (256 % n);
   let s = "";
-  for (const b of bytes) s += alphabet[b % alphabet.length];
+  while (s.length < 8) {
+    for (const b of source(8 - s.length)) {
+      if (b < limit && s.length < 8) s += QUEUE_ID_ALPHABET[b % n];
+    }
+  }
   return s;
+}
+
+export function newQueueId(): string {
+  // Short enough to type; about 40 bits of randomness.
+  return queueIdFrom((n) => randomBytes(n));
 }
 
 export function listQueue(l: Layout): { items: QueueItem[]; corrupt: string[] } {

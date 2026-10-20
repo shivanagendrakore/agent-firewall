@@ -320,7 +320,7 @@ function checkSettingsResult(c: Collector, rawPath: string, compute: (before: st
     const after = known || !registered ? compute(before) : null;
     for (const problem of settingsViolations(before, after, registered, abs, sandboxGuard(c, abs, lc))) {
       addFinding(c, "hook_disable", `changing ${abs}: ${problem}`);
-      addEffect(c, { cls: "firewall_tamper", target: abs, detail: `change ${agentOfSettings(abs)} settings so that ${problem.replace(/^it /, "it ")}` });
+      addEffect(c, { cls: "firewall_tamper", target: abs, detail: `change ${agentOfSettings(abs)} settings so that ${problem}` });
     }
     for (const problem of layeredSandboxViolations(c, abs, before, after)) {
       addFinding(c, "hook_disable", `changing ${abs}: ${problem}`);
@@ -404,7 +404,7 @@ function layeredSandboxViolations(c: Collector, abs: string, beforeText: string 
       return mergeSettingsLayers(higher ? [mine, theirs] : [theirs, mine], strict);
     };
     const guard = { installed: rec.installed, policyDomains: profileFromPolicy(c.cfg).profile.network.allowedDomains, safeExcluded: pol.safeExcludedCommands };
-    for (const p of sandboxViolations(layered(b), layered(a), guard)) out.push(`${p.replace(/^it /, "it ")} (this layer overrides the sandbox profile the firewall installed in ${rec.path})`);
+    for (const p of sandboxViolations(layered(b), layered(a), guard)) out.push(`${p} (this layer overrides the sandbox profile the firewall installed in ${rec.path})`);
   }
   return [...new Set(out)];
 }

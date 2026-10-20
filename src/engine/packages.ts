@@ -379,7 +379,9 @@ function noteInner(c: Collector, program: string, args: readonly Word[]): void {
       const verb = s.pos[0]?.text ?? "";
       if (verb !== "get" && verb !== "install" && verb !== "run") return;
       for (const p of literalNames(s, 1)) {
-        const m = /^([a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s@]+)*)(?:@(.+))?$/i.exec(p);
+        // One optional path part: `(?:\/[^\s@]+)*` accepts the same strings, but [^\s@] also matches "/", so it
+        // could split a path many ways and backtracked exponentially on one that fails to match.
+        const m = /^([a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s@]+)?)(?:@(.+))?$/i.exec(p);
         if (m === null) continue;
         if (verb === "run" && m[2] === undefined) continue; // a local package path, not a download
         const ver = m[2];

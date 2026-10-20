@@ -569,6 +569,13 @@ export function resolvePath(raw: string, ctx: Pick<Context, "cwd" | "home">): Re
   return out;
 }
 
+/** `p` without its trailing slashes. A loop, not /\/+$/, whose retries are quadratic on a long run of slashes mid-string. */
+function stripTrailingSlashes(p: string): string {
+  let end = p.length;
+  while (end > 0 && p.charCodeAt(end - 1) === 47) end--;
+  return p.slice(0, end);
+}
+
 function parentDir(p: string): string {
   const i = p.lastIndexOf("/");
   return i <= 0 ? "/" : p.slice(0, i);
@@ -581,7 +588,7 @@ function parentDir(p: string): string {
  */
 export function isUnder(path: string, root: string, ci: boolean): boolean {
   const a = ci ? path.toLowerCase() : path;
-  const r = (ci ? root.toLowerCase() : root).replace(/\/+$/, "");
+  const r = stripTrailingSlashes(ci ? root.toLowerCase() : root);
   if (r === "") return true;
   return a === r || a.startsWith(`${r}/`);
 }
@@ -623,7 +630,7 @@ function expand(pattern: string, ctx: Context): string[] {
   if (pattern.startsWith("~/")) base = ctx.home + pattern.slice(1);
   else if (pattern.startsWith("/")) base = pattern;
   // Relative patterns are relative to each workspace root (the runtime lists each root in both forms).
-  else return ctx.workspaceRoots.map((r) => `${r.replace(/\/+$/, "")}/${pattern}`);
+  else return ctx.workspaceRoots.map((r) => `${stripTrailingSlashes(r)}/${pattern}`);
   const rp = ctx.realpath;
   if (rp === undefined) return [base];
   let m = expandCache.get(rp);

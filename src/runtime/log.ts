@@ -123,7 +123,12 @@ function keyPairConsistentInner(l: Layout): boolean {
   return derived.trim() === pubPem.trim();
 }
 
-/** The hash an entry must carry (exported for the dashboard's cheap head check, src/ui/logindex.ts). */
+/**
+ * The hash an entry must carry (exported for the dashboard's cheap head check, src/ui/logindex.ts). It links the
+ * chain, it does not store a secret: an event names things (an OAuth vault entry by its name, never its token,
+ * which redactSecrets keeps out of the log), and `log verify` must recompute the same SHA-256 for every existing
+ * entry, so a slow password hash would be wrong here.
+ */
 export function entryHash(prev: string, seq: number, ts: string, event: Record<string, unknown>): string {
   return createHash("sha256").update(`${prev}\n${seq}\n${ts}\n${canonicalJson(event)}`).digest("hex");
 }

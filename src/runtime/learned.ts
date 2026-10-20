@@ -114,7 +114,11 @@ export function projectId(dir: string): string {
   } catch {
     real = abs;
   }
-  return real.length > 1 ? real.replace(/\/+$/, "") : real;
+  if (real.length <= 1) return real;
+  // A backward scan, not /\/+$/ (which retries the run from each "/" in it: CodeQL js/polynomial-redos).
+  let end = real.length;
+  while (end > 0 && real.charCodeAt(end - 1) === 47) end--;
+  return real.slice(0, end);
 }
 
 /** The code a person types for an action in a project (stable: the same action always has the same code). */

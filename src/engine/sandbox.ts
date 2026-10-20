@@ -295,7 +295,10 @@ export function sandboxViolations(before: Json | null, after: Json | null, g: Sa
 /** A Claude Code settings layer's precedence for the `sandbox` key (local > project > user). */
 export function settingsRank(path: string, home: string): number {
   if (/\/\.claude\/settings\.local\.json$/i.test(path)) return 3;
-  if (/\/\.claude\/settings\.json$/i.test(path) && path.toLowerCase() !== `${home.replace(/\/+$/, "")}/.claude/settings.json`.toLowerCase()) return 2;
+  // A loop, not /\/+$/, whose retries are quadratic on a long run of slashes mid-string.
+  let end = home.length;
+  while (end > 0 && home.charCodeAt(end - 1) === 47) end--;
+  if (/\/\.claude\/settings\.json$/i.test(path) && path.toLowerCase() !== `${home.slice(0, end)}/.claude/settings.json`.toLowerCase()) return 2;
   return 1;
 }
 

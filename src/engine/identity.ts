@@ -20,7 +20,11 @@ export const FIREWALL_VAULT_SERVICE = "launchsafe-firewall";
 export const FIREWALL_MANAGED_DIRS: readonly string[] = ["/Library/Application Support/LaunchSafeFirewall", "/etc/launchsafe-firewall"];
 
 function trimSlash(p: string): string {
-  return p.length > 1 ? p.replace(/\/+$/, "") : p;
+  if (p.length <= 1) return p;
+  // A loop, not /\/+$/, whose retries are quadratic on a long run of slashes mid-string.
+  let end = p.length;
+  while (end > 0 && p.charCodeAt(end - 1) === 47) end--;
+  return p.slice(0, end);
 }
 
 /**

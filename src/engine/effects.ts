@@ -55,7 +55,51 @@ export interface Collector {
   judged?: Judged;
 }
 
-const VAR_REF = /\$\{([A-Za-z_][A-Za-z0-9_]*)[^}]*\}|\$([A-Za-z_][A-Za-z0-9_]*)/g;
+const NAME_START = /[A-Za-z_]/;
+const NAME_CHAR = /[A-Za-z0-9_]/;
+
+/**
+ * The variables a word refers to, in order: ${NAME...} up to the first "}" after the name, or $NAME. One pass:
+ * the regular expression this replaces rescanned the rest of the word for each "${" that had no "}" after it
+ * (CodeQL js/polynomial-redos). The first "}" is looked up once and kept while names stay before it.
+ */
+function varNames(raw: string): string[] {
+  const names: string[] = [];
+  let close = -1;
+  let noClose = false;
+  let i = 0;
+  while (i < raw.length) {
+    if (raw[i] !== "$") {
+      i++;
+      continue;
+    }
+    const braced = raw[i + 1] === "{";
+    const start = braced ? i + 2 : i + 1;
+    if (!NAME_START.test(raw[start] ?? "")) {
+      i++;
+      continue;
+    }
+    let end = start + 1;
+    while (end < raw.length && NAME_CHAR.test(raw[end] as string)) end++;
+    if (!braced) {
+      names.push(raw.slice(start, end));
+      i = end;
+      continue;
+    }
+    if (!noClose && close < end) {
+      close = raw.indexOf("}", end);
+      noClose = close === -1;
+    }
+    if (noClose) {
+      // An unclosed ${NAME is no reference, and "{" after the "$" is no $NAME either.
+      i++;
+      continue;
+    }
+    names.push(raw.slice(start, end));
+    i = close + 1;
+  }
+  return names;
+}
 
 /**
  * Substitutes variables the same command bound to literal values. Returns the
@@ -63,7 +107,7 @@ const VAR_REF = /\$\{([A-Za-z_][A-Za-z0-9_]*)[^}]*\}|\$([A-Za-z_][A-Za-z0-9_]*)/
  */
 export function bindingVariants(c: Collector, raw: string): string[] {
   if (c.bindings === undefined || !raw.includes("$")) return [raw];
-  const names = [...raw.matchAll(VAR_REF)].map((m) => (m[1] ?? m[2]) as string);
+  const names = varNames(raw);
   if (names.length === 0 || names.some((n) => n === "HOME" || n === "PWD")) return [raw];
   if (!names.every((n) => c.bindings?.has(n) === true)) return [raw];
   if (/\$\(|`/.test(raw)) return [raw];
@@ -446,13 +490,20 @@ function readOutside(c: Collector, info: PathInfo, via: string): void {
  */
 function readUnknownDir(c: Collector, abs: string, via: string): PathInfo {
   const tail = abs.slice(UNKNOWN_ROOT.length).replace(/^(?:\/_)+/, "");
-  const as = `${(c.ctx.workspaceRoots[0] ?? "/__workspace__").replace(/\/+$/, "")}${tail === "" ? "" : tail}`;
+  const as = `${withoutTrailingSlashes(c.ctx.workspaceRoots[0] ?? "/__workspace__")}${tail === "" ? "" : tail}`;
   const info = classified(c, { abs: as, exact: false, glob: false });
   const shown = `<unknown directory>${tail}`;
   if (info.secret || info.credentialStore) addEffect(c, { cls: "read_secret", target: shown, detail: `read the secret file ${shown} in a directory the firewall cannot follow${via}`, private: true });
   else if (c.state.tainted) addEffect(c, { cls: "read_external", target: shown, detail: `read ${shown} in a directory the firewall cannot follow${via}`, taints: true });
   else addEffect(c, { cls: "read_local_workspace", target: shown, detail: `read ${shown}${via}`, tags: ["cwd-unknown"] });
   return { ...info, abs };
+}
+
+/** The text without its trailing "/"s, by a backward scan (/\/+$/ retries the run from each "/" in it: CodeQL js/polynomial-redos). */
+export function withoutTrailingSlashes(s: string): string {
+  let end = s.length;
+  while (end > 0 && s.charCodeAt(end - 1) === 47) end--;
+  return end === s.length ? s : s.slice(0, end);
 }
 
 /** F-e: the ledger's view of a file, when the policy trusts self-authored files (null on any doubt). */

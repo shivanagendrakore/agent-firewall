@@ -266,7 +266,7 @@ export function tomlTopLevel(text: string | null, key: string): string | null {
   for (const line of text.split("\n")) {
     const t = line.trim();
     if (t.startsWith("[")) break;
-    const m = new RegExp(`^${key.replace(/\./g, "\\.")}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^#\\s]+))`).exec(t);
+    const m = new RegExp(`^${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^#\\s]+))`).exec(t);
     if (m !== null) return m[1] ?? m[2] ?? m[3] ?? null;
   }
   return null;

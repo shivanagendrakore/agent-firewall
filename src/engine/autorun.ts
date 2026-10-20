@@ -240,12 +240,50 @@ function ciFile(raw: string, cfg: FirewallConfig): string[] {
  * are git-hook files too, but only some of their settings run a program.)
  */
 export function isHookBody(abs: string): boolean {
-  return /\/\.git\/hooks\/|\/\.git\/modules\/(?:[^/]+\/)+hooks\/|\/\.husky\/|\/\.githooks\/|\/\.lefthook\/|\/lefthook(?:-local)?\.yml$|\/\.pre-commit-(?:config|hooks)\.yaml$/i.test(abs);
+  if (/\/\.husky\/|\/\.githooks\/|\/\.lefthook\/|\/lefthook(?:-local)?\.yml$|\/\.pre-commit-(?:config|hooks)\.yaml$/i.test(abs)) return true;
+  const segs = lowerSegments(abs);
+  const dir = gitDirEnds(segs);
+  for (let i = 1; i < segs.length - 1; i++) if (segs[i] === "hooks" && dir[i - 1] === true) return true;
+  return false;
 }
 
 /** Git's config files: the repository's, a submodule's (.git/modules/<name>/config) and worktree config. */
 export function isGitConfig(abs: string): boolean {
-  return /\/\.git\/(?:modules\/(?:[^/]+\/)+)?config(?:\.worktree)?$|\/\.git\/worktrees\/[^/]+\/config(?:\.worktree)?$/i.test(abs);
+  const segs = lowerSegments(abs);
+  const n = segs.length;
+  if (segs[n - 1] !== "config" && segs[n - 1] !== "config.worktree") return false;
+  if (n >= 3 && gitDirEnds(segs)[n - 2] === true) return true;
+  return n >= 5 && segs[n - 2] !== "" && segs[n - 3] === "worktrees" && segs[n - 4] === ".git";
+}
+
+/** A repository's or a submodule's info/attributes, which can name filter drivers like .gitattributes. */
+export function isGitInfoAttributes(abs: string): boolean {
+  const segs = lowerSegments(abs);
+  const n = segs.length;
+  return n >= 4 && segs[n - 1] === "attributes" && segs[n - 2] === "info" && gitDirEnds(segs)[n - 3] === true;
+}
+
+/** Path segments with ASCII letters lower-cased: the same letters a /i regex folds, and no others. */
+function lowerSegments(abs: string): string[] {
+  return abs.replace(/[A-Z]+/g, (s) => s.toLowerCase()).split("/");
+}
+
+/**
+ * For each segment, whether the path up to it names a git directory: `/.git`, or a submodule's
+ * `/.git/modules/<name>` (one or more non-empty segments). One pass: a regex for this was quadratic on a
+ * path that repeats `.git/modules/` (CodeQL js/polynomial-redos).
+ */
+function gitDirEnds(segs: readonly string[]): boolean[] {
+  const out: boolean[] = [];
+  // A `/.git/modules` seen earlier with no empty segment since.
+  let modules = false;
+  for (let i = 0; i < segs.length; i++) {
+    const s = segs[i] as string;
+    if (s === "") modules = false;
+    out.push(s !== "" && ((s === ".git" && i >= 1) || modules));
+    if (s === "modules" && i >= 2 && segs[i - 1] === ".git") modules = true;
+  }
+  return out;
 }
 
 /**
@@ -292,7 +330,7 @@ function gitConfigPrograms(text: string): string[] {
 
 function gitHook(abs: string, text: string): string[] {
   if (isGitConfig(abs)) return gitConfigPrograms(text);
-  if (/\/\.git\/(?:modules\/(?:[^/]+\/)+)?info\/attributes$/i.test(abs)) return gitAttributes(text);
+  if (isGitInfoAttributes(abs)) return gitAttributes(text);
   // Hook bodies and hook-manager configurations: a plain lint or test hook is fine; any risky command is not.
   return risks(text, true).map((r) => `a git hook with ${r}`);
 }

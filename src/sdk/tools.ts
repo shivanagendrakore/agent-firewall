@@ -10,7 +10,12 @@ import { own, setOwn } from "../own.js";
 
 /** An MCP server name can hold anything but "__" (the separator in mcp__server__tool). */
 function serverName(s: string): string {
-  const n = s.replace(/_{2,}/g, "_").replace(/^_+|_+$/g, "");
+  // Each run of "_" becomes one and none is kept at either end, by a split (linear): the expressions this
+  // replaced, /_{2,}/g then /^_+|_+$/g, retried a run from each "_" in it (CodeQL js/polynomial-redos).
+  const n = s
+    .split("_")
+    .filter((part) => part !== "")
+    .join("_");
   return n === "" ? "tool" : n;
 }
 

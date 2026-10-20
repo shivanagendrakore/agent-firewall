@@ -69,15 +69,18 @@ export function pnpmGlobalRc(e: CooldownEnv): string {
 
 const positive = (v: string | undefined): boolean => v !== undefined && v !== "" && !/^["']?0+["']?$/.test(v) && !/^["']?(?:false|null|~)["']?$/i.test(v);
 
+/** A key as a literal inside a RegExp: every metacharacter escaped, the backslash included, so no key can change the pattern. */
+const reKey = (key: string): string => key.replace(/[\\^$.*+?()[\]{}|/-]/g, "\\$&");
+
 function iniValue(text: string | null, key: string): string | undefined {
   if (text === null) return undefined;
-  const m = new RegExp(`^\\s*${key.replace(/[-.]/g, "\\$&")}\\s*=\\s*(.+?)\\s*$`, "m").exec(text);
+  const m = new RegExp(`^\\s*${reKey(key)}\\s*=\\s*(.+?)\\s*$`, "m").exec(text);
   return m?.[1];
 }
 
 function yamlTopValue(text: string | null, key: string): string | undefined {
   if (text === null) return undefined;
-  const m = new RegExp(`^${key}:\\s*(.+?)\\s*$`, "m").exec(text);
+  const m = new RegExp(`^${reKey(key)}:\\s*(.+?)\\s*$`, "m").exec(text);
   return m?.[1]?.replace(/\s+#.*$/, "");
 }
 
@@ -92,7 +95,7 @@ function tomlValue(text: string | null, section: string, key: string): string | 
       continue;
     }
     if (cur !== section) continue;
-    const m = new RegExp(`^\\s*${key.replace(/[-.]/g, "\\$&")}\\s*=\\s*(.+?)\\s*$`).exec(line);
+    const m = new RegExp(`^\\s*${reKey(key)}\\s*=\\s*(.+?)\\s*$`).exec(line);
     if (m !== null) return (m[1] as string).replace(/\s+#.*$/, "");
   }
   return undefined;
@@ -192,13 +195,13 @@ export function cooldownStatus(projectDir: string, e: CooldownEnv): CooldownStat
 // --- editing user-level config ----------------------------------------------------------------------------
 
 function setIni(text: string, key: string, value: string): string {
-  const re = new RegExp(`^\\s*${key.replace(/[-.]/g, "\\$&")}\\s*=.*$`, "m");
+  const re = new RegExp(`^\\s*${reKey(key)}\\s*=.*$`, "m");
   if (re.test(text)) return text.replace(re, `${key}=${value}`);
   return `${text}${text === "" || text.endsWith("\n") ? "" : "\n"}${key}=${value}\n`;
 }
 
 function setYamlTop(text: string, key: string, value: string): string {
-  const re = new RegExp(`^${key}:.*$`, "m");
+  const re = new RegExp(`^${reKey(key)}:.*$`, "m");
   if (re.test(text)) return text.replace(re, `${key}: ${value}`);
   return `${text}${text === "" || text.endsWith("\n") ? "" : "\n"}${key}: ${value}\n`;
 }
@@ -206,7 +209,7 @@ function setYamlTop(text: string, key: string, value: string): string {
 function setToml(text: string, section: string, key: string, value: string): string {
   const lines = text === "" ? [] : text.replace(/\n$/, "").split("\n");
   const header = (l: string): string | null => /^\s*\[([^\]]+)\]\s*$/.exec(l)?.[1]?.trim() ?? null;
-  const keyRe = new RegExp(`^\\s*${key.replace(/[-.]/g, "\\$&")}\\s*=`);
+  const keyRe = new RegExp(`^\\s*${reKey(key)}\\s*=`);
   let start: number;
   if (section === "") start = 0;
   else {

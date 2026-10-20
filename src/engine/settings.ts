@@ -91,7 +91,10 @@ export function agentOfSettings(abs: string): string {
 
 /** Settings files that may sit inside a directory (for rm -r .claude, mv .claude elsewhere). */
 export function settingsFilesUnder(dir: string): string[] {
-  const d = dir.replace(/\/+$/, "");
+  // A loop, not /\/+$/, whose retries are quadratic on a long run of slashes mid-string.
+  let end = dir.length;
+  while (end > 0 && dir.charCodeAt(end - 1) === 47) end--;
+  const d = dir.slice(0, end);
   return [`${d}/settings.json`, `${d}/settings.local.json`, `${d}/.claude/settings.json`, `${d}/.claude/settings.local.json`, `${d}/managed-settings.json`, `${d}/hooks.json`, `${d}/config.toml`, `${d}/requirements.toml`, `${d}/.codex/hooks.json`, `${d}/.codex/config.toml`, `${d}/.gemini/settings.json`, `${d}/.cursor/hooks.json`];
 }
 

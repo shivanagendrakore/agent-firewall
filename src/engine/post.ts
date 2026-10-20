@@ -254,13 +254,23 @@ function githubRepo(ownerRaw: string, repoRaw: string): string | null {
   return `github:${owner}/${repo}`;
 }
 
+/**
+ * `s` without its trailing run of `chars` (trailing punctuation after a URL). A loop, not /[...]+$/: that regex
+ * is tried from every position of a long run that does not reach the end, which is quadratic.
+ */
+function withoutTrailing(s: string, chars: string): string {
+  let end = s.length;
+  while (end > 0 && chars.includes(s[end - 1] as string)) end--;
+  return s.slice(0, end);
+}
+
 /** Hosts, URLs and owner/repo names a person typed: destinations they chose themselves. */
 export function destinationsFromPrompt(prompt: string): string[] {
   const out = new Set<string>();
   // URLs contribute their own host (and, on github.com, the repository in the path), then are cut out so
   // no later pattern reads a path segment such as "com/guide" as something else.
   let rest = prompt.replace(/\b(?:https?|wss?|ftp):\/\/[^\s'"`<>\\]+/gi, (raw) => {
-    const p = parseUrlLike(raw.replace(/[),.;\]}]+$/, ""));
+    const p = parseUrlLike(withoutTrailing(raw, "),.;]}"));
     if (p !== null) {
       out.add(p.host);
       if (p.host === "github.com" || p.host === "www.github.com") {

@@ -14,8 +14,12 @@ function capitalize(s: string): string {
 }
 
 function relative(path: string, cwd: string): string {
-  if (cwd !== "" && path.startsWith(`${cwd.replace(/\/+$/, "")}/`)) return path.slice(cwd.replace(/\/+$/, "").length + 1);
-  return path;
+  if (cwd === "") return path;
+  // A loop, not /\/+$/, whose retries are quadratic on a long run of slashes mid-string.
+  let end = cwd.length;
+  while (end > 0 && cwd.charCodeAt(end - 1) === 47) end--;
+  const base = cwd.slice(0, end);
+  return path.startsWith(`${base}/`) ? path.slice(base.length + 1) : path;
 }
 
 /** What the agent wanted to do, in one short line. */

@@ -68,7 +68,12 @@ export function defaultRegistryRoot(env: NodeJS.ProcessEnv = process.env): strin
   return join(firewallHome(env), "run-mounts");
 }
 
-const registryKey = (root: string, p: string): string => join(root, createHash("sha256").update(p).digest("hex").slice(0, 32));
+/**
+ * A path's directory in the registry: a fixed-length name for any mount point path. The path is not a secret
+ * (a protected path such as /etc/passwd is only a file name here), and every run must derive the same name, so a
+ * plain hash is the right tool.
+ */
+const registryKey = (root: string, mountPath: string): string => join(root, createHash("sha256").update(mountPath).digest("hex").slice(0, 32));
 
 const uid = (): number | null => (typeof process.getuid === "function" ? process.getuid() : null);
 
