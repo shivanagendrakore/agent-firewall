@@ -1,0 +1,7 @@
+# Used by .github/workflows/codeql.yml. Test code is not scanned: the tests hold stand-in servers, shell
+# helpers and reference patterns on purpose (the 16 alerts on them on 20 Oct 2026 were all test code, none a
+# problem in the shipped code). The product code (src/, browser/src/) and the build scripts stay scanned.
+name: Agent Firewall CodeQL config
+paths-ignore:
+  - test/**
+  - browser/test/**
