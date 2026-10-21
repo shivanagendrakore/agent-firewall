@@ -1,4 +1,4 @@
-// Vendored from the LaunchSafe Agent Firewall (src/engine/network.ts), Apache-2.0, at commit 5145f69e102584ff11ae342cd2349c4ee76974f3.
+// Vendored from the LaunchSafe Agent Firewall (src/engine/network.ts), Apache-2.0, at commit 79fa72df3ba323a23e186e2ca856297a78fc8194.
 // Licence: Apache-2.0 (see NOTICE).
 // Do not edit here: it is copied from the firewall repository by
 // `node scripts/sync-firewall.mjs` (`--check` verifies the copy).
@@ -62,12 +62,32 @@ export function normalizeHost(h: string): string {
   return h.toLowerCase().replace(/^\[|\]$/g, "").replace(/\.+$/, "");
 }
 
+/**
+ * The text before its first "/", "?" or "#" that has no line break after it: what .replace(/[/?#].*$/, "") left,
+ * in two linear scans (that expression retried from each such character to the end: CodeQL js/polynomial-redos).
+ */
+function beforePathPart(p: string): string {
+  let from = 0;
+  for (let i = p.length - 1; i >= 0; i--) {
+    const ch = p[i];
+    if (ch === "\n" || ch === "\r" || ch === " " || ch === " ") {
+      from = i + 1;
+      break;
+    }
+  }
+  for (let i = from; i < p.length; i++) {
+    const ch = p[i];
+    if (ch === "/" || ch === "?" || ch === "#") return p.slice(0, i);
+  }
+  return p;
+}
+
 /** A host pattern as written by a person: a scheme, a path, a port or a leading dot is not part of the host. */
 function cleanPattern(raw: string): string {
   let p = raw.trim().toLowerCase();
   const lead = /^[=*.]*/.exec(p)?.[0] ?? "";
   p = p.slice(lead.length);
-  p = p.replace(/^[a-z][a-z0-9+.-]*:\/\//, "").replace(/[/?#].*$/, "");
+  p = beforePathPart(p.replace(/^[a-z][a-z0-9+.-]*:\/\//, ""));
   // A port ("example.com:8443", "[::1]:8080"); a bare IPv6 literal has several colons and no port.
   p = /^\[[^\]]*\]:\d+$/.test(p) || /^[^:]+:\d+$/.test(p) ? p.replace(/:\d+$/, "") : p;
   const prefix = lead.startsWith("=") ? "=" : lead.startsWith("*") ? "*." : "";
