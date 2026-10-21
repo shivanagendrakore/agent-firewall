@@ -147,11 +147,19 @@ function extractInPage(maxHtml) {
   });
   const gif = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
   // <noscript> (inert text with scripts on) and <template> are text an agent can read, so they stay, cleaned.
-  const cleanMarkup = (html) =>
-    html
-      .replace(/<(script|iframe|object|embed|video|audio|link|base|style)\b[\s\S]*?(<\/\1>|\/?>)/gi, "")
-      .replace(/\s(src|srcset|data-src|poster|data)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-      .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "");
+  // Repeated until nothing changes: one pass can leave a tag its removal assembled (`<scr<script></script>ipt>`).
+  // Every pass only removes text, so this ends.
+  const cleanMarkup = (html) => {
+    let s = html;
+    for (let before = ""; s !== before; ) {
+      before = s;
+      s = s
+        .replace(/<(script|iframe|object|embed|video|audio|link|base|style)\b[\s\S]*?(<\/\1>|\/?>)/gi, "")
+        .replace(/\s(src|srcset|data-src|poster|data)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+        .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "");
+    }
+    return s;
+  };
   const sanitize = (scope) => {
     for (const el of Array.from(scope.querySelectorAll("script,iframe,frame,object,embed,video,audio,source,track,canvas,link,base,style,portal,applet,meta[http-equiv],meta[name=csrf-token],meta[name=csrf-param],meta[name=request-id]"))) el.remove();
     for (const el of Array.from(scope.querySelectorAll("noscript"))) el.textContent = cleanMarkup(el.textContent ?? "");

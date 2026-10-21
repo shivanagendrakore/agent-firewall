@@ -48,7 +48,8 @@ const json = {
   frameworks: Object.fromEntries(frameworks.map((f) => [f.key, f.items])),
 };
 
-const cell = (s) => String(s).replace(/\|/g, "\\|");
+// The backslash first: otherwise a `\` before a `|` would cancel the escape and split the cell.
+const cell = (s) => String(s).replace(/[\\|]/g, "\\$&");
 const ids = (xs) => (xs.length === 0 ? "-" : xs.map((x) => x.replace(/:2025$/, "")).join(", "));
 const count = (f, s) => f.items.filter((i) => i.status === s).length;
 const markers = active.filter(unmapped);
