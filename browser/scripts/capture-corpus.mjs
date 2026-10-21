@@ -148,13 +148,14 @@ function extractInPage(maxHtml) {
   const gif = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
   // <noscript> (inert text with scripts on) and <template> are text an agent can read, so they stay, cleaned.
   // Repeated until nothing changes: one pass can leave a tag its removal assembled (`<scr<script></script>ipt>`).
-  // A tag goes even when it has no closing `>` (a dangling `<script`). Every pass only removes text, so this ends.
+  // A tag goes even when it has no closing `>` (a dangling `<script`) or runs on into more letters (`<scriptx`): a
+  // lookalike such as `<linkedin>` goes too, which is the safe side for a corpus. Every pass only removes text, so this ends.
   const cleanMarkup = (html) => {
     let s = html;
     for (let before = ""; s !== before; ) {
       before = s;
       s = s
-        .replace(/<\/?(?:script|iframe|object|embed|video|audio|link|base|style)\b[^>]*>?/gi, "")
+        .replace(/<\/?(?:script|iframe|object|embed|video|audio|link|base|style)[^>]*>?/gi, "")
         .replace(/\s(src|srcset|data-src|poster|data)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
         .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "");
     }
